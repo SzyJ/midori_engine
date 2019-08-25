@@ -24,6 +24,9 @@
     <ClInclude Include="src\Midori.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\midori\EntryPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\midori\Application.cpp">

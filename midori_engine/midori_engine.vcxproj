@@ -78,6 +78,7 @@
     <ClInclude Include="src\Midori.h" />
     <ClInclude Include="src\midori\Application.h" />
     <ClInclude Include="src\midori\Core.h" />
+    <ClInclude Include="src\midori\EntryPoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\midori\Application.cpp" />

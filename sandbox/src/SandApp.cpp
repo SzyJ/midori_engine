@@ -7,13 +7,7 @@ public:
     ~Sandbox() {}
 };
 
-
-int main() {
-	printf("Hello World from Sandbox!\n");
-
-    Sandbox* sandbox = new Sandbox();
-
-    sandbox->Run();
-
-    delete sandbox;
+Midori::Application* Midori::CreateApplication() {
+    printf("Hello World from Sandbox!\n");
+    return new Sandbox();
 }
