@@ -2,7 +2,7 @@
 
 #include "Core.h"
 
-namespace mde {
+namespace Midori {
 
 	class MIDORI_API Application
 	{

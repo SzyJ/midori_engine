@@ -15,15 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\midari\Core.h">
+    <ClInclude Include="src\midori\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\midari\Application.h">
+    <ClInclude Include="src\midori\Core.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Midori.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\midari\Application.cpp">
+    <ClCompile Include="src\midori\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

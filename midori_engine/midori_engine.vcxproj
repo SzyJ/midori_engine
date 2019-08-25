@@ -75,11 +75,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\midari\Application.h" />
-    <ClInclude Include="src\midari\Core.h" />
+    <ClInclude Include="src\Midori.h" />
+    <ClInclude Include="src\midori\Application.h" />
+    <ClInclude Include="src\midori\Core.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\midari\Application.cpp" />
+    <ClCompile Include="src\midori\Application.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

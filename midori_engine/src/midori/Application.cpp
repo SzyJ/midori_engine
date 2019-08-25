@@ -1,6 +1,8 @@
 #include "Application.h"
 
-namespace mde {
+#include <stdio.h>
+
+namespace Midori {
 	Application::Application()
 	{
 	}
@@ -11,6 +13,7 @@ namespace mde {
 	}
 
 	void Application::Run() {
+        printf("Hello World from Midori!\n");
 		while (true);
 	}
 }
