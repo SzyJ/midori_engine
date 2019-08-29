@@ -15,3 +15,8 @@ cd midori_engine
 git submodule init
 git submodule update
 ```
+
+This project uses [premake](https://github.com/premake/premake-core) to generate desired project files.
+
+### Generating Visual Studio solution
+Generating a Visual Studio 2017 solution on windows, can be done through running the ```generate_vs2017.bat``` script.
