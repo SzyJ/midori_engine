@@ -15,4 +15,5 @@ namespace Midori {
 
     // To be defined in client
     Application* CreateApplication();
+
 }
