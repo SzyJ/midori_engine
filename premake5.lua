@@ -25,6 +25,7 @@ project "midori_engine"
     }
 
     includedirs {
+        "%{prj.location}/src",
         "%{prj.location}/3rd_party/spdlog/include"
     }
 

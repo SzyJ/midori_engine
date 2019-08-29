@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core.h"
+#include "midori/Core.h"
 
 namespace Midori {
 
