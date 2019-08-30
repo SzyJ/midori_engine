@@ -14,6 +14,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Midori Dependencies
 midoriincludes = {}
 midoriincludes["spdlog"] = "%{wks.location}/midori_engine/3rd_party/spdlog/include"
+midoriincludes["glfw"]   = "%{wks.location}/midori_engine/3rd_party/glfw/include"
+
+-- GLFW --
+include "premake_projects/glfw.lua"
 
 -- Midori Engine --
 -- Requires: glfw

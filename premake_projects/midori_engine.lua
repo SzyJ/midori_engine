@@ -16,7 +16,13 @@ project "midori_engine"
 
     includedirs {
         "%{prj.location}/src",
-        "%{midoriincludes.spdlog}"
+        "%{midoriincludes.spdlog}",
+        "%{midoriincludes.glfw}"
+    }
+    
+    links { 
+        "glfw",
+        "opengl32.lib"
     }
 
     filter "system:windows"
