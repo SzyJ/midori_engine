@@ -1,3 +1,4 @@
+#include "mdpch.h"
 #include "Application.h"
 
 namespace Midori {

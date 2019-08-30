@@ -1,9 +1,7 @@
 #pragma once
+#include "mdpch.h"
 
 #include "midori/Core.h"
-
-#include <string>
-#include <functional>
 
 /*
    Events are currently blocking, meaning when an event occurs, it

@@ -19,6 +19,9 @@ project "midori_engine"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+    pchheader "mdpch.h"
+    pchsource "midori_engine/src/mdpch.cpp"
+
     files {
         "%{prj.location}/src/**.h",
         "%{prj.location}/src/**.cpp"

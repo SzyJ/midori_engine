@@ -2,8 +2,6 @@
 
 #include "midori/events/Event.h"
 
-#include <sstream>
-
 namespace Midori {
 
     class MIDORI_API KeyEvent : public Event {
