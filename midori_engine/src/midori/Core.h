@@ -13,3 +13,5 @@
     #error Midori Engine currently only supports Windows
 
 #endif // MD_PLATFORM_WINDOWS
+
+#define BIT(x) (1 << x)
