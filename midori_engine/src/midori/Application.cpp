@@ -9,7 +9,6 @@ namespace Midori {
         m_Window = std::unique_ptr<Window>(Window::Create());
     }
 
-
     Application::~Application() {}
 
     void Application::Run() {

@@ -6,8 +6,7 @@
 
 namespace Midori {
 
-    class MIDORI_API Application
-    {
+    class MIDORI_API Application {
     public:
         Application();
         virtual ~Application();

@@ -42,7 +42,7 @@ namespace Midori {
             s_GLFWInitialised = true;
         }
 
-        m_Window = glfwCreateWindow((int)properties.Width, (int)properties.Height, m_WindowData.Title.c_str(), nullptr, nullptr);
+        m_Window = glfwCreateWindow((int) properties.Width, (int) properties.Height, m_WindowData.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
         glfwSetWindowUserPointer(m_Window, &m_WindowData);
 
