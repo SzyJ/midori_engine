@@ -11,6 +11,8 @@ namespace Midori {
         m_Window = std::unique_ptr<Window>(Window::Create());
 
         m_Window->SetEventCallback(BIND_EVENT_FUNCTION(OnEvent));
+
+        m_LayerStack = LayerStack();
     }
 
     Application::~Application() {}
@@ -21,7 +23,20 @@ namespace Midori {
             glClear(GL_COLOR_BUFFER_BIT);
 
             m_Window->OnUpdate();
+
+            for (Layer* layer : m_LayerStack) {
+                layer->OnUpdate();
+            }
         }
+    }
+
+
+    void Application::PushLayer(Layer* layer) {
+        m_LayerStack.PushLayer(layer);
+    }
+
+    void Application::PushOverlay(Layer* overlay) {
+        m_LayerStack.PushOverlay(overlay);
     }
 
     void Application::OnEvent(Event& event) {
@@ -29,7 +44,12 @@ namespace Midori {
 
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(OnWindowClose));
 
-        MD_TRACE("Dispatched: {0}", event);
+        for (auto stackIndex = m_LayerStack.end(); stackIndex != m_LayerStack.begin(); ) {
+            (*--stackIndex)->OnEvent(event);
+            if (event.IsHandled()) {
+                break;
+            }
+        }
 
     }
 
