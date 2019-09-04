@@ -18,12 +18,14 @@ project "midori_engine"
         "%{prj.location}/src",
         "%{midoriincludes.spdlog}",
         "%{midoriincludes.glfw}",
-        "%{midoriincludes.glad}"
+        "%{midoriincludes.glad}",
+        "%{midoriincludes.imgui}"
     }
     
     links { 
         "glfw",
         "glad",
+        "imgui",
         "opengl32.lib"
     }
 

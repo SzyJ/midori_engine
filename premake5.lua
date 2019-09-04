@@ -16,13 +16,15 @@ midoriincludes = {}
 midoriincludes["spdlog"] = "%{wks.location}/midori_engine/3rd_party/spdlog/include"
 midoriincludes["glfw"]   = "%{wks.location}/midori_engine/3rd_party/glfw/include"
 midoriincludes["glad"]   = "%{wks.location}/midori_engine/3rd_party/glad/include"
+midoriincludes["imgui"]   = "%{wks.location}/midori_engine/3rd_party/imgui"
 
 -- GLFW --
 include "premake_projects/glfw.lua"
 include "premake_projects/glad.lua"
+include "premake_projects/imgui.lua"
 
 -- Midori Engine --
--- Requires: glfw, glad
+-- Requires: glfw, glad, imgui
 include "premake_projects/midori_engine.lua"
 
 -- Sandbox App --
