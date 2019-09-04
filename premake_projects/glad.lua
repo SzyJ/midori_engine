@@ -12,9 +12,9 @@ project "glad"
         "%{prj.location}/src/glad.c"
     }
 
-	includedirs {
-		"%{prj.location}/include"
-	}
+    includedirs {
+        "%{prj.location}/include"
+    }
 
     filter "system:windows"
         systemversion "latest"
