@@ -17,11 +17,13 @@ project "midori_engine"
     includedirs {
         "%{prj.location}/src",
         "%{midoriincludes.spdlog}",
-        "%{midoriincludes.glfw}"
+        "%{midoriincludes.glfw}",
+        "%{midoriincludes.glad}"
     }
     
     links { 
         "glfw",
+        "glad",
         "opengl32.lib"
     }
 
@@ -32,7 +34,8 @@ project "midori_engine"
 
         defines {
             "MD_PLATFORM_WINDOWS",
-            "MD_BUILD_DLL"
+            "MD_BUILD_DLL",
+            "GLFW_INCLUDE_NONE"
         }
 
         postbuildcommands {

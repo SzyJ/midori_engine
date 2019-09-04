@@ -5,6 +5,8 @@
 #include "midori/events/KeyEvent.h"
 #include "midori/events/MouseEvent.h"
 
+#include <glad/glad.h>
+
 namespace Midori {
 
     Window* Window::Create(const WindowProperties& props) {
@@ -54,6 +56,10 @@ namespace Midori {
     void WindowsWindow::CreateGLFWWindow() {
         m_Window = glfwCreateWindow((int) m_WindowData.Width, (int) m_WindowData.Height, m_WindowData.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+
+        int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        MD_ASSERT(gladInitSuccess, "Failed to initialise Glad");
+
         glfwSetWindowUserPointer(m_Window, &m_WindowData);
     }
 

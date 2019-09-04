@@ -15,12 +15,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 midoriincludes = {}
 midoriincludes["spdlog"] = "%{wks.location}/midori_engine/3rd_party/spdlog/include"
 midoriincludes["glfw"]   = "%{wks.location}/midori_engine/3rd_party/glfw/include"
+midoriincludes["glad"]   = "%{wks.location}/midori_engine/3rd_party/glad/include"
 
 -- GLFW --
 include "premake_projects/glfw.lua"
+include "premake_projects/glad.lua"
 
 -- Midori Engine --
--- Requires: glfw
+-- Requires: glfw, glad
 include "premake_projects/midori_engine.lua"
 
 -- Sandbox App --

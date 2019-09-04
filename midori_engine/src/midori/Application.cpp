@@ -1,7 +1,6 @@
 #include "mdpch.h"
 #include "Application.h"
-
-#include "glfw/glfw3.h"
+#include <glad/glad.h>
 
 #define BIND_EVENT_FUNCTION(x) std::bind(&Application::x, this, std::placeholders::_1)
 
