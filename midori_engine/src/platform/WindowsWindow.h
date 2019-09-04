@@ -35,6 +35,10 @@ namespace Midori {
         GLFWwindow* m_Window;
 
         virtual void Init(const WindowProperties& props);
+        inline void CreateGLFWWindow();
+        inline void SetGLFWConfigurations();
+        inline void SetGLFWCallbacks();
+
         virtual void Shutdown();
     };
 
