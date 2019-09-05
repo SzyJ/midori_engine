@@ -12,6 +12,8 @@ namespace Midori {
         Application();
         virtual ~Application();
 
+        static Application& Get();
+
         void Run();
 
         void OnEvent(Event& event);
@@ -19,7 +21,11 @@ namespace Midori {
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
 
+        inline Window& GetWindow() { return *m_Window; }
+
     private:
+        static Application* s_Instance;
+
         std::unique_ptr<Window> m_Window;
         bool m_Running;
         LayerStack m_LayerStack;

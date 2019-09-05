@@ -6,7 +6,13 @@
 
 namespace Midori {
 
+    Application* Application::s_Instance = nullptr;
+
     Application::Application() {
+        if (!s_Instance) {
+            s_Instance = this;
+        }
+
         m_Window = std::unique_ptr<Window>(Window::Create());
 
         m_Window->SetEventCallback(BIND_EVENT_FUNCTION(OnEvent));
@@ -15,6 +21,15 @@ namespace Midori {
     }
 
     Application::~Application() {}
+
+    Application& Application::Get() {
+        if (s_Instance) {
+            MD_CORE_WARN("Application instance already exists!");
+            return *s_Instance;
+        }
+
+        return *(s_Instance = new Application());
+    }
 
     void Application::Run() {
         while (m_Running) {
