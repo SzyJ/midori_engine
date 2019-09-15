@@ -3,10 +3,10 @@
 #include "midori/Core.h"
 #include "midori/layers/Layer.h"
 
-namespace Midori {
+namespace midori {
 
-    //typedef std::vector<Midori::Layer*> Layers;
-    //typedef std::vector<Midori::Layer*>::iterator LayerPtr;
+    //typedef std::vector<midori::Layer*> Layers;
+    //typedef std::vector<midori::Layer*>::iterator LayerPtr;
 
     class MIDORI_API LayerStack {
     public:

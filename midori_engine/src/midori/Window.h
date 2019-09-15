@@ -3,7 +3,7 @@
 #include "midori/Core.h"
 #include "midori/events/Event.h"
 
-namespace Midori {
+namespace midori {
     
     struct WindowProperties {
         std::string Title;
@@ -14,6 +14,12 @@ namespace Midori {
                     unsigned int width = 1280,
                     unsigned int height = 720)
             : Title(title), Width(width), Height(height) {}
+
+        WindowProperties(const WindowProperties& copy) {
+            Title = copy.Title;
+            Width = copy.Width;
+            Height = copy.Height;
+        }
     };
 
     class MIDORI_API Window {

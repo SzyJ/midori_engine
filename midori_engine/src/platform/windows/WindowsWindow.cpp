@@ -7,7 +7,7 @@
 
 #include <glad/glad.h>
 
-namespace Midori {
+namespace midori {
 
     Window* Window::Create(const WindowProperties& props) {
         return new WindowsWindow(props);
@@ -34,9 +34,7 @@ namespace Midori {
     }
 
     void WindowsWindow::Init(const WindowProperties& properties) {
-        m_WindowData.Title = properties.Title;
-        m_WindowData.Width = properties.Width;
-        m_WindowData.Height = properties.Height;
+        m_WindowData.properties = WindowProperties(properties);
 
         MD_CORE_INFO("Creating window: [{0}] ({1}, {2})", properties.Title, properties.Width, properties.Height);
 
@@ -54,21 +52,21 @@ namespace Midori {
     }
 
     void WindowsWindow::CreateGLFWWindow() {
-        m_Window = glfwCreateWindow((int) m_WindowData.Width, (int) m_WindowData.Height, m_WindowData.Title.c_str(), nullptr, nullptr);
+        m_Window = glfwCreateWindow((int) m_WindowData.properties.Width, (int) m_WindowData.properties.Height, m_WindowData.properties.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
 
-        int gladInitSuccess = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+        int gladInitSuccess = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         MD_ASSERT(gladInitSuccess, "Failed to initialise Glad");
 
         glfwSetWindowUserPointer(m_Window, &m_WindowData);
     }
 
     void WindowsWindow::SetGLFWConfigurations() {
-        // TODO: Make configuarble
+        // TODO: Make configurable
         SetVSync(true);
     }
 
-    void WindowsWindow::SetGLFWCallbacks() {
+    void WindowsWindow::SetGLFWCallbacks() const {
         // Error Callback
         glfwSetErrorCallback([](int error, const char* description) {
             MD_CORE_ERROR("GLFW Error [{0}]: {1}", error, description);
@@ -78,8 +76,8 @@ namespace Midori {
         glfwSetWindowSizeCallback(m_Window, [](GLFWwindow* window, int width, int height) {
             WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
 
-            data.Width = width;
-            data.Height = height;
+            data.properties.Width = width;
+            data.properties.Height = height;
 
             WindowResizeEvent event(width, height);
             data.EventCallback(event);
@@ -95,7 +93,7 @@ namespace Midori {
         
         // Keypress Callback
         glfwSetKeyCallback(m_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
 
             switch (action) {
             case GLFW_PRESS:
@@ -116,6 +114,8 @@ namespace Midori {
                     KeyPressedEvent event(key, 1);
                     data.EventCallback(event);
                 }
+                break;
+            default:
                 break;
             }
         });

@@ -3,11 +3,11 @@
 #include "midori/Core.h"
 #include "midori/events/Event.h"
 
-namespace Midori {
+namespace midori {
 
     class MIDORI_API Layer {
     public:
-        Layer(std::string debugName);
+        Layer(std::string debugName = "Layer");
         virtual ~Layer();
 
         virtual void OnAttach() {}

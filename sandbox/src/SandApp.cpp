@@ -1,6 +1,6 @@
 #include <Midori.h>
 
-class TestLayer : public Midori::Layer {
+class TestLayer : public midori::Layer {
 public:
     TestLayer()
         : Layer("Test_Layer") {}
@@ -14,15 +14,15 @@ public:
     }
 
     void OnUpdate() override {  
-        MD_INFO("Update to {0}", GetDebugName());
+        
     }
 
-    void OnEvent(Midori::Event& event) override {
+    void OnEvent(midori::Event& event) override {
         MD_TRACE("Event in {0}: {1}", GetDebugName(), event);
     }
 };
 
-class Sandbox : public Midori::Application {
+class Sandbox : public midori::Application {
 public:
     Sandbox() {
         PushLayer(new TestLayer());
@@ -31,6 +31,6 @@ public:
     ~Sandbox() {}
 };
 
-Midori::Application* Midori::CreateApplication() {
+midori::Application* midori::CreateApplication() {
     return new Sandbox();
 }

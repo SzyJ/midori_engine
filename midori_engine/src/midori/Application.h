@@ -5,7 +5,7 @@
 #include "midori/events/ApplicationEvent.h"
 #include "midori/layers/LayerStack.h"
 
-namespace Midori {
+namespace midori {
 
     class MIDORI_API Application {
     public:

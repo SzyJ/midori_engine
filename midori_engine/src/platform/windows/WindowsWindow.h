@@ -2,7 +2,7 @@
 #include "midori/Window.h"
 #include <GLFW/glfw3.h>
 
-namespace Midori {
+namespace midori {
 
     class WindowsWindow : public Window {
     public:
@@ -11,8 +11,8 @@ namespace Midori {
 
         virtual void OnUpdate() override;
 
-        virtual inline int GetWindowWidth() const override { return m_WindowData.Width; }
-        virtual inline int GetWindowHeight() const override { return m_WindowData.Height; }
+        virtual inline int GetWindowWidth() const override { return m_WindowData.properties.Width; }
+        virtual inline int GetWindowHeight() const override { return m_WindowData.properties.Height; }
 
         virtual void SetEventCallback(const EventCallbackFn& callback) override { m_WindowData.EventCallback = callback; }
 
@@ -21,8 +21,7 @@ namespace Midori {
 
     private:
         struct WindowData {
-            std::string Title;
-            unsigned int Width, Height;
+            WindowProperties properties;
             bool VSync;
 
             EventCallbackFn EventCallback;
@@ -37,7 +36,7 @@ namespace Midori {
         virtual void Init(const WindowProperties& props);
         inline void CreateGLFWWindow();
         inline void SetGLFWConfigurations();
-        inline void SetGLFWCallbacks();
+        inline void SetGLFWCallbacks() const;
 
         virtual void Shutdown();
     };

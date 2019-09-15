@@ -10,7 +10,7 @@
    TODO: A better strategy might be to buffer events in an event
    bus and process them during the "event" part of the update stage.
 */
-namespace Midori {
+namespace midori {
 
     enum class EventType {
         None = 0,

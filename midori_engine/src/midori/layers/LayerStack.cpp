@@ -1,9 +1,9 @@
 #include "mdpch.h"
 #include "LayerStack.h"
 
-namespace Midori {
+namespace midori {
 
-    LayerStack::LayerStack() {}
+    LayerStack::LayerStack() = default;
 
     LayerStack::~LayerStack() {
         for (Layer* layer : m_Layers) {
@@ -22,7 +22,7 @@ namespace Midori {
     }
 
     void LayerStack::PopLayer(Layer* layer) {
-        auto layerIndex = std::find(m_Layers.begin(), m_Layers.end(), layer);
+        const auto layerIndex = std::find(m_Layers.begin(), m_Layers.end(), layer);
 
         if (layerIndex != m_Layers.end()) {
             m_Layers.erase(layerIndex);
@@ -32,7 +32,7 @@ namespace Midori {
     }
 
     void LayerStack::PopOverlay(Layer* overlay) {
-        auto overlayIndex = std::find(m_Layers.begin(), m_Layers.end(), overlay);
+        const auto overlayIndex = std::find(m_Layers.begin(), m_Layers.end(), overlay);
 
         if (overlayIndex != m_Layers.end()) {
             m_Layers.erase(overlayIndex);

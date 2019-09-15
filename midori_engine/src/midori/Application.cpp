@@ -4,27 +4,23 @@
 
 #define BIND_EVENT_FUNCTION(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-namespace Midori {
+namespace midori {
 
     Application* Application::s_Instance = nullptr;
 
     Application::Application() {
         if (!s_Instance) {
             s_Instance = this;
-        }
+        } // else error ???
 
         m_Window = std::unique_ptr<Window>(Window::Create());
-
         m_Window->SetEventCallback(BIND_EVENT_FUNCTION(OnEvent));
-
-        m_LayerStack = LayerStack();
     }
 
     Application::~Application() {}
 
     Application& Application::Get() {
         if (s_Instance) {
-            MD_CORE_WARN("Application instance already exists!");
             return *s_Instance;
         }
 
@@ -35,7 +31,7 @@ namespace Midori {
         while (m_Running) {
             glClearColor(1, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
-
+            
             m_Window->OnUpdate();
 
             for (Layer* layer : m_LayerStack) {
@@ -43,7 +39,6 @@ namespace Midori {
             }
         }
     }
-
 
     void Application::PushLayer(Layer* layer) {
         m_LayerStack.PushLayer(layer);
@@ -64,7 +59,6 @@ namespace Midori {
                 break;
             }
         }
-
     }
 
     bool Application::OnWindowClose(WindowCloseEvent& closeEvent) {

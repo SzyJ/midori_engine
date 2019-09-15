@@ -2,7 +2,7 @@
 
 #include "midori/events/Event.h"
 
-namespace Midori {
+namespace midori {
     
     class MIDORI_API MouseMovedEvent : public Event {
     public:

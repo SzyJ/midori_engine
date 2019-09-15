@@ -2,7 +2,7 @@
 
 #include "midori/events/Event.h"
 
-namespace Midori {
+namespace midori {
 
     class MIDORI_API WindowResizeEvent : public Event {
     public:
