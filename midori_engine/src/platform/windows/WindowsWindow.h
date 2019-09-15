@@ -12,6 +12,7 @@ namespace midori {
         virtual void OnUpdate() override;
 
         virtual inline int GetWindowWidth() const override { return m_WindowData.properties.Width; }
+
         virtual inline int GetWindowHeight() const override { return m_WindowData.properties.Height; }
 
         virtual void SetEventCallback(const EventCallbackFn& callback) override {
@@ -19,11 +20,13 @@ namespace midori {
         }
 
         virtual void SetVSync(bool enableVSync) override;
+
         virtual bool IsVSyncEnabled() const override { return m_WindowData.VSync; }
 
     private:
         struct WindowData {
             WindowProperties properties;
+
             bool VSync;
 
             EventCallbackFn EventCallback;
@@ -36,11 +39,11 @@ namespace midori {
         GLFWwindow* m_Window;
 
         virtual void Init(const WindowProperties& props);
+        virtual void Shutdown();
         inline void CreateGLFWWindow();
         inline void SetGLFWConfigurations();
         inline void SetGLFWCallbacks() const;
 
-        virtual void Shutdown();
     };
 
 }

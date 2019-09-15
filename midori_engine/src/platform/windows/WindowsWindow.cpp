@@ -6,6 +6,7 @@
 #include <glad/glad.h>
 
 namespace midori {
+
     Window* Window::Create(const WindowProperties& props) {
         return new WindowsWindow(props);
     }
@@ -32,13 +33,16 @@ namespace midori {
 
     void WindowsWindow::Init(const WindowProperties& properties) {
         m_WindowData.properties = WindowProperties(properties);
+
         MD_CORE_INFO("Creating window: [{0}] ({1}, {2})", properties.Title, properties.Width, properties.Height);
+
         if (!s_GLFWInitialised) {
             // TODO: glfwTerminate on system shutdown
             int initSuccess = glfwInit();
             MD_CORE_ASSERT(initSuccess, "Failed to initialise GLFW");
             s_GLFWInitialised = true;
         }
+
         CreateGLFWWindow();
         SetGLFWConfigurations();
         SetGLFWCallbacks();
@@ -47,8 +51,10 @@ namespace midori {
     void WindowsWindow::CreateGLFWWindow() {
         m_Window = glfwCreateWindow((int) m_WindowData.properties.Width, (int) m_WindowData.properties.Height, m_WindowData.properties.Title.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(m_Window);
+
         int gladInitSuccess = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
         MD_ASSERT(gladInitSuccess, "Failed to initialise Glad");
+
         glfwSetWindowUserPointer(m_Window, &m_WindowData);
     }
 
@@ -121,6 +127,7 @@ namespace midori {
                     data.EventCallback(event);
                 }
                 break;
+            default: break;
             }
         });
 
@@ -142,4 +149,5 @@ namespace midori {
     void WindowsWindow::Shutdown() {
         glfwDestroyWindow(m_Window);
     }
+
 }
