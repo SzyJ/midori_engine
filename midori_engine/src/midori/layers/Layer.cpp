@@ -4,7 +4,7 @@
 namespace midori {
 
     Layer::Layer(std::string debugName)
-        :m_DebugName(debugName) {}
+        : m_DebugName(debugName) {}
 
     Layer::~Layer() {}
 

@@ -20,5 +20,5 @@ namespace midori {
     private:
         std::string m_DebugName;
     };
-    
+
 }

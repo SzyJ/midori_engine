@@ -31,7 +31,7 @@ namespace midori {
         while (m_Running) {
             glClearColor(1, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
-            
+
             m_Window->OnUpdate();
 
             for (Layer* layer : m_LayerStack) {
@@ -53,7 +53,7 @@ namespace midori {
 
         dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(OnWindowClose));
 
-        for (auto stackIndex = m_LayerStack.end(); stackIndex != m_LayerStack.begin(); ) {
+        for (auto stackIndex = m_LayerStack.end(); stackIndex != m_LayerStack.begin();) {
             (*--stackIndex)->OnEvent(event);
             if (event.IsHandled()) {
                 break;

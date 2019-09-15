@@ -14,7 +14,9 @@ namespace midori {
         virtual inline int GetWindowWidth() const override { return m_WindowData.properties.Width; }
         virtual inline int GetWindowHeight() const override { return m_WindowData.properties.Height; }
 
-        virtual void SetEventCallback(const EventCallbackFn& callback) override { m_WindowData.EventCallback = callback; }
+        virtual void SetEventCallback(const EventCallbackFn& callback) override {
+            m_WindowData.EventCallback = callback;
+        }
 
         virtual void SetVSync(bool enableVSync) override;
         virtual bool IsVSyncEnabled() const override { return m_WindowData.VSync; }

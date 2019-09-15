@@ -14,17 +14,28 @@ namespace midori {
 
     enum class EventType {
         None = 0,
+
         // Window Events
-        WindowClose, WindowResize, WindowFocus, WindowLostFocus, WindowMoved,
+        WindowClose,
+        WindowResize,
+        WindowFocus,
+        WindowLostFocus,
+        WindowMoved,
 
         // App Events
-        AppTick, AppUpdate, AppRender,
+        AppTick,
+        AppUpdate,
+        AppRender,
 
         // Key Events
-        KeyPressed, KeyReleased,
+        KeyPressed,
+        KeyReleased,
 
         // Mouse Events
-        MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
+        MouseButtonPressed,
+        MouseButtonReleased,
+        MouseMoved,
+        MouseScrolled
     };
 
     enum EventCategory {
@@ -56,14 +67,14 @@ namespace midori {
     };
 
     class EventDispatcher {
-        template<typename T>
+        template <typename T>
         using EventFn = std::function<bool(T&)>;
 
     public:
         EventDispatcher(Event& event)
             : m_Event(event) {}
 
-        template<typename T>
+        template <typename T>
         bool Dispatch(EventFn<T> func) {
             if (m_Event.GetEventType() == T::GetStaticType()) {
                 m_Event.m_Handled = func(*(T*)&m_Event);
