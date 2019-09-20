@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include "midori/Application.h"
 #include "platform/opengl/ImGuiOpenGLRenderer.h"
+#include <glad/glad.h>
 
 namespace midori {
 
@@ -38,6 +39,7 @@ namespace midori {
         io.KeyMap[ImGuiKey_X] = GLFW_KEY_X;
         io.KeyMap[ImGuiKey_Y] = GLFW_KEY_Y;
         io.KeyMap[ImGuiKey_Z] = GLFW_KEY_Z;
+
         ImGui_ImplOpenGL3_Init("#version 410");
     }
 
@@ -46,17 +48,106 @@ namespace midori {
     void ImGuiLayer::OnUpdate() {
         Application& app = Application::Get();
         ImGuiIO& io = ImGui::GetIO();
+
         ImGui_ImplOpenGL3_NewFrame();
+
         io.DisplaySize = ImVec2(app.GetWindow().GetWindowWidth(), app.GetWindow().GetWindowHeight());
         float time = (float) glfwGetTime();
         io.DeltaTime = m_Time > 0.0f ? (time - m_Time) : 1.0f / 60.0f;
         m_Time = time;
+
         ImGui::NewFrame();
+
         static bool show = true;
         ImGui::ShowDemoWindow(&show);
+
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void ImGuiLayer::OnEvent(Event& event) { }
+    void ImGuiLayer::OnEvent(Event& event) {
+        MD_CORE_WARN("IMGUI Event: {0}", event);
+
+        EventDispatcher dispatcher(event);
+
+        dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::KeyPressedCallback));
+        dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::KeyReleasedCallback));
+        dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseMovedCallback));
+        dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseScrollCallback));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseButtonPressedCallback));
+        dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseButtonReleasedCallback));
+    }
+
+    bool ImGuiLayer::KeyPressedCallback(KeyPressedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+        io.KeysDown[event.GetKeyCode()] = true;
+
+        io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
+        io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
+        io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
+        io.KeySuper= io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+
+        return false;
+    }
+
+    bool ImGuiLayer::KeyReleasedCallback(KeyReleasedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+        io.KeysDown[event.GetKeyCode()] = false;
+
+        return false;
+    }
+
+    bool ImGuiLayer::MouseMovedCallback(MouseMovedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MousePos = ImVec2(event.GetX(), event.GetY());
+
+        return false;
+    }
+
+    bool ImGuiLayer::MouseScrollCallback(MouseScrolledEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+        io.MouseWheel += event.GetYOffset();
+        io.MouseWheelH += event.GetXOffset();
+
+        return false;
+    }
+
+    bool ImGuiLayer::MouseButtonPressedCallback(MouseButtonPressedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+
+        io.MouseDown[event.GetMouseButton()] = true;
+
+        return false;
+    }
+
+    bool ImGuiLayer::MouseButtonReleasedCallback(MouseButtonReleasedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+
+        io.MouseDown[event.GetMouseButton()] = false;
+
+        return false;
+    }
+
+    bool ImGuiLayer::WindowResizeCallback(WindowResizeEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+
+        io.DisplaySize = ImVec2(event.GetWidth(), event.GetHeight());
+        io.DisplayFramebufferScale = ImVec2(1.0f, 1.0f);
+
+        glViewport(0, 0, event.GetWidth(), event.GetHeight());
+        return false;
+    }
+
+    bool ImGuiLayer::KeyTypedCallback(KeyTypedEvent& event) {
+        ImGuiIO& io = ImGui::GetIO();
+
+        const int charCode = event.GetKeyCode();
+
+        if (charCode > 0 && charCode < 0x10000) {
+            io.AddInputCharacter((unsigned short) charCode);
+        }
+
+        return false;
+    }
+
 }

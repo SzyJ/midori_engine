@@ -111,6 +111,14 @@ namespace midori {
             }
         });
 
+        // Key Typed
+        glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int charCode) {
+            WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
+
+            KeyTypedEvent event(charCode);
+            data.EventCallback(event);
+        });
+
         // Mouse Button Callback
         glfwSetMouseButtonCallback(m_Window, [](GLFWwindow* window, int button, int action, int mods) {
             WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
