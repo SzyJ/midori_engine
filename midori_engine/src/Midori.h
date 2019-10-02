@@ -10,7 +10,11 @@
 #include "midori/Log.h"
 #include "midori/layers/Layer.h"
 
+#include "midori/Input.h"
+#include "midori/MouseButtonCodes.h"
+#include "midori/KeyCodes.h"
+
 #include "midori/layers/imgui/ImGuiLayer.h"
 
-// == Entry Point ==
+// == Entry Point == //
 #include "midori/EntryPoint.h"
