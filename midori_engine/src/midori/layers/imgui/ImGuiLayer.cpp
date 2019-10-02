@@ -70,12 +70,12 @@ namespace midori {
 
         EventDispatcher dispatcher(event);
 
-        dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::KeyPressedCallback));
-        dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::KeyReleasedCallback));
-        dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseMovedCallback));
-        dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseScrollCallback));
-        dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseButtonPressedCallback));
-        dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FUNCTION(ImGuiLayer::MouseButtonReleasedCallback));
+        dispatcher.Dispatch<KeyPressedEvent>(MD_BIND_FUNCTION(ImGuiLayer::KeyPressedCallback));
+        dispatcher.Dispatch<KeyReleasedEvent>(MD_BIND_FUNCTION(ImGuiLayer::KeyReleasedCallback));
+        dispatcher.Dispatch<MouseMovedEvent>(MD_BIND_FUNCTION(ImGuiLayer::MouseMovedCallback));
+        dispatcher.Dispatch<MouseScrolledEvent>(MD_BIND_FUNCTION(ImGuiLayer::MouseScrollCallback));
+        dispatcher.Dispatch<MouseButtonPressedEvent>(MD_BIND_FUNCTION(ImGuiLayer::MouseButtonPressedCallback));
+        dispatcher.Dispatch<MouseButtonReleasedEvent>(MD_BIND_FUNCTION(ImGuiLayer::MouseButtonReleasedCallback));
     }
 
     bool ImGuiLayer::KeyPressedCallback(KeyPressedEvent& event) {

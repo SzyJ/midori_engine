@@ -12,7 +12,7 @@ namespace midori {
         } // else error ???
 
         m_Window = std::unique_ptr<Window>(Window::Create());
-        m_Window->SetEventCallback(BIND_EVENT_FUNCTION(Application::OnEvent));
+        m_Window->SetEventCallback(MD_BIND_FUNCTION(Application::OnEvent));
     }
 
     Application::~Application() {}
@@ -49,7 +49,7 @@ namespace midori {
     void Application::OnEvent(Event& event) {
         EventDispatcher dispatcher(event);
 
-        dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FUNCTION(Application::OnWindowClose));
+        dispatcher.Dispatch<WindowCloseEvent>(MD_BIND_FUNCTION(Application::OnWindowClose));
 
         for (auto stackIndex = m_LayerStack.end(); stackIndex != m_LayerStack.begin();) {
             (*--stackIndex)->OnEvent(event);

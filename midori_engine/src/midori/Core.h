@@ -10,6 +10,10 @@
     #error Midori Engine currently only supports Windows
 #endif // MD_PLATFORM_WINDOWS
 
+#ifdef MD_DEBUG
+    #define MD_ENABLE_ASSERTS
+#endif // MD_DEBUG
+
 #ifdef MD_ENABLE_ASSERTS
     #define MD_ASSERT(x, ...) { if(!(x)) { MD_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
     #define MD_CORE_ASSERT(x, ...) { if(!(x)) { MD_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
@@ -20,4 +24,4 @@
 
 #define BIT(x) (1 << x)
 
-#define BIND_EVENT_FUNCTION(x) std::bind(&x, this, std::placeholders::_1)
+#define MD_BIND_FUNCTION(x) std::bind(&x, this, std::placeholders::_1)
