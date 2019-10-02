@@ -23,6 +23,8 @@ namespace midori {
 
         virtual bool IsVSyncEnabled() const override { return m_WindowData.VSync; }
 
+        virtual inline void* GetNativeWindow() const override { return m_Window; }
+
     private:
         struct WindowData {
             WindowProperties properties;

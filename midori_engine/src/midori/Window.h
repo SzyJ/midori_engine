@@ -38,6 +38,8 @@ namespace midori {
         virtual void SetVSync(bool enableVSync) = 0;
         virtual bool IsVSyncEnabled() const = 0;
 
+        virtual inline void* GetNativeWindow() const = 0;
+
         static Window* Create(const WindowProperties& props = WindowProperties());
     };
 
