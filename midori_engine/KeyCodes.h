@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: KeyCodes.h
+// Date: 02/10/2019
+
 #pragma once
 
 /* Key Codes from glfw3.h */

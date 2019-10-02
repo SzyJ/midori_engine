@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: WindowsInput.cpp
+// Date: 02/10/2019
+
 #include "mdpch.h"
 #include "WindowsInput.h"
 #include "midori/Application.h"

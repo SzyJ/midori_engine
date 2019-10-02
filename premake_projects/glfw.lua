@@ -1,3 +1,9 @@
+-- Author: Szymon Jackiewicz
+-- 
+-- Project: midori_engine
+-- File: glfw.lua
+-- Date: 02/10/2019
+
 -- This GLFW project configuration is a modified version of the file
 -- from TheCherno's fork of GLFW.
 -- The repository can be found here: https://github.com/TheCherno/glfw/.

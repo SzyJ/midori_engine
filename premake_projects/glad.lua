@@ -1,3 +1,9 @@
+-- Author: Szymon Jackiewicz
+-- 
+-- Project: midori_engine
+-- File: glad.lua
+-- Date: 02/10/2019
+
 project "glad"
     location "%{wks.location}/midori_engine/3rd_party/glad"
     kind "StaticLib"

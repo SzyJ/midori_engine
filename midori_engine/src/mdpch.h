@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: mdpch.h
+// Date: 02/10/2019
+
 #pragma once
 
 #include <iostream>
@@ -15,5 +21,5 @@
 #include "midori/Log.h"
 
 #ifdef MD_PLATFORM_WINDOWS
-    #include <Windows.h> 
+#include <Windows.h>
 #endif // MD_PLATFORM_WINDOWS

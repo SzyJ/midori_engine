@@ -1,3 +1,9 @@
+-- Author: Szymon Jackiewicz
+-- 
+-- Project: midori_engine
+-- File: imgui.lua
+-- Date: 02/10/2019
+
 project "imgui"
     location "%{wks.location}/midori_engine/3rd_party/imgui"
     kind "StaticLib"

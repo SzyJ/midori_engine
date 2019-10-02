@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: WindowsWindow.h
+// Date: 02/10/2019
+
 #pragma once
 #include "midori/Window.h"
 #include <GLFW/glfw3.h>

@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: MouseEvent.h
+// Date: 02/10/2019
+
 #pragma once
 
 #include "midori/events/Event.h"
@@ -7,12 +13,14 @@ namespace midori {
     class MIDORI_API MouseMovedEvent : public Event {
     public:
         EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+
         EVENT_CLASS_TYPE(MouseMoved)
 
         MouseMovedEvent(float x, float y)
             : m_MouseX(x), m_MouseY(y) {}
 
         inline float GetX() const { return m_MouseX; }
+
         inline float GetY() const { return m_MouseY; }
 
         std::string ToString() const override {
@@ -28,12 +36,14 @@ namespace midori {
     class MIDORI_API MouseScrolledEvent : public Event {
     public:
         EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+
         EVENT_CLASS_TYPE(MouseScrolled)
 
         MouseScrolledEvent(float xOffset, float yOffset)
             : m_XOffset(xOffset), m_YOffset(yOffset) {}
 
         inline float GetXOffset() const { return m_XOffset; }
+
         inline float GetYOffset() const { return m_YOffset; }
 
         std::string ToString() const override {

@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Window.h
+// Date: 02/10/2019
+
 #pragma once
 #include "mdpch.h"
 #include "midori/Core.h"
@@ -7,12 +13,14 @@ namespace midori {
 
     struct WindowProperties {
         std::string Title;
+
         unsigned int Width;
+
         unsigned int Height;
 
         WindowProperties(const std::string& title = "Midori Engine",
-                         unsigned int width = 1280,
-                         unsigned int height = 720)
+            unsigned int width = 1280,
+            unsigned int height = 720)
             : Title(title), Width(width), Height(height) {}
 
         WindowProperties(const WindowProperties& copy) {

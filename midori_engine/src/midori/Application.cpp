@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Application.cpp
+// Date: 02/10/2019
+
 #include "mdpch.h"
 #include "Application.h"
 #include <glad/glad.h>

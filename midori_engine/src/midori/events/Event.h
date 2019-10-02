@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Event.h
+// Date: 02/10/2019
+
 #pragma once
 #include "mdpch.h"
 
@@ -50,6 +56,7 @@ namespace midori {
 
     class MIDORI_API Event {
         friend class EventDispatcher;
+
     public:
         virtual EventType GetEventType() const = 0;
         virtual const char* GetName() const = 0;
@@ -78,7 +85,7 @@ namespace midori {
         template <typename T>
         bool Dispatch(EventFn<T> func) {
             if (m_Event.GetEventType() == T::GetStaticType()) {
-                m_Event.m_Handled = func(*(T*)&m_Event);
+                m_Event.m_Handled = func(*(T*) &m_Event);
                 return true;
             }
 

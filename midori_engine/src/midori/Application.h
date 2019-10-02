@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Application.h
+// Date: 02/10/2019
+
 #pragma once
 
 #include "midori/Core.h"
@@ -27,7 +33,9 @@ namespace midori {
         static Application* s_Instance;
 
         std::unique_ptr<Window> m_Window;
+
         bool m_Running;
+
         LayerStack m_LayerStack;
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);

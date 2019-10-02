@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: MouseButtonCodes.h
+// Date: 02/10/2019
+
 #pragma once
 
 /* Mouse Button Codes from glfw3.h */

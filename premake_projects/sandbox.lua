@@ -1,3 +1,9 @@
+-- Author: Szymon Jackiewicz
+-- 
+-- Project: midori_engine
+-- File: sandbox.lua
+-- Date: 02/10/2019
+
 project "sandbox"
     location "%{wks.location}/sandbox"
     kind "ConsoleApp"

@@ -1,3 +1,9 @@
+-- Author: Szymon Jackiewicz
+-- 
+-- Project: midori_engine
+-- File: midori_engine.lua
+-- Date: 02/10/2019
+
 project "midori_engine"
     location "%{wks.location}/midori_engine"
     kind "SharedLib"

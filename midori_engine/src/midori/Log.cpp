@@ -1,9 +1,16 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Log.cpp
+// Date: 02/10/2019
+
 #include "mdpch.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
 namespace midori {
 
     std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
+
     std::shared_ptr<spdlog::logger> Log::s_AppLogger;
 
     void Log::Init() {

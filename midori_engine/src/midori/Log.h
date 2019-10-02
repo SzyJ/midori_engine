@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Log.h
+// Date: 02/10/2019
+
 #pragma once
 
 #include "midori/Core.h"
@@ -11,10 +17,12 @@ namespace midori {
         static void Init();
 
         inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+
         inline static std::shared_ptr<spdlog::logger>& GetAppLogger() { return s_AppLogger; }
 
     private:
         static std::shared_ptr<spdlog::logger> s_CoreLogger;
+
         static std::shared_ptr<spdlog::logger> s_AppLogger;
     };
 

@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: EntryPoint.h
+// Date: 02/10/2019
+
 #pragma once
 
 #ifdef MD_PLATFORM_WINDOWS

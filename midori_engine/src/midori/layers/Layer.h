@@ -1,3 +1,9 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Layer.h
+// Date: 02/10/2019
+
 #pragma once
 
 #include "midori/Core.h"
@@ -11,8 +17,11 @@ namespace midori {
         virtual ~Layer();
 
         virtual void OnAttach() {}
+
         virtual void OnDetach() {}
+
         virtual void OnUpdate() {}
+
         virtual void OnEvent(Event& event) {}
 
         inline const std::string& GetDebugName() const { return m_DebugName; }
