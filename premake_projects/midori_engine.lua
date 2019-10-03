@@ -18,7 +18,9 @@ project "midori_engine"
 
     files {
         "%{prj.location}/src/**.h",
-        "%{prj.location}/src/**.cpp"
+        "%{prj.location}/src/**.cpp",
+        "%{prj.location}/3rd_Party/glm/glm/**.hpp",
+        "%{prj.location}/3rd_Party/glm/glm/**.inl"
     }
 
     includedirs {
@@ -26,7 +28,8 @@ project "midori_engine"
         "%{midoriincludes.spdlog}",
         "%{midoriincludes.glfw}",
         "%{midoriincludes.glad}",
-        "%{midoriincludes.imgui}"
+        "%{midoriincludes.imgui}",
+        "%{midoriincludes.glm}"
     }
     
     links { 

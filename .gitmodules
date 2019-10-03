@@ -8,3 +8,6 @@
 	path = midori_engine/3rd_party/imgui
 	url = https://github.com/ocornut/imgui
 	ignore = untracked
+[submodule "midori_engine/3rd_party/glm"]
+	path = midori_engine/3rd_party/glm
+	url = https://github.com/g-truc/glm

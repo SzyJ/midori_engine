@@ -20,7 +20,8 @@ project "sandbox"
 
     includedirs {
         "%{wks.location}/midori_engine/src",
-        "%{midoriincludes.spdlog}"
+        "%{midoriincludes.spdlog}",
+        "%{midoriincludes.glm}"
     }
 
     links {
