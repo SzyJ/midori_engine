@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: Application.h
-// Date: 02/10/2019
+// Date: 03/10/2019
 
 #pragma once
 
@@ -10,6 +10,7 @@
 #include "midori/Window.h"
 #include "midori/events/ApplicationEvent.h"
 #include "midori/layers/LayerStack.h"
+#include "midori/layers/imgui/ImGuiLayer.h"
 
 namespace midori {
 
@@ -31,6 +32,8 @@ namespace midori {
 
     private:
         static Application* s_Instance;
+
+        ImGuiLayer* m_ImGuiLayer;
 
         std::unique_ptr<Window> m_Window;
 

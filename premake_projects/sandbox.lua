@@ -2,7 +2,7 @@
 -- 
 -- Project: midori_engine
 -- File: sandbox.lua
--- Date: 02/10/2019
+-- Date: 03/10/2019
 
 project "sandbox"
     location "%{wks.location}/sandbox"
@@ -20,6 +20,7 @@ project "sandbox"
 
     includedirs {
         "%{wks.location}/midori_engine/src",
+        "%{wks.location}/midori_engine/3rd_Party",
         "%{midoriincludes.spdlog}",
         "%{midoriincludes.glm}"
     }

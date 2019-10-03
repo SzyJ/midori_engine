@@ -1,6 +1,7 @@
 ## Custom ignores
 bin/
 bin-int/
+*.ini
 
 ## Ignore Visual Studio files as these can be generated with Premake
 *.sln

@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: Midori.h
-// Date: 02/10/2019
+// Date: 03/10/2019
 
 #pragma once
 
@@ -15,6 +15,10 @@
 #include "midori/KeyCodes.h"
 
 #include "midori/layers/imgui/ImGuiLayer.h"
+
+#include "midori/events/ApplicationEvent.h"
+#include "midori/events/KeyEvent.h"
+#include "midori/events/MouseEvent.h"
 
 // == Entry Point == //
 #include "midori/EntryPoint.h"

@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: Application.cpp
-// Date: 02/10/2019
+// Date: 03/10/2019
 
 #include "mdpch.h"
 #include "Application.h"
@@ -19,6 +19,9 @@ namespace midori {
 
         m_Window = std::unique_ptr<Window>(Window::Create());
         m_Window->SetEventCallback(MD_BIND_FUNCTION(Application::OnEvent));
+
+        m_ImGuiLayer = new ImGuiLayer();
+        PushOverlay(m_ImGuiLayer);
     }
 
     Application::~Application() {}
@@ -36,11 +39,19 @@ namespace midori {
             glClearColor(1, 0, 1, 1);
             glClear(GL_COLOR_BUFFER_BIT);
 
-            m_Window->OnUpdate();
-
+            // Layer Updates
             for (Layer* layer : m_LayerStack) {
                 layer->OnUpdate();
             }
+
+            // ImGui Updates
+            m_ImGuiLayer->Begin();
+            for (Layer* layer : m_LayerStack) {
+                layer->OnImGuiRender();
+            }
+            m_ImGuiLayer->End();
+
+            m_Window->OnUpdate();
         }
     }
 

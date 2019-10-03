@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: Layer.h
-// Date: 02/10/2019
+// Date: 03/10/2019
 
 #pragma once
 
@@ -21,6 +21,8 @@ namespace midori {
         virtual void OnDetach() {}
 
         virtual void OnUpdate() {}
+
+        virtual void OnImGuiRender() {}
 
         virtual void OnEvent(Event& event) {}
 
