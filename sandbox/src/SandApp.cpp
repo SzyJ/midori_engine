@@ -39,7 +39,6 @@ class Sandbox : public midori::Application {
 public:
     Sandbox() {
         PushLayer(new TestLayer());
-        PushOverlay(new midori::ImGuiLayer());
     }
 
     ~Sandbox() {}
