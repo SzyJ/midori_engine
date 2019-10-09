@@ -2,13 +2,14 @@
 -- 
 -- Project: midori_engine
 -- File: sandbox.lua
--- Date: 03/10/2019
+-- Date: 09/10/2019
 
 project "sandbox"
     location "%{wks.location}/sandbox"
     kind "ConsoleApp"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -30,14 +31,12 @@ project "sandbox"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
-        
         systemversion "latest"
 
         defines {
             "MD_PLATFORM_WINDOWS"
         }
-        
+
     filter "configurations:Debug"
         defines "MD_DEBUG"
         runtime "Debug"

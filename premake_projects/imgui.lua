@@ -2,12 +2,14 @@
 -- 
 -- Project: midori_engine
 -- File: imgui.lua
--- Date: 02/10/2019
+-- Date: 09/10/2019
 
 project "imgui"
     location "%{wks.location}/midori_engine/3rd_party/imgui"
     kind "StaticLib"
     language "C++"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -24,11 +26,6 @@ project "imgui"
         "%{prj.location}/imstb_truetype.h",
         "%{prj.location}/imgui_demo.cpp"
     }
-    
+
     filter "system:windows"
         systemversion "latest"
-        cppdialect "C++17"
-        staticruntime "On"
-        
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MT"

@@ -2,7 +2,7 @@
 -- 
 -- Project: midori_engine
 -- File: premake5.lua
--- Date: 02/10/2019
+-- Date: 09/10/2019
 
 workspace "midori_engine"
     architecture "x64"

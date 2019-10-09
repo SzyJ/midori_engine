@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: ImGuiLayer.cpp
-// Date: 03/10/2019
+// Date: 09/10/2019
 
 #include "mdpch.h"
 #include "ImGuiLayer.h"
@@ -12,7 +12,6 @@
 #include "examples/imgui_impl_glfw.h"
 #include "examples/imgui_impl_opengl3.h"
 
-#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace midori {
@@ -67,7 +66,7 @@ namespace midori {
         Application& app = Application::Get();
         ImGuiIO& io = ImGui::GetIO();
 
-        io.DisplaySize = ImVec2(app.GetWindow().GetWindowWidth(), app.GetWindow().GetWindowHeight());
+        io.DisplaySize = ImVec2(static_cast<float>(app.GetWindow().GetWindowWidth()), static_cast<float>(app.GetWindow().GetWindowHeight()));
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -2,13 +2,14 @@
 -- 
 -- Project: midori_engine
 -- File: midori_engine.lua
--- Date: 02/10/2019
+-- Date: 09/10/2019
 
 project "midori_engine"
     location "%{wks.location}/midori_engine"
-    kind "SharedLib"
+    kind "StaticLib"
     language "C++"
-    staticruntime "off"
+    cppdialect "C++17"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -21,6 +22,10 @@ project "midori_engine"
         "%{prj.location}/src/**.cpp",
         "%{prj.location}/3rd_Party/glm/glm/**.hpp",
         "%{prj.location}/3rd_Party/glm/glm/**.inl"
+    }
+
+    defines {
+        "_CRT_SECURE_NO_WARNINGS"
     }
 
     includedirs {
@@ -40,20 +45,13 @@ project "midori_engine"
     }
 
     filter "system:windows"
-        cppdialect "C++17"
-        
         systemversion "latest"
 
         defines {
             "MD_PLATFORM_WINDOWS",
-            "MD_BUILD_DLL",
             "GLFW_INCLUDE_NONE"
         }
 
-        postbuildcommands {
-            ("{COPY} %{cfg.buildtarget.relpath} %{wks.location}/bin/" .. outputdir .. "/sandbox")
-        }
-        
     filter "configurations:Debug"
         defines "MD_DEBUG"
         runtime "Debug"

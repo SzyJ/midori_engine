@@ -2,7 +2,7 @@
 -- 
 -- Project: midori_engine
 -- File: glfw.lua
--- Date: 02/10/2019
+-- Date: 09/10/2019
 
 -- This GLFW project configuration is a modified version of the file
 -- from TheCherno's fork of GLFW.
@@ -12,6 +12,7 @@ project "glfw"
     location "%{wks.location}/midori_engine/3rd_party/glfw"
     kind "StaticLib"
     language "C"
+    staticruntime "on"
 
     targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
     objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -29,10 +30,10 @@ project "glfw"
     }
 
     filter "system:linux"
-        pic "On"
+        pic "on"
 
         systemversion "latest"
-        staticruntime "On"
+        staticruntime "on"
 
         files {
             "%{prj.location}/src/x11_init.c",
@@ -53,7 +54,6 @@ project "glfw"
 
     filter "system:windows"
         systemversion "latest"
-        staticruntime "On"
 
         files {
             "%{prj.location}/src/win32_init.c",

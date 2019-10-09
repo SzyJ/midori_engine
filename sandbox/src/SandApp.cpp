@@ -2,9 +2,10 @@
 // 
 // Project: sandbox
 // File: SandApp.cpp
-// Date: 02/10/2019
+// Date: 09/10/2019
 
 #include <Midori.h>
+#include "imgui/imgui.h"
 
 class TestLayer : public midori::Layer {
 public:
@@ -18,7 +19,17 @@ public:
         MD_INFO("Test Layer Detached");
     }
 
-    void OnUpdate() override {}
+    void OnUpdate() override {
+        if (midori::Input::IsKeyPressed(MD_KEY_TAB)) {
+            MD_TRACE("Tab key is pressed!");
+        }
+    }
+
+    void OnImGuiRender() override {
+        ImGui::Begin("Test");
+        ImGui::Text("Hello World");
+        ImGui::End();
+    }
 
     void OnEvent(midori::Event& event) override {
         if (event.GetEventType() == midori::EventType::KeyPressed) {
@@ -29,7 +40,7 @@ public:
                 MD_TRACE("Tab key is pressed (event)!");
             }
 
-            MD_TRACE("{0}", (char)e.GetKeyCode());
+            MD_TRACE("{0}", e.GetKeyCode());
 
         }
     }
