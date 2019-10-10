@@ -9,7 +9,6 @@
 #include "midori/events/ApplicationEvent.h"
 #include "midori/events/KeyEvent.h"
 #include "midori/events/MouseEvent.h"
-#include <glad/glad.h>
 
 namespace midori {
 
@@ -29,7 +28,7 @@ namespace midori {
 
     void WindowsWindow::OnUpdate() {
         glfwPollEvents();
-        glfwSwapBuffers(m_Window);
+        m_GraphicsContext->SwapBuffers();
     }
 
     void WindowsWindow::SetVSync(bool enableVSync) {
@@ -56,10 +55,10 @@ namespace midori {
 
     void WindowsWindow::CreateGLFWWindow() {
         m_Window = glfwCreateWindow((int) m_WindowData.properties.Width, (int) m_WindowData.properties.Height, m_WindowData.properties.Title.c_str(), nullptr, nullptr);
-        glfwMakeContextCurrent(m_Window);
+        
 
-        int gladInitSuccess = gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
-        MD_ASSERT(gladInitSuccess, "Failed to initialise Glad");
+        m_GraphicsContext = new OpenGLContext(m_Window);
+        m_GraphicsContext->Init();
 
         glfwSetWindowUserPointer(m_Window, &m_WindowData);
     }
