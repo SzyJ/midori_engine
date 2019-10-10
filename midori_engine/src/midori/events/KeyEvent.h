@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: KeyEvent.h
-// Date: 02/10/2019
+// Date: 10/10/2019
 
 #pragma once
 
@@ -20,6 +20,8 @@ namespace midori {
         KeyEvent(int keycode)
             : m_KeyCode(keycode) {}
 
+        KeyEvent() = delete;
+
         int m_KeyCode;
     };
 
@@ -29,6 +31,8 @@ namespace midori {
 
         KeyPressedEvent(int keycode, int repeatCount)
             : KeyEvent(keycode), m_RepeatCount(repeatCount) {}
+
+        KeyPressedEvent() = delete;
 
         inline int GetRepeatCount() const { return m_RepeatCount; }
 
@@ -49,6 +53,8 @@ namespace midori {
         KeyReleasedEvent(int keycode)
             : KeyEvent(keycode) {}
 
+        KeyReleasedEvent() = delete;
+
         std::string ToString() const override {
             std::stringstream ss;
             ss << "KeyReleasedEvent: " << m_KeyCode;
@@ -62,6 +68,8 @@ namespace midori {
 
         KeyTypedEvent(unsigned int keycode)
             : KeyEvent(keycode) {}
+
+        KeyTypedEvent() = delete;
 
         std::string ToString() const override {
             std::stringstream ss;

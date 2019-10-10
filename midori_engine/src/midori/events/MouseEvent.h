@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: MouseEvent.h
-// Date: 02/10/2019
+// Date: 10/10/2019
 
 #pragma once
 
@@ -18,6 +18,8 @@ namespace midori {
 
         MouseMovedEvent(float x, float y)
             : m_MouseX(x), m_MouseY(y) {}
+
+        MouseMovedEvent() = delete;
 
         inline float GetX() const { return m_MouseX; }
 
@@ -41,6 +43,8 @@ namespace midori {
 
         MouseScrolledEvent(float xOffset, float yOffset)
             : m_XOffset(xOffset), m_YOffset(yOffset) {}
+
+        MouseScrolledEvent() = delete;
 
         inline float GetXOffset() const { return m_XOffset; }
 
@@ -76,6 +80,8 @@ namespace midori {
         MouseButtonPressedEvent(int button)
             : MouseButtonEvent(button) {}
 
+        MouseButtonPressedEvent() = delete;
+
         std::string ToString() const override {
             std::stringstream ss;
             ss << "MouseButtonPressedEvent: " << m_Button;
@@ -89,6 +95,8 @@ namespace midori {
 
         MouseButtonReleasedEvent(int button)
             : MouseButtonEvent(button) {}
+
+        MouseButtonReleasedEvent() = delete;
 
         std::string ToString() const override {
             std::stringstream ss;

@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: ApplicationEvent.h
-// Date: 02/10/2019
+// Date: 10/10/2019
 
 #pragma once
 
@@ -18,6 +18,8 @@ namespace midori {
 
         WindowResizeEvent(unsigned int width, unsigned int height)
             : m_Width(width), m_Height(height) {}
+
+        WindowResizeEvent() = delete;
 
         inline unsigned int GetWidth() const { return m_Width; }
 
