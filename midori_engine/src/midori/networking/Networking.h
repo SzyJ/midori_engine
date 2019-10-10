@@ -1,7 +1,7 @@
 // Author: Szymon Jackiewicz
 // 
 // Project: midori_engine
-// File: NetworkLayer.h
+// File: Networking.h
 // Date: 10/10/2019
 
 #pragma once
