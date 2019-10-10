@@ -8,19 +8,19 @@
 
 #ifdef MD_PLATFORM_WINDOWS
 
-#ifdef MD_CONFIG_DLL
-
-    #ifdef MD_BUILD_DLL
-        #define MIDORI_API __declspec(dllexport)
+    #ifdef MD_CONFIG_DLL
+    
+        #ifdef MD_BUILD_DLL
+            #define MIDORI_API __declspec(dllexport)
+        #else
+            #define MIDORI_API __declspec(dllimport)
+        #endif // MD_BUILD_DLL
+    
     #else
-        #define MIDORI_API __declspec(dllimport)
-    #endif // MD_BUILD_DLL
-
-#else
-
-    #define MIDORI_API 
-
-#endif
+    
+        #define MIDORI_API 
+    
+    #endif
 
 #else
 

@@ -25,7 +25,8 @@ project "midori_engine"
     }
 
     defines {
-        "_CRT_SECURE_NO_WARNINGS"
+        "_CRT_SECURE_NO_WARNINGS",
+        "MD_USE_NETWORKING"
     }
 
     includedirs {
