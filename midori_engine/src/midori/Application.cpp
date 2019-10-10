@@ -51,6 +51,8 @@ namespace midori {
             }
             m_ImGuiLayer->End();
 
+
+
             m_Window->OnUpdate();
         }
     }

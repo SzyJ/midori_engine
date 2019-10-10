@@ -7,6 +7,7 @@
 #pragma once
 #include "midori/Window.h"
 #include <GLFW/glfw3.h>
+#include "platform/opengl/OpenGLContext.h"
 
 namespace midori {
 
@@ -45,6 +46,8 @@ namespace midori {
         WindowData m_WindowData;
 
         GLFWwindow* m_Window;
+        GraphicsContext* m_GraphicsContext;
+
 
         virtual void Init(const WindowProperties& props);
         virtual void Shutdown();
