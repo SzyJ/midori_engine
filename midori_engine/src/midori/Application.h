@@ -32,16 +32,16 @@ namespace midori {
 
     private:
         static Application* s_Instance;
-
         ImGuiLayer* m_ImGuiLayer;
-
         std::unique_ptr<Window> m_Window;
-
         bool m_Running;
-
         LayerStack m_LayerStack;
 
+        unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+
         bool OnWindowClose(WindowCloseEvent& closeEvent);
+        bool OnWindowResize(WindowResizeEvent& resizeEvent);
+
     };
 
     // To be defined in client
