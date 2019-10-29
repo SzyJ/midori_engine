@@ -7,6 +7,8 @@
 #include "mdpch.h"
 #include "Application.h"
 #include <glad/glad.h>
+#include "midori/renderer/Buffer.h"
+
 
 namespace midori {
 
@@ -28,9 +30,6 @@ namespace midori {
         glGenVertexArrays(1, &m_VertexArray);
         glBindVertexArray(m_VertexArray);
 
-        glGenBuffers(1, &m_VertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VertexBuffer);
-
         float vertices[3 * 3] = {
             -0.5f, -0.5f,  0.0f,
              0.5f, -0.5f,  0.0f,
@@ -38,15 +37,14 @@ namespace midori {
         };
 
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        m_VertexBuffer.reset(midori::VertexBuffer::Create(vertices, sizeof(vertices)));
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
 
-        glGenBuffers(1, &m_IndexBuffer);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IndexBuffer);
-
-        unsigned int indeces[3] = {0, 1, 2};
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indeces), indeces, GL_STATIC_DRAW);
+        const uint32_t INDEX_COUNT = 3;
+        uint32_t indices[INDEX_COUNT] = {0, 1, 2};
+        m_IndexBuffer.reset(midori::IndexBuffer::Create(indices, INDEX_COUNT));
 
         // Set up shader
         std::string vertexSrc = R"(

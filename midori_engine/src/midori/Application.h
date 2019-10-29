@@ -8,10 +8,14 @@
 
 #include "midori/Core.h"
 #include "midori/Window.h"
-#include "midori/renderer/Shader.h"
+
 #include "midori/events/ApplicationEvent.h"
+
 #include "midori/layers/LayerStack.h"
 #include "midori/layers/imgui/ImGuiLayer.h"
+
+#include "midori/renderer/Shader.h"
+#include "midori/renderer/Buffer.h"
 
 namespace midori {
 
@@ -39,7 +43,10 @@ namespace midori {
         bool m_Running;
         LayerStack m_LayerStack;
 
-        unsigned int m_VertexArray, m_VertexBuffer, m_IndexBuffer;
+        unsigned int m_VertexArray;
+        std::unique_ptr<VertexBuffer> m_VertexBuffer;
+        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
         bool OnWindowResize(WindowResizeEvent& resizeEvent);
