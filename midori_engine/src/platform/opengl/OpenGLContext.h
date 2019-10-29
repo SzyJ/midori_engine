@@ -17,7 +17,7 @@ namespace midori {
             MD_CORE_ASSERT(m_WindowHandle, "Window handle is null!")
         }
         OpenGLContext() = delete;
-        ~OpenGLContext();
+        ~OpenGLContext() = default;
 
         virtual void Init() override;
         virtual void SwapBuffers() override;

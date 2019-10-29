@@ -8,6 +8,7 @@
 
 #include "midori/Core.h"
 #include "midori/Window.h"
+#include "midori/renderer/Shader.h"
 #include "midori/events/ApplicationEvent.h"
 #include "midori/layers/LayerStack.h"
 #include "midori/layers/imgui/ImGuiLayer.h"
@@ -34,6 +35,7 @@ namespace midori {
         static Application* s_Instance;
         ImGuiLayer* m_ImGuiLayer;
         std::unique_ptr<Window> m_Window;
+        std::unique_ptr<Shader> m_Shader;
         bool m_Running;
         LayerStack m_LayerStack;
 
