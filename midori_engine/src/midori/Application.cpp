@@ -7,9 +7,6 @@
 #include "mdpch.h"
 #include "Application.h"
 
-#include "midori/renderer/Buffer.h"
-#include "midori/renderer/Renderer.h"
-
 namespace midori {
 
     Application* Application::s_Instance = nullptr;
@@ -36,7 +33,6 @@ namespace midori {
 
     void Application::Run() {
         while (m_Running) {
-            
             // Layer Updates
             for (Layer* layer : m_LayerStack) {
                 layer->OnUpdate();
@@ -79,6 +75,5 @@ namespace midori {
 
         return true;
     }
-
 
 }

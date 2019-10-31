@@ -16,7 +16,6 @@
 
 #include "midori/renderer/Shader.h"
 #include "midori/renderer/VertexArray.h"
-#include "midori/renderer/camera/PerspectiveCamera.h"
 
 namespace midori {
 
@@ -42,7 +41,6 @@ namespace midori {
         std::unique_ptr<Window> m_Window;
         bool m_Running = true;
         LayerStack m_LayerStack;
-
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
     };
