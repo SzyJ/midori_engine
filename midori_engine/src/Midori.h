@@ -16,9 +16,16 @@
 
 #include "midori/layers/imgui/ImGuiLayer.h"
 
+// Events
 #include "midori/events/ApplicationEvent.h"
 #include "midori/events/KeyEvent.h"
 #include "midori/events/MouseEvent.h"
+
+// Renderer
+#include "midori/renderer/Renderer.h"
+#include "midori/renderer/RenderCommand.h"
+#include "midori/renderer/Buffer.h"
+#include "midori/renderer/Shader.h"
 
 // == Entry Point == //
 #include "midori/EntryPoint.h"

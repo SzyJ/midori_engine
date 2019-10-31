@@ -39,15 +39,8 @@ namespace midori {
         static Application* s_Instance;
         ImGuiLayer* m_ImGuiLayer;
         std::unique_ptr<Window> m_Window;
-        bool m_Running;
+        bool m_Running = true;
         LayerStack m_LayerStack;
-
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
-
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
         bool OnWindowResize(WindowResizeEvent& resizeEvent);

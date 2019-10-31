@@ -7,9 +7,112 @@
 #include <Midori.h>
 #include "imgui/imgui.h"
 
-class TestLayer : public midori::Layer {
+class ExampleLayer : public midori::Layer {
 public:
-    TestLayer() : Layer("Test_Layer") {}
+    ExampleLayer() : Layer("Test_Layer") {
+        m_VertexArray.reset(midori::VertexArray::Create());
+
+        float vertices[3 * 7] = {
+            -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f, // [x, y, z], [r, g, b, a]
+             0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f, // [x, y, z], [r, g, b, a]
+             0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f  // [x, y, z], [r, g, b, a]
+        };
+
+        std::shared_ptr<midori::VertexBuffer> vertexBuffer;
+        vertexBuffer.reset(midori::VertexBuffer::Create(vertices, sizeof(vertices)));
+        midori::BufferLayout layout = {
+            { midori::ShaderDataType::Float3, "a_Position" },
+            { midori::ShaderDataType::Float4, "a_Color" }
+        };
+        vertexBuffer->SetLayout(layout);
+        m_VertexArray->AddVertexBuffer(vertexBuffer);
+
+        const uint32_t INDEX_COUNT = 3;
+        uint32_t indices[INDEX_COUNT] = { 0, 1, 2 };
+        std::shared_ptr<midori::IndexBuffer> indexBuffer;
+        indexBuffer.reset(midori::IndexBuffer::Create(indices, INDEX_COUNT));
+        m_VertexArray->SetIndexBuffer(indexBuffer);
+
+        m_SquareVA.reset(midori::VertexArray::Create());
+        float squareVertices[3 * 4] = {
+            -0.75f, -0.75f, 0.0f,
+             0.75f, -0.75f, 0.0f,
+             0.75f,  0.75f, 0.0f,
+            -0.75f,  0.75f, 0.0f
+        };
+
+        std::shared_ptr<midori::VertexBuffer> squareVB;
+        squareVB.reset(midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        squareVB->SetLayout({
+            { midori::ShaderDataType::Float3, "a_Position" }
+            });
+        m_SquareVA->AddVertexBuffer(squareVB);
+
+        uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
+        std::shared_ptr<midori::IndexBuffer> squareIB;
+        squareIB.reset(midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        m_SquareVA->SetIndexBuffer(squareIB);
+
+        // Set up shader
+        std::string vertexSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) in vec3 a_Position;
+            layout(location = 1) in vec4 a_Color;
+
+            out vec3 v_Position;
+            out vec4 v_Color;
+
+            void main() {
+                v_Position = a_Position;
+                v_Color = a_Color;
+                gl_Position = vec4(a_Position, 1.0);    
+            }
+        )";
+
+        std::string fragmentSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) out vec4 color;
+
+            in vec3 v_Position;
+            in vec4 v_Color;
+
+            void main() {
+                color = vec4(v_Position * 0.5 + 0.5, 1.0);
+                //color = v_Color;
+            }
+        )";
+
+        m_Shader.reset(new midori::Shader(vertexSrc, fragmentSrc));
+
+        std::string blueShaderVertexSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) in vec3 a_Position;
+
+            out vec3 v_Position;
+
+            void main() {
+                v_Position = a_Position;
+                gl_Position = vec4(a_Position, 1.0);
+            }
+        )";
+
+        std::string blueShaderFragmentSrc = R"(
+            #version 330 core
+            
+            layout(location = 0) out vec4 color;
+
+            in vec3 v_Position;
+
+            void main() {
+                color = vec4(0.2, 0.3, 0.8, 1.0);
+            }
+        )";
+
+        m_BlueShader.reset(new midori::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+    }
 
     void OnAttach() override {
         MD_INFO("Test Layer Attached");
@@ -20,36 +123,44 @@ public:
     }
 
     void OnUpdate() override {
-        if (midori::Input::IsKeyPressed(MD_KEY_TAB)) {
-            MD_TRACE("Tab key is pressed!");
-        }
+        midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
+        midori::RenderCommand::Clear();
+
+        midori::Renderer::BeginScene();
+
+        m_BlueShader->Bind();
+        midori::Renderer::Submit(m_SquareVA);
+
+        m_Shader->Bind();
+        midori::Renderer::Submit(m_VertexArray);
+
+        midori::Renderer::EndScene();
     }
 
-    void OnImGuiRender() override {
-        ImGui::Begin("Test");
-        ImGui::Text("Hello World");
-        ImGui::End();
-    }
+    void OnImGuiRender() override {}
 
     void OnEvent(midori::Event& event) override {
-        if (event.GetEventType() == midori::EventType::KeyPressed) {
-
-            midori::KeyPressedEvent& e = (midori::KeyPressedEvent&) event;
-
-            if (e.GetKeyCode() == MD_KEY_TAB) {
-                MD_TRACE("Tab key is pressed (event)!");
-            }
-
-            MD_TRACE("{0}", e.GetKeyCode());
-
+        if (event.GetEventType() == midori::EventType::WindowResize) {
+            OnWindowResize((midori::WindowResizeEvent&) event);
         }
+    }
+
+private:
+    std::shared_ptr<midori::Shader> m_Shader;
+    std::shared_ptr<midori::VertexArray> m_VertexArray;
+
+    std::shared_ptr<midori::Shader> m_BlueShader;
+    std::shared_ptr<midori::VertexArray> m_SquareVA;
+
+    void OnWindowResize(midori::WindowResizeEvent& resizeEvent) {
+        midori::RenderCommand::SetViewport(0, 0, resizeEvent.GetWidth(), resizeEvent.GetHeight());
     }
 };
 
 class Sandbox : public midori::Application {
 public:
     Sandbox() {
-        PushLayer(new TestLayer());
+        PushLayer(new ExampleLayer());
     }
 
     ~Sandbox() {}
