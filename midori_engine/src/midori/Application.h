@@ -15,7 +15,7 @@
 #include "midori/layers/imgui/ImGuiLayer.h"
 
 #include "midori/renderer/Shader.h"
-#include "midori/renderer/Buffer.h"
+#include "midori/renderer/VertexArray.h"
 
 namespace midori {
 
@@ -39,13 +39,14 @@ namespace midori {
         static Application* s_Instance;
         ImGuiLayer* m_ImGuiLayer;
         std::unique_ptr<Window> m_Window;
-        std::unique_ptr<Shader> m_Shader;
         bool m_Running;
         LayerStack m_LayerStack;
 
-        unsigned int m_VertexArray;
-        std::unique_ptr<VertexBuffer> m_VertexBuffer;
-        std::unique_ptr<IndexBuffer> m_IndexBuffer;
+        std::shared_ptr<Shader> m_Shader;
+        std::shared_ptr<VertexArray> m_VertexArray;
+
+        std::shared_ptr<Shader> m_BlueShader;
+        std::shared_ptr<VertexArray> m_SquareVA;
 
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);

@@ -17,8 +17,12 @@ namespace midori {
         virtual void Bind() const override;
         virtual void Unbind() const override;
 
+        virtual const BufferLayout& GetLayout() const override;
+        virtual void SetLayout(const BufferLayout& bufferLayout) override;
+
     private:
         uint32_t m_VertexBufferID;
+        BufferLayout m_Layout;
     };
 
     class OpenGLIndexBuffer : public IndexBuffer {
