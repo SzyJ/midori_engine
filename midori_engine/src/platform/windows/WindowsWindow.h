@@ -37,6 +37,9 @@ namespace midori {
             WindowProperties properties;
 
             bool VSync;
+            bool firstMouseSample = true;
+            double lastMouseX;
+            double lastMouseY;
 
             EventCallbackFn EventCallback;
         };
@@ -47,7 +50,6 @@ namespace midori {
 
         GLFWwindow* m_Window;
         GraphicsContext* m_GraphicsContext;
-
 
         virtual void Init(const WindowProperties& props);
         virtual void Shutdown();

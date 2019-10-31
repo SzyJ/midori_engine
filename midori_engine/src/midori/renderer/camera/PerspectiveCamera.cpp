@@ -58,6 +58,8 @@ namespace midori {
         m_Yaw += xOffset;
         m_Pitch += yOffset;
 
+        MD_CORE_TRACE("xOff: {0}, yOff: {1}", xOffset, yOffset);
+
         glm::clamp(m_Pitch, -89.0f, 89.0f);
 
         UpdateCameraVectors();

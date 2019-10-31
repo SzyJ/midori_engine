@@ -149,8 +149,21 @@ namespace midori {
         // Cursor Move Callback
         glfwSetCursorPosCallback(m_Window, [](GLFWwindow* window, double xPos, double yPos) {
             WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
-            MouseMovedEvent event((float) xPos, (float) yPos);
+            if (data.firstMouseSample) {
+                data.lastMouseX = xPos;
+                data.lastMouseY = yPos;
+                data.firstMouseSample = false;
+            }
+
+            MouseMovedEvent event((float) -1.0f * (data.lastMouseX - xPos), (float) (data.lastMouseY - yPos));
+            data.lastMouseX = xPos;
+            data.lastMouseY = yPos;
             data.EventCallback(event);
+        });
+
+        glfwSetCursorEnterCallback(m_Window, [](GLFWwindow* window, int entered) {
+            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            data.firstMouseSample = true;
         });
     }
 
