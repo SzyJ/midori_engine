@@ -30,6 +30,8 @@ namespace midori {
 
         virtual bool IsVSyncEnabled() const override { return m_WindowData.VSync; }
 
+        virtual void SetCursorEnabled(bool isEnabled) override;
+
         virtual inline void* GetNativeWindow() const override { return m_Window; }
 
     private:

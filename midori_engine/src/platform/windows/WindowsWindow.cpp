@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: WindowsWindow.cpp
-// Date: 02/10/2019
+// Date: 31/10/2019
 
 #include "mdpch.h"
 #include "WindowsWindow.h"
@@ -36,6 +36,10 @@ namespace midori {
         m_WindowData.VSync = enableVSync;
     }
 
+    void WindowsWindow::SetCursorEnabled(bool isEnabled) {
+        glfwSetInputMode(m_Window, GLFW_CURSOR, isEnabled ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+    }
+
     void WindowsWindow::Init(const WindowProperties& properties) {
         m_WindowData.properties = WindowProperties(properties);
 
@@ -55,7 +59,7 @@ namespace midori {
 
     void WindowsWindow::CreateGLFWWindow() {
         m_Window = glfwCreateWindow((int) m_WindowData.properties.Width, (int) m_WindowData.properties.Height, m_WindowData.properties.Title.c_str(), nullptr, nullptr);
-        
+
 
         m_GraphicsContext = new OpenGLContext(m_Window);
         m_GraphicsContext->Init();
@@ -65,6 +69,7 @@ namespace midori {
 
     void WindowsWindow::SetGLFWConfigurations() {
         // TODO: Make configurable
+
         SetVSync(true);
     }
 
@@ -162,7 +167,7 @@ namespace midori {
         });
 
         glfwSetCursorEnterCallback(m_Window, [](GLFWwindow* window, int entered) {
-            WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+            WindowData& data = *(WindowData*) glfwGetWindowUserPointer(window);
             data.firstMouseSample = true;
         });
     }

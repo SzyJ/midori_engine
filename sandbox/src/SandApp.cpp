@@ -10,6 +10,7 @@
 class ExampleLayer : public midori::Layer {
 public:
     ExampleLayer() : Layer("Test_Layer") {
+        midori::Application::Get().GetWindow().SetCursorEnabled(m_CursorEnabled);
 
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
@@ -17,7 +18,7 @@ public:
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight);
 
         // Temporary triangle
-       m_VertexArray.reset(midori::VertexArray::Create());
+        m_VertexArray.reset(midori::VertexArray::Create());
 
         float vertices[3 * 7] = {
             -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f, // [x, y, z], [r, g, b, a]
@@ -161,6 +162,7 @@ public:
             m_Camera->Move(midori::MovementDirection::down, delta * m_MoveSpeed);
         }
 
+
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
         midori::RenderCommand::Clear();
 
@@ -192,14 +194,23 @@ public:
     }
 
     void OnEvent(midori::Event& event) override {
-        if (event.GetEventType() == midori::EventType::WindowResize) {
+        switch(event.GetEventType()) {
+        case midori::EventType::WindowResize:
             OnWindowResize((midori::WindowResizeEvent&) event);
-        }
+            break;
+        case midori::EventType::MouseMoved:
+            if (!m_CursorEnabled) {
+                auto& moveEvent = (midori::MouseMovedEvent&) event;
+                m_Camera->Rotate(m_LookSens * moveEvent.GetX(), m_LookSens * moveEvent.GetY());
+            }
+            break;
 
-        if (event.GetEventType() == midori::EventType::MouseMoved) {
-            auto& moveEvent = (midori::MouseMovedEvent&) event;
-
-            m_Camera->Rotate(m_LookSens * moveEvent.GetX(), m_LookSens * moveEvent.GetY());
+        case midori::EventType::KeyPressed:
+            auto& keyPressedEvent = (midori::KeyPressedEvent&) event;
+            if (keyPressedEvent.GetKeyCode() == MD_KEY_ESCAPE) {
+                midori::Application::Get().GetWindow().SetCursorEnabled(m_CursorEnabled = !m_CursorEnabled);
+            }
+            break;
         }
     }
 
@@ -215,6 +226,8 @@ private:
     midori::PerspectiveCamera* m_Camera;
     float m_MoveSpeed = 2.5f;
     float m_LookSens = 0.1f;
+
+    bool m_CursorEnabled = false;
 
     void OnWindowResize(midori::WindowResizeEvent& resizeEvent) {
         const auto newWidth = resizeEvent.GetWidth();
