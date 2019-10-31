@@ -8,8 +8,7 @@
 #include "Application.h"
 
 #include "midori/renderer/Buffer.h"
-
-#include "midori/renderer/RenderCommand.h"
+#include "midori/renderer/Renderer.h"
 
 namespace midori {
 
@@ -145,13 +144,15 @@ namespace midori {
             RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
             RenderCommand::Clear();
 
+            Renderer::BeginScene();
+
             m_BlueShader->Bind();
-            m_SquareVA->Bind();
-            RenderCommand::DrawVertices(m_SquareVA);
+            Renderer::Submit(m_SquareVA);
 
             m_Shader->Bind();
-            m_VertexArray->Bind();
-            RenderCommand::DrawVertices(m_VertexArray);
+            Renderer::Submit(m_VertexArray);
+
+            Renderer::EndScene();
 
             // Layer Updates
             for (Layer* layer : m_LayerStack) {

@@ -5,7 +5,7 @@
 // Date: 29/10/2019
 
 #pragma once
-#include "midori/renderer/RendererAPI.h"
+#include "midori/renderer/RenderCommand.h"
 
 namespace midori {
 
