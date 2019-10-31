@@ -50,7 +50,12 @@ namespace midori {
         if (direction == MovementDirection::down) {
             m_Position -= m_Up * distance;
         }
-
+        if (direction == MovementDirection::world_up) {
+            m_Position += m_WorldUp * distance;
+        }
+        if (direction == MovementDirection::world_down) {
+            m_Position -= m_WorldUp * distance;
+        }
         RecalculateViewMatrix();
     }
 

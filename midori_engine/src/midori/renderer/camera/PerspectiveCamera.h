@@ -18,7 +18,9 @@ namespace midori {
         left,
         right,
         up,
-        down
+        down,
+        world_up,
+        world_down,
     };
 
     class PerspectiveCamera : public Camera {
