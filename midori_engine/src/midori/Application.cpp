@@ -25,6 +25,7 @@ namespace midori {
         m_ImGuiLayer = new ImGuiLayer();
         PushOverlay(m_ImGuiLayer);
 
+        m_Camera = new PerspectiveCamera();
 
         // Temporary triangle
         m_VertexArray.reset(VertexArray::Create());
@@ -77,13 +78,15 @@ namespace midori {
             layout(location = 0) in vec3 a_Position;
             layout(location = 1) in vec4 a_Color;
 
+            uniform mat4 u_ViewProjection;
+
             out vec3 v_Position;
             out vec4 v_Color;
 
             void main() {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = vec4(a_Position, 1.0);    
+                gl_Position = u_ViewProjection * vec4(a_Position, 1.0);    
             }
         )";
 
@@ -108,11 +111,13 @@ namespace midori {
             
             layout(location = 0) in vec3 a_Position;
 
+            uniform mat4 u_ViewProjection;
+
             out vec3 v_Position;
 
             void main() {
                 v_Position = a_Position;
-                gl_Position = vec4(a_Position, 1.0);
+                gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
             }
         )";
 
@@ -141,16 +146,15 @@ namespace midori {
 
     void Application::Run() {
         while (m_Running) {
+            // Render Scene
             RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
             RenderCommand::Clear();
 
-            Renderer::BeginScene();
+            Renderer::BeginScene(m_Camera);
 
-            m_BlueShader->Bind();
-            Renderer::Submit(m_SquareVA);
+            Renderer::Submit(m_BlueShader, m_SquareVA);
 
-            m_Shader->Bind();
-            Renderer::Submit(m_VertexArray);
+            Renderer::Submit(m_Shader, m_VertexArray);
 
             Renderer::EndScene();
 
@@ -199,7 +203,10 @@ namespace midori {
     }
 
     bool Application::OnWindowResize(WindowResizeEvent& resizeEvent) {
-        RenderCommand::SetViewport(0, 0, resizeEvent.GetWidth(), resizeEvent.GetHeight());
+        const auto newWidth = resizeEvent.GetWidth();
+        const auto newHeight = resizeEvent.GetHeight();
+        RenderCommand::SetViewport(0, 0, newWidth, newHeight);
+        m_Camera->OnWindowResize(newWidth, newHeight);
 
         return false;
     }

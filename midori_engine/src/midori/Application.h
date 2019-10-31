@@ -16,13 +16,16 @@
 
 #include "midori/renderer/Shader.h"
 #include "midori/renderer/VertexArray.h"
+#include "midori/renderer/camera/PerspectiveCamera.h"
 
 namespace midori {
 
     class MIDORI_API Application {
     public:
         Application();
-        virtual ~Application() = default;
+        virtual ~Application() {
+            delete m_Camera;
+        }
 
         static Application& Get();
 
@@ -48,6 +51,7 @@ namespace midori {
         std::shared_ptr<Shader> m_BlueShader;
         std::shared_ptr<VertexArray> m_SquareVA;
 
+        Camera* m_Camera;
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
         bool OnWindowResize(WindowResizeEvent& resizeEvent);
