@@ -28,7 +28,7 @@ namespace midori {
     }
 
     void LayerStack::PopLayer(Layer* layer) {
-        const auto layerIndex = std::find(m_Layers.begin(), m_Layers.end(), layer);
+        const auto layerIndex = std::find(m_Layers.begin(), m_Layers.begin() + m_LayerInsertIndex, layer);
 
         if (layerIndex != m_Layers.end()) {
             layer->OnDetach();
@@ -38,7 +38,7 @@ namespace midori {
     }
 
     void LayerStack::PopOverlay(Layer* overlay) {
-        const auto overlayIndex = std::find(m_Layers.begin(), m_Layers.end(), overlay);
+        const auto overlayIndex = std::find(m_Layers.begin() + m_LayerInsertIndex, m_Layers.end(), overlay);
 
         if (overlayIndex != m_Layers.end()) {
             overlay->OnDetach();
