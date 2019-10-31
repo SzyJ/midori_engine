@@ -23,9 +23,7 @@ namespace midori {
     class MIDORI_API Application {
     public:
         Application();
-        virtual ~Application() {
-            delete m_Camera;
-        }
+        virtual ~Application() = default;
 
         static Application& Get();
 
@@ -42,20 +40,11 @@ namespace midori {
         static Application* s_Instance;
         ImGuiLayer* m_ImGuiLayer;
         std::unique_ptr<Window> m_Window;
-        bool m_Running;
+        bool m_Running = true;
         LayerStack m_LayerStack;
 
-        std::shared_ptr<Shader> m_Shader;
-        std::shared_ptr<VertexArray> m_VertexArray;
-
-        std::shared_ptr<Shader> m_BlueShader;
-        std::shared_ptr<VertexArray> m_SquareVA;
-
-        Camera* m_Camera;
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
-        bool OnWindowResize(WindowResizeEvent& resizeEvent);
-
     };
 
     // To be defined in client
