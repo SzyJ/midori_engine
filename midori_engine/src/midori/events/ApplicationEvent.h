@@ -41,7 +41,7 @@ namespace midori {
 
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
-        WindowCloseEvent() {}
+        WindowCloseEvent() = default;
     };
 
     class MIDORI_API AppTickEvent : public Event {
@@ -50,7 +50,7 @@ namespace midori {
 
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
-        AppTickEvent() {}
+        AppTickEvent() = default;
     };
 
     class MIDORI_API AppUpdateEvent : public Event {
@@ -59,7 +59,7 @@ namespace midori {
 
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
-        AppUpdateEvent() {}
+        AppUpdateEvent() = default;
     };
 
     class MIDORI_API AppRenderEvent : public Event {
@@ -68,7 +68,7 @@ namespace midori {
 
         EVENT_CLASS_CATEGORY(EventCategoryApplication)
 
-        AppRenderEvent() {}
+        AppRenderEvent() = default;
     };
 
 }

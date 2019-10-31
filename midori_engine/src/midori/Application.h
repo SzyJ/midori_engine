@@ -22,7 +22,7 @@ namespace midori {
     class MIDORI_API Application {
     public:
         Application();
-        virtual ~Application();
+        virtual ~Application() = default;
 
         static Application& Get();
 

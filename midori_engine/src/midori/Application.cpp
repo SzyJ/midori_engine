@@ -132,8 +132,6 @@ namespace midori {
         m_BlueShader.reset(new Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
-    Application::~Application() {}
-
     Application& Application::Get() {
         if (s_Instance) {
             return *s_Instance;

@@ -14,7 +14,7 @@ namespace midori {
     class MIDORI_API Layer {
     public:
         Layer(std::string debugName = "Layer");
-        virtual ~Layer();
+        virtual ~Layer() = default;
 
         virtual void OnAttach() {}
 
