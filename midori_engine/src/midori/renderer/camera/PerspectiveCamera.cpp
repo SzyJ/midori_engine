@@ -44,6 +44,13 @@ namespace midori {
         if (direction == MovementDirection::right) {
             m_Position += m_Right * distance;
         }
+        if (direction == MovementDirection::up) {
+            m_Position += m_WorldUp * distance;
+        }
+        if (direction == MovementDirection::down) {
+            m_Position -= m_WorldUp * distance;
+        }
+
         RecalculateViewMatrix();
     }
 

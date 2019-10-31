@@ -16,7 +16,9 @@ namespace midori {
         forward,
         backward,
         left,
-        right
+        right,
+        up,
+        down
     };
 
     class PerspectiveCamera : public Camera {

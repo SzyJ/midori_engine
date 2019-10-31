@@ -139,12 +139,21 @@ public:
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {
             m_Camera->Move(midori::MovementDirection::forward, delta * m_MoveSpeed);
-        } else if (midori::Input::IsKeyPressed(MD_KEY_A)) {
+        }
+        if (midori::Input::IsKeyPressed(MD_KEY_A)) {
             m_Camera->Move(midori::MovementDirection::left, delta * m_MoveSpeed);
-        } else if (midori::Input::IsKeyPressed(MD_KEY_S)) {
+        }
+        if (midori::Input::IsKeyPressed(MD_KEY_S)) {
             m_Camera->Move(midori::MovementDirection::backward, delta * m_MoveSpeed);
-        } else if (midori::Input::IsKeyPressed(MD_KEY_D)) {
+        }
+        if (midori::Input::IsKeyPressed(MD_KEY_D)) {
             m_Camera->Move(midori::MovementDirection::right, delta * m_MoveSpeed);
+        }
+        if (midori::Input::IsKeyPressed(MD_KEY_SPACE)) {
+            m_Camera->Move(midori::MovementDirection::up, delta * m_MoveSpeed);
+        }
+        if (midori::Input::IsKeyPressed(MD_KEY_LEFT_SHIFT)) {
+            m_Camera->Move(midori::MovementDirection::down, delta * m_MoveSpeed);
         }
 
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
