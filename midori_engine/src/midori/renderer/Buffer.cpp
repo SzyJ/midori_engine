@@ -13,9 +13,9 @@ namespace midori {
 
     VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::OpenGL:;
+        case RendererAPI::API::OpenGL:;
             return new OpenGLVertexBuffer(vertices, size);
-        case RendererAPI::None:
+        case RendererAPI::API::None:
         default:
             break;
         }
@@ -26,9 +26,9 @@ namespace midori {
 
     IndexBuffer* IndexBuffer::Create(uint32_t* indices, uint32_t count) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::OpenGL:;
+        case RendererAPI::API::OpenGL:;
             return new OpenGLIndexBuffer(indices, count);
-        case RendererAPI::None:
+        case RendererAPI::API::None:
         default:
             break;
         }

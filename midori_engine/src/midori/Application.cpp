@@ -9,7 +9,7 @@
 
 #include "midori/renderer/Buffer.h"
 
-#include <glad/glad.h>
+#include "midori/renderer/RenderCommand.h"
 
 namespace midori {
 
@@ -98,7 +98,7 @@ namespace midori {
 
             void main() {
                 color = vec4(v_Position * 0.5 + 0.5, 1.0);
-                color = v_Color;
+                //color = v_Color;
             }
         )";
 
@@ -142,16 +142,16 @@ namespace midori {
 
     void Application::Run() {
         while (m_Running) {
-            glClearColor(0, 0, 1.0f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+            RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
+            RenderCommand::Clear();
 
             m_BlueShader->Bind();
             m_SquareVA->Bind();
-            glDrawElements(GL_TRIANGLES, m_SquareVA->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            RenderCommand::DrawVertices(m_SquareVA);
 
             m_Shader->Bind();
             m_VertexArray->Bind();
-            glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+            RenderCommand::DrawVertices(m_VertexArray);
 
             // Layer Updates
             for (Layer* layer : m_LayerStack) {
@@ -198,8 +198,7 @@ namespace midori {
     }
 
     bool Application::OnWindowResize(WindowResizeEvent& resizeEvent) {
-        
-        glViewport(0, 0, resizeEvent.GetWidth(), resizeEvent.GetHeight());
+        RenderCommand::SetViewport(0, 0, resizeEvent.GetWidth(), resizeEvent.GetHeight());
 
         return false;
     }

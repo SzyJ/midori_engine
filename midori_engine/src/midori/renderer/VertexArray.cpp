@@ -13,9 +13,9 @@ namespace midori {
 
     VertexArray* VertexArray::Create() {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::OpenGL:;
+        case RendererAPI::API::OpenGL:;
             return new OpenGLVertexArray();
-        case RendererAPI::None:
+        case RendererAPI::API::None:
         default:
             break;
         }
