@@ -31,8 +31,8 @@ namespace midori {
         const auto layerIndex = std::find(m_Layers.begin(), m_Layers.end(), layer);
 
         if (layerIndex != m_Layers.end()) {
-            m_Layers.erase(layerIndex);
             layer->OnDetach();
+            m_Layers.erase(layerIndex);
             --m_LayerInsertIndex;
         }
     }
@@ -41,8 +41,8 @@ namespace midori {
         const auto overlayIndex = std::find(m_Layers.begin(), m_Layers.end(), overlay);
 
         if (overlayIndex != m_Layers.end()) {
-            m_Layers.erase(overlayIndex);
             overlay->OnDetach();
+            m_Layers.erase(overlayIndex);
         }
     }
 
