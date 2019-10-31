@@ -7,6 +7,10 @@
 #include "mdpch.h"
 #include "Application.h"
 
+#include "midori/core/DeltaTime.h"
+
+#include <GLFW/glfw3.h>
+
 namespace midori {
 
     Application* Application::s_Instance = nullptr;
@@ -32,10 +36,18 @@ namespace midori {
     }
 
     void Application::Run() {
+        DeltaTime delta;
+        float lastFrameTime = 0.0f;
+        float thisFrameTime;
+
         while (m_Running) {
+            thisFrameTime = (float) glfwGetTime();
+            delta = thisFrameTime - lastFrameTime;
+            lastFrameTime = thisFrameTime;
+
             // Layer Updates
             for (Layer* layer : m_LayerStack) {
-                layer->OnUpdate();
+                layer->OnUpdate(delta);
             }
 
             // ImGui Updates

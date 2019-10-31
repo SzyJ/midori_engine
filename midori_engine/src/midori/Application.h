@@ -14,9 +14,6 @@
 #include "midori/layers/LayerStack.h"
 #include "midori/layers/imgui/ImGuiLayer.h"
 
-#include "midori/renderer/Shader.h"
-#include "midori/renderer/VertexArray.h"
-
 namespace midori {
 
     class MIDORI_API Application {

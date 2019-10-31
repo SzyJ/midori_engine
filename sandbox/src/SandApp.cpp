@@ -134,7 +134,19 @@ public:
         MD_INFO("Example Layer Detached");
     }
 
-    void OnUpdate() override {
+    void OnUpdate(midori::DeltaTime delta) override {
+        m_ThisDelta = delta;
+
+        if (midori::Input::IsKeyPressed(MD_KEY_W)) {
+            m_Camera->Move(midori::MovementDirection::forward, delta * m_MoveSpeed);
+        } else if (midori::Input::IsKeyPressed(MD_KEY_A)) {
+            m_Camera->Move(midori::MovementDirection::left, delta * m_MoveSpeed);
+        } else if (midori::Input::IsKeyPressed(MD_KEY_S)) {
+            m_Camera->Move(midori::MovementDirection::backward, delta * m_MoveSpeed);
+        } else if (midori::Input::IsKeyPressed(MD_KEY_D)) {
+            m_Camera->Move(midori::MovementDirection::right, delta * m_MoveSpeed);
+        }
+
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
         midori::RenderCommand::Clear();
 
@@ -146,23 +158,38 @@ public:
         midori::Renderer::EndScene();
     }
 
-    void OnImGuiRender() override { }
+    void OnImGuiRender() override {
+        float smoothing = 0.9; // larger=more smoothing
+        m_DeltaAverage = (m_DeltaAverage * smoothing) + (m_ThisDelta * (1.0 - smoothing));
+        
+        ImGui::Begin("FPS");
+        ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
+        ImGui::End();
+    }
 
     void OnEvent(midori::Event& event) override {
         if (event.GetEventType() == midori::EventType::WindowResize) {
             OnWindowResize((midori::WindowResizeEvent&) event);
         }
+
+        if (event.GetEventType() == midori::EventType::MouseMoved) {
+            auto& moveEvent = (midori::MouseMovedEvent&) event;
+            m_Camera->Rotate(m_LookSens * moveEvent.GetX(), m_LookSens * moveEvent.GetY());
+        }
     }
 
 private:
-
+    midori::DeltaTime m_ThisDelta;
+    midori::DeltaTime m_DeltaAverage = 0.0f;
     std::shared_ptr<midori::Shader> m_Shader;
     std::shared_ptr<midori::VertexArray> m_VertexArray;
 
     std::shared_ptr<midori::Shader> m_BlueShader;
     std::shared_ptr<midori::VertexArray> m_SquareVA;
 
-    midori::Camera* m_Camera;
+    midori::PerspectiveCamera* m_Camera;
+    float m_MoveSpeed = 2.5f;
+    float m_LookSens = 0.1f;
 
     void OnWindowResize(midori::WindowResizeEvent& resizeEvent) {
         const auto newWidth = resizeEvent.GetWidth();

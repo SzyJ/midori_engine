@@ -14,6 +14,8 @@
 #include "midori/MouseButtonCodes.h"
 #include "midori/KeyCodes.h"
 
+#include "midori/core/DeltaTime.h"
+
 #include "midori/layers/imgui/ImGuiLayer.h"
 
 // Events

@@ -9,6 +9,8 @@
 #include "midori/Core.h"
 #include "midori/events/Event.h"
 
+#include "midori/core/DeltaTime.h"
+
 namespace midori {
 
     class MIDORI_API Layer {
@@ -20,7 +22,7 @@ namespace midori {
 
         virtual void OnDetach() {}
 
-        virtual void OnUpdate() {}
+        virtual void OnUpdate(DeltaTime delta) {}
 
         virtual void OnImGuiRender() {}
 
