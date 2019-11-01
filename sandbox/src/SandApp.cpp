@@ -185,8 +185,8 @@ public:
     }
 
     void OnImGuiRender() override {
-        float smoothing = 0.9; // larger=more smoothing
-        m_DeltaAverage = (m_DeltaAverage * smoothing) + (m_ThisDelta * (1.0 - smoothing));
+        float smoothing = 0.9f; // larger=more smoothing
+        m_DeltaAverage = (m_DeltaAverage * smoothing) + (m_ThisDelta * (1.0f - smoothing));
         
         ImGui::Begin("FPS");
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
@@ -198,6 +198,7 @@ public:
         case midori::EventType::WindowResize:
             OnWindowResize((midori::WindowResizeEvent&) event);
             break;
+
         case midori::EventType::MouseMoved:
             if (!m_CursorEnabled) {
                 auto& moveEvent = (midori::MouseMovedEvent&) event;

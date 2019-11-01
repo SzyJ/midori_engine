@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 #include "midori/layers/Layer.h"
 
 namespace midori {

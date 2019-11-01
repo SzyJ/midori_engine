@@ -6,7 +6,7 @@
 
 #pragma once
 #include "mdpch.h"
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 #include "midori/events/Event.h"
 
 namespace midori {

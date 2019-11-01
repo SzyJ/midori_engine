@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 

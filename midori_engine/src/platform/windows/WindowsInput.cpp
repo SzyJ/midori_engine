@@ -6,8 +6,9 @@
 
 #include "mdpch.h"
 #include "WindowsInput.h"
-#include "midori/Application.h"
-#include "GLFW/glfw3.h"
+#include "midori/core/Application.h"
+
+#include <GLFW/glfw3.h>
 
 namespace midori {
 

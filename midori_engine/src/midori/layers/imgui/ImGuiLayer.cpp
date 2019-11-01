@@ -7,11 +7,11 @@
 #include "mdpch.h"
 #include "ImGuiLayer.h"
 
-#include "midori/Application.h"
-#include "imgui.h"
-#include "examples/imgui_impl_glfw.h"
-#include "examples/imgui_impl_opengl3.h"
+#include "midori/core/Application.h"
 
+#include <imgui.h>
+#include <examples/imgui_impl_glfw.h>
+#include <examples/imgui_impl_opengl3.h>
 #include <GLFW/glfw3.h>
 
 namespace midori {
@@ -52,8 +52,8 @@ namespace midori {
     }
 
     void ImGuiLayer::OnImGuiRender() {
-        static bool show = true;
-        ImGui::ShowDemoWindow(&show);
+        //static bool show = true;
+        //ImGui::ShowDemoWindow(&show);
     }
 
     void ImGuiLayer::Begin() {

@@ -5,7 +5,7 @@
 // Date: 02/10/2019
 
 #pragma once
-#include "midori/Input.h"
+#include "midori/core/Input.h"
 
 namespace midori {
 

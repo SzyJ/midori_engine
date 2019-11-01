@@ -7,6 +7,8 @@
 #pragma once
 
 #ifdef MD_PLATFORM_WINDOWS
+#include "midori/core/Application.h"
+
 extern midori::Application* midori::CreateApplication();
 
 int main(int argc, char** argv) {

@@ -7,7 +7,7 @@
 #pragma once
 #include "mdpch.h"
 
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 
 /*
    Events are currently blocking, meaning when an event occurs, it

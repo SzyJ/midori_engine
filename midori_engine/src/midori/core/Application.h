@@ -6,8 +6,8 @@
 
 #pragma once
 
-#include "midori/Core.h"
-#include "midori/Window.h"
+#include "midori/core/Core.h"
+#include "midori/core/Window.h"
 
 #include "midori/events/ApplicationEvent.h"
 

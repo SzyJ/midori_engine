@@ -18,7 +18,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "midori/Log.h"
+#include "midori/core/Log.h"
 
 #ifdef MD_PLATFORM_WINDOWS
 #include <Windows.h>

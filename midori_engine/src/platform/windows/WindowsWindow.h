@@ -5,7 +5,7 @@
 // Date: 02/10/2019
 
 #pragma once
-#include "midori/Window.h"
+#include "midori/core/Window.h"
 #include <GLFW/glfw3.h>
 #include "platform/opengl/OpenGLContext.h"
 

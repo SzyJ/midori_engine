@@ -5,7 +5,7 @@
 // Date: 02/10/2019
 
 #pragma once
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 #include <utility>
 
 namespace midori {

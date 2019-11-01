@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "midori/Core.h"
+#include "midori/core/Core.h"
 #include "midori/events/Event.h"
 
 #include "midori/core/DeltaTime.h"

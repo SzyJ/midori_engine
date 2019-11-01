@@ -160,7 +160,7 @@ namespace midori {
                 data.firstMouseSample = false;
             }
 
-            MouseMovedEvent event((float) -1.0f * (data.lastMouseX - xPos), (float) (data.lastMouseY - yPos));
+            MouseMovedEvent event( -1.0f * (float) (data.lastMouseX - xPos), (float) (data.lastMouseY - yPos));
             data.lastMouseX = xPos;
             data.lastMouseY = yPos;
             data.EventCallback(event);

@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "midori/Application.h"
-#include "midori/Log.h"
+#include "midori/core/Application.h"
+#include "midori/core/Log.h"
 #include "midori/layers/Layer.h"
 
-#include "midori/Input.h"
-#include "midori/MouseButtonCodes.h"
-#include "midori/KeyCodes.h"
+#include "midori/core/Input.h"
+#include "midori/core/MouseButtonCodes.h"
+#include "midori/core/KeyCodes.h"
 
 #include "midori/core/DeltaTime.h"
 
@@ -32,4 +32,4 @@
 #include "midori/renderer/camera/PerspectiveCamera.h"
 
 // == Entry Point == //
-#include "midori/EntryPoint.h"
+#include "midori/core/EntryPoint.h"
