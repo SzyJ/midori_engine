@@ -15,15 +15,16 @@ public:
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
-        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight);
+        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 5.0f));
 
         // Temporary triangle
         m_VertexArray.reset(midori::VertexArray::Create());
 
-        float vertices[3 * 7] = {
-           -0.5f, -0.5f, -1.0f,   1.0f, 0.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
-            0.5f, -0.5f, -1.0f,   0.0f, 1.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
-            0.0f,  0.5f, -1.0f,   0.0f, 0.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
+        float vertices[4 * 7] = {
+           -0.5f, -0.5f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
+            0.5f, -0.5f, 1.0f,   0.0f, 1.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
+            0.5f,  0.5f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
+           -0.5f,  0.5f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
         };
 
         std::shared_ptr<midori::VertexBuffer> vertexBuffer;
@@ -35,8 +36,8 @@ public:
         vertexBuffer->SetLayout(layout);
         m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-        const uint32_t INDEX_COUNT = 4;
-        uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 0};
+        const uint32_t INDEX_COUNT = 6;
+        uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 2, 3, 0};
         std::shared_ptr<midori::IndexBuffer> indexBuffer;
         indexBuffer.reset(midori::IndexBuffer::Create(indices, INDEX_COUNT));
         m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -106,8 +107,10 @@ public:
             uniform mat4 u_Transform;
 
             out vec3 v_Position;
+            out vec3 v_ColChange;
 
             void main() {
+                v_ColChange = vec3(u_Transform[3][0], u_Transform[3][1], u_Transform[3][2]);
                 v_Position = a_Position;
                 gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
             }
@@ -119,9 +122,10 @@ public:
             layout(location = 0) out vec4 color;
 
             in vec3 v_Position;
+            in vec3 v_ColChange;
 
             void main() {
-                color = vec4(0.2, 0.3, 0.8, 1.0);
+                color = vec4(v_ColChange, 1.0);
             }
         )";
 

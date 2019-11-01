@@ -20,6 +20,7 @@ namespace midori {
         virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
 
         static Shader* Create(std::string& vertexSrc, std::string& fragmentSrc);
+        static Shader* Load(const char* vertShaderPath, const char* fragShaderPath);
     };
 
 }
