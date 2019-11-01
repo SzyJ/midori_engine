@@ -95,7 +95,7 @@ public:
             }
         )";
 
-        m_Shader.reset(new midori::Shader(vertexSrc, fragmentSrc));
+        m_Shader.reset(midori::Shader::Create(vertexSrc, fragmentSrc));
 
         std::string blueShaderVertexSrc = R"(
             #version 330 core
@@ -125,7 +125,7 @@ public:
             }
         )";
 
-        m_BlueShader.reset(new midori::Shader(blueShaderVertexSrc, blueShaderFragmentSrc));
+        m_BlueShader.reset(midori::Shader::Create(blueShaderVertexSrc, blueShaderFragmentSrc));
     }
 
     ~ExampleLayer() {
