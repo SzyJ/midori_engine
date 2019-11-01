@@ -2,7 +2,7 @@
 -- 
 -- Project: midori_engine
 -- File: midori_engine.lua
--- Date: 09/10/2019
+-- Date: 01/11/2019
 
 project "midori_engine"
     location "%{wks.location}/midori_engine"
@@ -20,6 +20,8 @@ project "midori_engine"
     files {
         "%{prj.location}/src/**.h",
         "%{prj.location}/src/**.cpp",
+        "%{prj.location}/3rd_Party/stb_image/**.h",
+        "%{prj.location}/3rd_Party/stb_image/**.cpp",
         "%{prj.location}/3rd_Party/glm/glm/**.hpp",
         "%{prj.location}/3rd_Party/glm/glm/**.inl"
     }
@@ -34,7 +36,8 @@ project "midori_engine"
         "%{midoriincludes.glfw}",
         "%{midoriincludes.glad}",
         "%{midoriincludes.imgui}",
-        "%{midoriincludes.glm}"
+        "%{midoriincludes.glm}",
+        "%{midoriincludes.stb_image}"
     }
     
     links { 
