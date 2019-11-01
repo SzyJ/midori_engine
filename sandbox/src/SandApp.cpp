@@ -21,9 +21,9 @@ public:
         m_VertexArray.reset(midori::VertexArray::Create());
 
         float vertices[3 * 7] = {
-            -0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f, // [x, y, z], [r, g, b, a]
-             0.5f, -0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f, // [x, y, z], [r, g, b, a]
-             0.0f,  0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f  // [x, y, z], [r, g, b, a]
+           -0.5f, -0.5f, -1.0f,   1.0f, 0.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
+            0.5f, -0.5f, -1.0f,   0.0f, 1.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
+            0.0f,  0.5f, -1.0f,   0.0f, 0.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
         };
 
         std::shared_ptr<midori::VertexBuffer> vertexBuffer;
@@ -35,8 +35,8 @@ public:
         vertexBuffer->SetLayout(layout);
         m_VertexArray->AddVertexBuffer(vertexBuffer);
 
-        const uint32_t INDEX_COUNT = 3;
-        uint32_t indices[INDEX_COUNT] = { 0, 1, 2 };
+        const uint32_t INDEX_COUNT = 4;
+        uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 0};
         std::shared_ptr<midori::IndexBuffer> indexBuffer;
         indexBuffer.reset(midori::IndexBuffer::Create(indices, INDEX_COUNT));
         m_VertexArray->SetIndexBuffer(indexBuffer);
@@ -77,7 +77,7 @@ public:
             void main() {
                 v_Position = a_Position;
                 v_Color = a_Color;
-                gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);    
+                gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
             }
         )";
 
@@ -90,8 +90,8 @@ public:
             in vec4 v_Color;
 
             void main() {
-                color = vec4(v_Position * 0.5 + 0.5, 1.0);
-                //color = v_Color;
+                //color = vec4(v_Position * 0.5 + 0.5, 1.0);
+                color = v_Color;
             }
         )";
 
