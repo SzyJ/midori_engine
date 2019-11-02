@@ -16,14 +16,14 @@ namespace midori {
     public:
         static void Init();
 
-        inline static std::shared_ptr<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
+        inline static ref<spdlog::logger>& GetCoreLogger() { return s_CoreLogger; }
 
-        inline static std::shared_ptr<spdlog::logger>& GetAppLogger() { return s_AppLogger; }
+        inline static ref<spdlog::logger>& GetAppLogger() { return s_AppLogger; }
 
     private:
-        static std::shared_ptr<spdlog::logger> s_CoreLogger;
+        static ref<spdlog::logger> s_CoreLogger;
 
-        static std::shared_ptr<spdlog::logger> s_AppLogger;
+        static ref<spdlog::logger> s_AppLogger;
     };
 
 }

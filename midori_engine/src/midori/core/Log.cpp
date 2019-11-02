@@ -9,9 +9,9 @@
 
 namespace midori {
 
-    std::shared_ptr<spdlog::logger> Log::s_CoreLogger;
+    ref<spdlog::logger> Log::s_CoreLogger;
 
-    std::shared_ptr<spdlog::logger> Log::s_AppLogger;
+    ref<spdlog::logger> Log::s_AppLogger;
 
     void Log::Init() {
         spdlog::set_pattern("%^[%T] %n: %v%$");

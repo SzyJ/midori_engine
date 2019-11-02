@@ -20,7 +20,7 @@ namespace midori {
             s_Instance = this;
         } // else error ???
 
-        m_Window = std::unique_ptr<Window>(Window::Create());
+        m_Window = scope<Window>(Window::Create());
         m_Window->SetEventCallback(MD_BIND_FUNCTION(Application::OnEvent));
 
         m_ImGuiLayer = new ImGuiLayer();

@@ -28,7 +28,7 @@ public:
            -0.5f,  0.5f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
         };
 
-        midori::Ref<midori::VertexBuffer> vertexBuffer;
+        midori::ref<midori::VertexBuffer> vertexBuffer;
         vertexBuffer = midori::VertexBuffer::Create(vertices, sizeof(vertices));
         midori::BufferLayout layout = {
             { midori::ShaderDataType::Float3, "a_Position" },
@@ -39,7 +39,7 @@ public:
 
         const uint32_t INDEX_COUNT = 6;
         uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 2, 3, 0};
-        midori::Ref<midori::IndexBuffer> indexBuffer;
+        midori::ref<midori::IndexBuffer> indexBuffer;
         indexBuffer = (midori::IndexBuffer::Create(indices, INDEX_COUNT));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
@@ -51,7 +51,7 @@ public:
             -0.5f,  0.5f, 0.0f
         };
 
-        midori::Ref<midori::VertexBuffer> squareVB;
+        midori::ref<midori::VertexBuffer> squareVB;
         squareVB = (midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
         squareVB->SetLayout({
             { midori::ShaderDataType::Float3, "a_Position" }
@@ -59,7 +59,7 @@ public:
         m_SquareVA->AddVertexBuffer(squareVB);
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        midori::Ref<midori::IndexBuffer> squareIB;
+        midori::ref<midori::IndexBuffer> squareIB;
         squareIB = (midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
         m_SquareVA->SetIndexBuffer(squareIB);
 
@@ -156,11 +156,11 @@ public:
 private:
     midori::DeltaTime m_ThisDelta;
     midori::DeltaTime m_DeltaAverage = 0.0f;
-    midori::Ref<midori::Shader> m_Shader;
-    midori::Ref<midori::VertexArray> m_VertexArray;
+    midori::ref<midori::Shader> m_Shader;
+    midori::ref<midori::VertexArray> m_VertexArray;
 
-    midori::Ref<midori::Shader> m_BlueShader;
-    midori::Ref<midori::VertexArray> m_SquareVA;
+    midori::ref<midori::Shader> m_BlueShader;
+    midori::ref<midori::VertexArray> m_SquareVA;
 
     midori::PerspectiveCamera* m_Camera;
     float m_MoveSpeed = 2.5f;

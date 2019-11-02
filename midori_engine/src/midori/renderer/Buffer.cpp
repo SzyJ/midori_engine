@@ -11,7 +11,7 @@
 
 namespace midori {
 
-    Ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
+    ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
             return std::make_shared<OpenGLVertexBuffer>(vertices, size);
@@ -24,7 +24,7 @@ namespace midori {
     }
 
 
-    Ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count) {
+    ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
             return std::make_shared<OpenGLIndexBuffer>(indices, count);

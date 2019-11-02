@@ -19,7 +19,7 @@ namespace midori {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void OpenGLRendererAPI::DrawVertices(const std::shared_ptr<VertexArray>& vertexArray) {
+    void OpenGLRendererAPI::DrawVertices(const ref<VertexArray>& vertexArray) {
         glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 

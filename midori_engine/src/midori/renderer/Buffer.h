@@ -113,7 +113,7 @@ namespace midori {
         virtual const BufferLayout& GetLayout() const = 0;
         virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
 
-        static Ref<VertexBuffer> Create(float* vertices, uint32_t size);
+        static ref<VertexBuffer> Create(float* vertices, uint32_t size);
     };
 
 
@@ -126,7 +126,7 @@ namespace midori {
 
         virtual uint32_t GetCount() const = 0;
 
-        static Ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
+        static ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
     };
 
 }

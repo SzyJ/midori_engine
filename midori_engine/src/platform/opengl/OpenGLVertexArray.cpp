@@ -47,7 +47,7 @@ namespace midori {
         glBindVertexArray(0);
     }
 
-    void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer) {
+    void OpenGLVertexArray::AddVertexBuffer(const ref<VertexBuffer>& vertexBuffer) {
 
         MD_CORE_ASSERT(vertexBuffer->GetLayout().GetElements().size(), "Buffer Layout not set in Vertex Buffer");
         glBindVertexArray(m_VertexArrayID);
@@ -72,7 +72,7 @@ namespace midori {
         m_VertexBuffers.push_back(vertexBuffer);
     }
 
-    void OpenGLVertexArray::SetIndexBuffer(const std::shared_ptr<IndexBuffer>& indexBuffer) {
+    void OpenGLVertexArray::SetIndexBuffer(const ref<IndexBuffer>& indexBuffer) {
         glBindVertexArray(m_VertexArrayID);
 
         indexBuffer->Bind();
@@ -80,8 +80,8 @@ namespace midori {
         m_IndexBuffer = indexBuffer;
     }
 
-    const std::vector<std::shared_ptr<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const { return m_VertexBuffers; }
+    const std::vector<ref<VertexBuffer>>& OpenGLVertexArray::GetVertexBuffers() const { return m_VertexBuffers; }
 
-    const std::shared_ptr<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const { return m_IndexBuffer; }
+    const ref<IndexBuffer>& OpenGLVertexArray::GetIndexBuffer() const { return m_IndexBuffer; }
 
 }
