@@ -19,7 +19,7 @@ public:
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 5.0f));
 
         // Temporary triangle
-        m_VertexArray.reset(midori::VertexArray::Create());
+        m_VertexArray = (midori::VertexArray::Create());
 
         float vertices[4 * 7] = {
            -0.5f, -0.5f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
@@ -28,8 +28,8 @@ public:
            -0.5f,  0.5f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
         };
 
-        std::shared_ptr<midori::VertexBuffer> vertexBuffer;
-        vertexBuffer.reset(midori::VertexBuffer::Create(vertices, sizeof(vertices)));
+        midori::Ref<midori::VertexBuffer> vertexBuffer;
+        vertexBuffer = midori::VertexBuffer::Create(vertices, sizeof(vertices));
         midori::BufferLayout layout = {
             { midori::ShaderDataType::Float3, "a_Position" },
             { midori::ShaderDataType::Float4, "a_Color" }
@@ -39,11 +39,11 @@ public:
 
         const uint32_t INDEX_COUNT = 6;
         uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 2, 3, 0};
-        std::shared_ptr<midori::IndexBuffer> indexBuffer;
-        indexBuffer.reset(midori::IndexBuffer::Create(indices, INDEX_COUNT));
+        midori::Ref<midori::IndexBuffer> indexBuffer;
+        indexBuffer = (midori::IndexBuffer::Create(indices, INDEX_COUNT));
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_SquareVA.reset(midori::VertexArray::Create());
+        m_SquareVA = (midori::VertexArray::Create());
         float squareVertices[3 * 4] = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
@@ -51,20 +51,20 @@ public:
             -0.5f,  0.5f, 0.0f
         };
 
-        std::shared_ptr<midori::VertexBuffer> squareVB;
-        squareVB.reset(midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        midori::Ref<midori::VertexBuffer> squareVB;
+        squareVB = (midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
         squareVB->SetLayout({
             { midori::ShaderDataType::Float3, "a_Position" }
             });
         m_SquareVA->AddVertexBuffer(squareVB);
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        std::shared_ptr<midori::IndexBuffer> squareIB;
-        squareIB.reset(midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        midori::Ref<midori::IndexBuffer> squareIB;
+        squareIB = (midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
         m_SquareVA->SetIndexBuffer(squareIB);
 
-        m_Shader.reset(midori::Shader::Load(SHADER_TEXTURE_SQUARE));
-        m_BlueShader.reset(midori::Shader::Load(SHADER_SQUARE_GRID));
+        m_Shader = (midori::Shader::Load(SHADER_TEXTURE_SQUARE));
+        m_BlueShader = (midori::Shader::Load(SHADER_SQUARE_GRID));
     }
 
     ~ExampleLayer() {
@@ -156,11 +156,11 @@ public:
 private:
     midori::DeltaTime m_ThisDelta;
     midori::DeltaTime m_DeltaAverage = 0.0f;
-    std::shared_ptr<midori::Shader> m_Shader;
-    std::shared_ptr<midori::VertexArray> m_VertexArray;
+    midori::Ref<midori::Shader> m_Shader;
+    midori::Ref<midori::VertexArray> m_VertexArray;
 
-    std::shared_ptr<midori::Shader> m_BlueShader;
-    std::shared_ptr<midori::VertexArray> m_SquareVA;
+    midori::Ref<midori::Shader> m_BlueShader;
+    midori::Ref<midori::VertexArray> m_SquareVA;
 
     midori::PerspectiveCamera* m_Camera;
     float m_MoveSpeed = 2.5f;

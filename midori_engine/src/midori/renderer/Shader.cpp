@@ -31,10 +31,10 @@
 
 namespace midori {
 
-    Shader* Shader::Create(std::string& vertexSrc, std::string& fragmentSrc) {
+    Ref<Shader> Shader::Create(std::string& vertexSrc, std::string& fragmentSrc) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:
-            return new OpenGLShader(vertexSrc, fragmentSrc);
+            return std::make_shared<OpenGLShader>(vertexSrc, fragmentSrc);
         case RendererAPI::API::None:
         default:
             break;
@@ -44,7 +44,7 @@ namespace midori {
         return nullptr;
     }
 
-    Shader* Shader::Load(const std::string& shaderPath) {
+    Ref<Shader> Shader::Load(const std::string& shaderPath) {
         std::string vertexShaderSrc;
         std::string fragmentShaderSrc;
         //TODO: Add geom and tess shaders
