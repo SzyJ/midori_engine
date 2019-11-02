@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <memory>
+
 #ifdef MD_PLATFORM_WINDOWS
 
 #ifdef MD_CONFIG_DLL
