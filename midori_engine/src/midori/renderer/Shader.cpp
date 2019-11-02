@@ -11,11 +11,29 @@
 #include "midori/renderer/Renderer.h"
 #include "platform/opengl/OpenGLShader.h"
 
+#define MD_FILEPATH_MAX 255
+
+#ifndef MD_VERT_EXT
+#define MD_VERT_EXT "_Vert.glsl"
+#endif
+
+#ifndef MD_TESS_EXT
+#define MD_TESS_EXT "_Tess.glsl"
+#endif
+
+#ifndef MD_GEOM_EXT
+#define MD_GEOM_EXT "_Geom.glsl"
+#endif
+
+#ifndef MD_FRAG_EXT
+#define MD_FRAG_EXT "_Frag.glsl"
+#endif
+
 namespace midori {
 
     Shader* Shader::Create(std::string& vertexSrc, std::string& fragmentSrc) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::API::OpenGL:;
+        case RendererAPI::API::OpenGL:
             return new OpenGLShader(vertexSrc, fragmentSrc);
         case RendererAPI::API::None:
         default:
@@ -26,22 +44,34 @@ namespace midori {
         return nullptr;
     }
 
-    Shader* Shader::Load(const char* vertShaderPath, const char* fragShaderPath) {
+    Shader* Shader::Load(const std::string& shaderPath) {
         std::string vertexShaderSrc;
-        bool vertSuccess = LoadFile(vertShaderPath, vertexShaderSrc);
-        if (!vertSuccess) {
-            MD_CORE_ERROR("Failed to load Vertex source code: {0}", vertShaderPath);
-            return nullptr;
-        }
-
         std::string fragmentShaderSrc;
-        bool fragSuccess = LoadFile(fragShaderPath, fragmentShaderSrc);
-        if (!fragSuccess) {
-            MD_CORE_ERROR("Failed to load Frag source code: {0}", fragmentShaderSrc);
-            return nullptr;
-        }
+        //TODO: Add geom and tess shaders
+        //std::string tesselationShaderSrc;
+        //std::string geometryShaderSrc;
+
+        char thisPath[MD_FILEPATH_MAX];
+        std::strcpy(thisPath, shaderPath.c_str());
+        char* const extPtr = thisPath + shaderPath.length();
+
+        strcpy(extPtr, MD_VERT_EXT);
+        GetSource(thisPath, vertexShaderSrc);
+
+        strcpy(extPtr, MD_FRAG_EXT);
+        GetSource(thisPath, fragmentShaderSrc);
 
         return Create(vertexShaderSrc, fragmentShaderSrc);
     }
+
+    inline bool Shader::GetSource(const char* pathFrom, std::string& to) {
+        const bool loadSuccess = LoadFile(pathFrom, to);
+        if (!loadSuccess) {
+            MD_CORE_WARN("Failed to open shader source: {0}", pathFrom);
+        }
+
+        return loadSuccess;
+    }
+
 
 }

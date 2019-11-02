@@ -24,6 +24,7 @@ namespace midori {
         void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) override;
 
     private:
+
         uint32_t m_RendererID = 0;
 
         static inline bool CompileShader(const uint32_t shaderID, std::string& shaderSrc);

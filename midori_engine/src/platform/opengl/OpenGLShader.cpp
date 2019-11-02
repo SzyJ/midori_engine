@@ -88,6 +88,8 @@ namespace midori {
             const int INFO_LOG_BUFFER_LENGTH = 512;
             GLchar infoLog[INFO_LOG_BUFFER_LENGTH];
 
+            std::strcpy(infoLog, "No info log available");
+
             glGetShaderInfoLog(programID, INFO_LOG_BUFFER_LENGTH, NULL, infoLog);
             MD_CORE_WARN("Failed to link shaders to program: {0}", infoLog);
             return false;
