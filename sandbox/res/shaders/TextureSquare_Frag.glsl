@@ -2,10 +2,10 @@
 
 layout(location = 0) out vec4 color;
 
-in vec3 v_Position;
-in vec4 v_Color;
+uniform sampler2D u_TextureCrate;
+
+in vec2 v_TexCoord;
 
 void main() {
-    //color = vec4(v_Position * 0.5 + 0.5, 1.0);
-    color = v_Color;
+    color = texture(u_TextureCrate, v_TexCoord);
 }

@@ -21,6 +21,7 @@ namespace midori {
         void Bind() override;
         void Unbind() override;
 
+        void UploadUniformInt(const std::string& name, int value) override;
         void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) override;
 
     private:

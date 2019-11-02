@@ -19,20 +19,20 @@ public:
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 5.0f));
 
         // Temporary triangle
-        m_VertexArray = (midori::VertexArray::Create());
+        m_VertexArray = midori::VertexArray::Create();
 
         float vertices[4 * 7] = {
-           -0.5f, -0.5f, 1.0f,   1.0f, 0.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
-            0.5f, -0.5f, 1.0f,   0.0f, 1.0f, 0.0f, 1.0f, // [x, y, z], [r, g, b, a]
-            0.5f,  0.5f, 1.0f,   0.0f, 0.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
-           -0.5f,  0.5f, 1.0f,   1.0f, 1.0f, 1.0f, 1.0f, // [x, y, z], [r, g, b, a]
+           -0.5f, -0.5f, 1.0f,   0.0f, 0.0f, // [x, y, z], [texX, texY]
+            0.5f, -0.5f, 1.0f,   1.0f, 0.0f, // [x, y, z], [texX, texY]
+            0.5f,  0.5f, 1.0f,   1.0f, 1.0f, // [x, y, z], [texX, texY]
+           -0.5f,  0.5f, 1.0f,   0.0f, 1.0f  // [x, y, z], [texX, texY]
         };
 
         midori::ref<midori::VertexBuffer> vertexBuffer;
         vertexBuffer = midori::VertexBuffer::Create(vertices, sizeof(vertices));
         midori::BufferLayout layout = {
             { midori::ShaderDataType::Float3, "a_Position" },
-            { midori::ShaderDataType::Float4, "a_Color" }
+            { midori::ShaderDataType::Float2, "a_TexCoord" }
         };
         vertexBuffer->SetLayout(layout);
         m_VertexArray->AddVertexBuffer(vertexBuffer);
@@ -40,7 +40,7 @@ public:
         const uint32_t INDEX_COUNT = 6;
         uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 2, 3, 0};
         midori::ref<midori::IndexBuffer> indexBuffer;
-        indexBuffer = (midori::IndexBuffer::Create(indices, INDEX_COUNT));
+        indexBuffer = midori::IndexBuffer::Create(indices, INDEX_COUNT);
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
         m_SquareVA = (midori::VertexArray::Create());
@@ -52,7 +52,7 @@ public:
         };
 
         midori::ref<midori::VertexBuffer> squareVB;
-        squareVB = (midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices)));
+        squareVB = midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
         squareVB->SetLayout({
             { midori::ShaderDataType::Float3, "a_Position" }
             });
@@ -60,11 +60,16 @@ public:
 
         uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
         midori::ref<midori::IndexBuffer> squareIB;
-        squareIB = (midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
+        squareIB = midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
         m_SquareVA->SetIndexBuffer(squareIB);
 
-        m_Shader = (midori::Shader::Load(SHADER_TEXTURE_SQUARE));
-        m_BlueShader = (midori::Shader::Load(SHADER_SQUARE_GRID));
+        m_Shader = midori::Shader::Load(SHADER_TEXTURE_SQUARE);
+        m_BlueShader = midori::Shader::Load(SHADER_SQUARE_GRID);
+
+        m_TextureCrate = midori::Texture2D::Create(TEXTURE_CRATE);
+        m_Shader->Bind();
+        m_Shader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
+
     }
 
     ~ExampleLayer() {
@@ -111,12 +116,13 @@ public:
 
         for (int y = 0; y < 20; y++) {
             for (int x = 0; x < 20; x++) {
-                glm::vec3 pos(x * 0.11f, y * 0.11f, 0.0f);
+                glm::vec3 pos(x * 0.11f, y * 0.11f, (x+y) * -0.11f);
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
                 midori::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
             }
         }
 
+        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
         midori::Renderer::Submit(m_Shader, m_VertexArray);
 
         midori::Renderer::EndScene();
@@ -161,6 +167,9 @@ private:
 
     midori::ref<midori::Shader> m_BlueShader;
     midori::ref<midori::VertexArray> m_SquareVA;
+
+    midori::ref<midori::Texture2D> m_TextureCrate;
+
 
     midori::PerspectiveCamera* m_Camera;
     float m_MoveSpeed = 2.5f;

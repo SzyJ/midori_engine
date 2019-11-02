@@ -66,10 +66,7 @@ namespace midori {
 
     inline bool Shader::GetSource(const char* pathFrom, std::string& to) {
         const bool loadSuccess = LoadFile(pathFrom, to);
-        if (!loadSuccess) {
-            MD_CORE_WARN("Failed to open shader source: {0}", pathFrom);
-        }
-
+        MD_CORE_ASSERT(loadSuccess, "Failed to open shader source: {0}", pathFrom);
         return loadSuccess;
     }
 

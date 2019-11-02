@@ -28,6 +28,7 @@
 #include "midori/renderer/RenderCommand.h"
 #include "midori/renderer/Buffer.h"
 #include "midori/renderer/Shader.h"
+#include "midori/renderer/Texture.h"
 
 #include "midori/renderer/camera/PerspectiveCamera.h"
 

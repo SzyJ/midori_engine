@@ -17,6 +17,7 @@ namespace midori {
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
 
+        virtual void UploadUniformInt(const std::string& name, int value) = 0;
         virtual void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) = 0;
 
         static ref<Shader> Create(std::string& vertexSrc, std::string& fragmentSrc);
