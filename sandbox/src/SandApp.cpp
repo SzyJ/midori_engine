@@ -70,6 +70,7 @@ public:
         m_Shader->Bind();
         m_Shader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
+        midori::RenderCommand::Init();
     }
 
     ~ExampleLayer() {
@@ -85,7 +86,7 @@ public:
     }
 
     void OnUpdate(midori::DeltaTime delta) override {
-        m_ThisDelta = delta;
+        m_DeltaAverage = (m_DeltaAverage * CONF_FPS_SMOOTHING) + (delta * (1.0f - CONF_FPS_SMOOTHING));
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {
             m_Camera->Move(midori::MovementDirection::forward, delta * m_MoveSpeed);
@@ -116,22 +117,25 @@ public:
 
         for (int y = 0; y < 20; y++) {
             for (int x = 0; x < 20; x++) {
-                glm::vec3 pos(x * 0.11f, y * 0.11f, (x+y) * -0.11f);
+                glm::vec3 pos(x * 0.11f, y * 0.11f, (x+y) * 0.11f * 0.5f);
                 glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
                 midori::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
             }
         }
 
         m_TextureCrate->Bind(TEXTURE_CRATE_ID);
-        midori::Renderer::Submit(m_Shader, m_VertexArray);
+        for (int z = 0; z < 6 ; ++z) {
+            glm::vec3 trans = glm::vec3(0.0f, 0.0f,  -3.5f + (1.0f * z));
+            glm::mat4 transform = glm::translate(glm::mat4(1.0f), trans);
+
+            midori::Renderer::Submit(m_Shader, m_VertexArray, transform);
+        }
+
 
         midori::Renderer::EndScene();
     }
 
     void OnImGuiRender() override {
-        float smoothing = 0.9f; // larger=more smoothing
-        m_DeltaAverage = (m_DeltaAverage * smoothing) + (m_ThisDelta * (1.0f - smoothing));
-        
         ImGui::Begin("FPS");
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
         ImGui::End();
@@ -160,7 +164,6 @@ public:
     }
 
 private:
-    midori::DeltaTime m_ThisDelta;
     midori::DeltaTime m_DeltaAverage = 0.0f;
     midori::ref<midori::Shader> m_Shader;
     midori::ref<midori::VertexArray> m_VertexArray;
