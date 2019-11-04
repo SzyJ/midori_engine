@@ -41,6 +41,9 @@ namespace midori {
             float pitch = c_DefaultPitch
         );
 
+        virtual const glm::vec3& GetPosition() const override { return m_Position; }
+        virtual const glm::vec3& GetDirection() const override { return m_Front; }
+
         virtual const glm::mat4& GetViewMatrix() const override;
         virtual const glm::mat4& GetProjectionMatrix() const override;
         virtual const glm::mat4& GetViewProjectionMatrix() const override;
