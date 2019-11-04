@@ -9,8 +9,10 @@
 #include "midori/core/Core.h"
 #include "midori/renderer/VertexArray.h"
 #include "midori/renderer/Shader.h"
+#include "midori/renderer/camera/Camera.h"
 
 #include <vector>
+
 
 namespace midori {
 

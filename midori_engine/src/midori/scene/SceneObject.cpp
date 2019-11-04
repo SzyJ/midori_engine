@@ -73,5 +73,4 @@ namespace midori {
 
         midori::Renderer::Submit(m_Shader, m_VertexArray, m_Transform);
     }
-
 };

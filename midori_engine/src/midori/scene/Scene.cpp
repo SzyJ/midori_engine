@@ -40,24 +40,16 @@ namespace midori {
     }
 
     void Scene::Draw() {
-        const glm::vec3& camPos = m_Camera->GetPosition();
-        auto farToCloseFunc = [=, &camPos](SceneObject* left, SceneObject* right) -> bool {
-            return left->GetDistTo(camPos) < right->GetDistTo(camPos);
-        };
-        auto closeToFarFunc = [=, &camPos](SceneObject* left, SceneObject* right) -> bool {
-            return left->GetDistTo(camPos) > right->GetDistTo(camPos);
-        };
-
         // TODO: make this insertion sort
-        std::sort(m_AlphaObjects.begin(), m_AlphaObjects.end(), closeToFarFunc);
+        SortBasedOnDistance(m_Camera->GetPosition(), m_OpaqueObjects.begin(), m_OpaqueObjects.end());
         for (const ref<SceneObject>& obj : m_OpaqueObjects) {
             obj->Draw();
         }
 
         // TODO: make this insertion sort
-        std::sort(m_AlphaObjects.begin(), m_AlphaObjects.end(), farToCloseFunc);
-        for (const ref<SceneObject>& obj : m_AlphaObjects) {
-            obj->Draw();
+        SortBasedOnDistance(m_Camera->GetPosition(), m_AlphaObjects.begin(), m_AlphaObjects.end());
+        for (auto it = m_AlphaObjects.end(); it >= m_AlphaObjects.begin(); --it) {
+            (*it)->Draw();
         }
     }
 

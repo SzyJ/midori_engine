@@ -32,6 +32,20 @@ namespace midori {
         ref<Camera> m_Camera;
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
+
+        static void SortBasedOnDistance(const glm::vec3& fromPos, std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
+            for (auto it = begin + 1; it < end; ++it) {
+                auto val = *it;
+                auto j = it - 1;
+
+                while (j >= begin && (*j)->GetDistTo(fromPos) < val->GetDistTo(fromPos)) {
+                    *(j + 1) = *j;
+                    --j;
+                }
+
+                *(j + 1) = val;
+            }
+        }
     };
 
 }
