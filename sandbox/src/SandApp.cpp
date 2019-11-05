@@ -8,6 +8,8 @@
 #include <Midori.h>
 #include "imgui/imgui.h"
 
+#include <midori/renderer/MeshLoader.h>
+
 class ExampleLayer : public midori::Layer {
 public:
     ExampleLayer() : Layer("Test_Layer") {
@@ -100,6 +102,12 @@ public:
 
         }
 
+        m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
+        auto modelTeapot = std::make_shared<midori::SceneObject>();
+        modelTeapot->SetShader(m_MeshLoadShader);
+        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_TEAPOT));
+
+        m_TestScene.AddOpaqueObject(modelTeapot);
 
         midori::RenderCommand::Init();
     }
@@ -180,6 +188,9 @@ private:
     midori::ref<midori::Shader> m_BlueShader;
     midori::ref<midori::VertexArray> m_SquareVA;
 
+    midori::ref<midori::Shader> m_MeshLoadShader;
+    midori::ref<midori::VertexArray> m_TeapotModel;
+ 
     midori::ref<midori::Texture2D> m_TextureCrate;
 
     midori::Scene m_TestScene;
