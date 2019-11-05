@@ -7,4 +7,5 @@
 #define SHADER_TEXTURE_SQUARE "res/shaders/TextureSquare"
 
 #define TEXTURE_CRATE_ID 0
-#define TEXTURE_CRATE "res/textures/container.jpg"
+#define TEXTURE_CRATE "res/textures/flower_logo.png"
+

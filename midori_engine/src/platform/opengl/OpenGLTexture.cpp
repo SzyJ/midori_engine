@@ -26,13 +26,28 @@ namespace midori {
         m_Width = width;
         m_Height = height;
 
+        GLenum internalFormat = 0, dataFormat = 0;
+
+        switch (channelCount) {
+        case 4:
+            internalFormat = GL_RGBA8;
+            dataFormat = GL_RGBA;
+            break;
+        case 3:
+            internalFormat = GL_RGB8;
+            dataFormat = GL_RGB;
+            break;
+        default:
+            MD_CORE_ERROR("Attempt to load texture of unsupported format: {0}", path);
+        }
+
         glCreateTextures(GL_TEXTURE_2D, 1, &m_ImagesID);
-        glTextureStorage2D(m_ImagesID, 1, GL_RGB8, m_Width, m_Height);
+        glTextureStorage2D(m_ImagesID, 1, internalFormat, m_Width, m_Height);
 
         glTextureParameteri(m_ImagesID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTextureParameteri(m_ImagesID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-        glTextureSubImage2D(m_ImagesID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, imageData);
+        glTextureSubImage2D(m_ImagesID, 0, 0, 0, m_Width, m_Height, dataFormat, GL_UNSIGNED_BYTE, imageData);
 
         stbi_image_free(imageData);
     }

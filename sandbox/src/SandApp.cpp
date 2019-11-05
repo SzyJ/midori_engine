@@ -93,7 +93,6 @@ public:
 
             auto thisObject = std::make_shared<midori::SceneObject>();
             thisObject->SetPosition(trans);
-            thisObject->SetRotation(trans);
             thisObject->SetShader(m_Shader);
             thisObject->SetVertexArray(m_VertexArray);
 
