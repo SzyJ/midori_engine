@@ -22,6 +22,8 @@ project "midori_engine"
         "%{prj.location}/src/**.cpp",
         "%{prj.location}/3rd_Party/stb_image/**.h",
         "%{prj.location}/3rd_Party/stb_image/**.cpp",
+        "%{prj.location}/3rd_Party/tinyobjloader/**.h",
+        "%{prj.location}/3rd_Party/tinyobjloader/**.cpp",
         "%{prj.location}/3rd_Party/glm/glm/**.hpp",
         "%{prj.location}/3rd_Party/glm/glm/**.inl"
     }
@@ -37,6 +39,7 @@ project "midori_engine"
         "%{midoriincludes.glad}",
         "%{midoriincludes.imgui}",
         "%{midoriincludes.glm}",
+        "%{midoriincludes.tinyobjloader}",
         "%{midoriincludes.stb_image}"
     }
     
