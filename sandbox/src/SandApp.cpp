@@ -79,6 +79,7 @@ public:
                 auto thisObject = std::make_shared<midori::SceneObject>();
                 thisObject->SetScale(0.1f);
                 thisObject->SetPosition(pos);
+                thisObject->SetRotation(pos);
                 thisObject->SetShader(m_BlueShader);
                 thisObject->SetVertexArray(m_SquareVA);
 
@@ -92,6 +93,7 @@ public:
 
             auto thisObject = std::make_shared<midori::SceneObject>();
             thisObject->SetPosition(trans);
+            thisObject->SetRotation(trans);
             thisObject->SetShader(m_Shader);
             thisObject->SetVertexArray(m_VertexArray);
 

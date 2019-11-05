@@ -33,7 +33,8 @@ namespace midori {
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
 
-        void SortBasedOnDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
+        inline void SortBasedOnCameraDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
+            // TODO: Make this insertion sort
             std::sort(begin, end,
            [this](ref<SceneObject> const &lhs, ref<SceneObject> const& rhs) {
                     glm::vec3 pos = this->m_Camera->GetPosition();

@@ -22,7 +22,7 @@ namespace midori {
     bool Scene::RemoveOpaqueObject(const ref<SceneObject>& object) {
         auto childIndex = std::find(m_OpaqueObjects.begin(), m_OpaqueObjects.end(), object);
         if (childIndex == m_OpaqueObjects.end()) {
-            MD_CORE_TRACE("Attempt to remove child scene object that cannot be found");
+            MD_CORE_TRACE("Attempt to remove scene object that cannot be found");
             return false;
         }
 
@@ -33,7 +33,7 @@ namespace midori {
     bool Scene::RemoveAlphaObject(const ref<SceneObject>& object)  {
         auto childIndex = std::find(m_AlphaObjects.begin(), m_AlphaObjects.end(), object);
         if (childIndex == m_AlphaObjects.end()) {
-            MD_CORE_TRACE("Attempt to remove child scene object that cannot be found");
+            MD_CORE_TRACE("Attempt to remove scene object that cannot be found");
             return false;
         }
 
@@ -45,14 +45,14 @@ namespace midori {
         midori::Renderer::BeginScene(m_Camera);
 
         if (!m_OpaqueObjects.empty()) {
-            SortBasedOnDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
+            SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
             for (const ref<SceneObject>& obj : m_OpaqueObjects) {
                 obj->Draw();
             }
         }
 
         if (!m_AlphaObjects.empty()) {
-            SortBasedOnDistance(m_AlphaObjects.begin(), m_AlphaObjects.end());
+            SortBasedOnCameraDistance(m_AlphaObjects.begin(), m_AlphaObjects.end());
             for (auto it = m_AlphaObjects.rbegin(); it != m_AlphaObjects.rend(); ++it) {
                 (*it)->Draw();
             }
