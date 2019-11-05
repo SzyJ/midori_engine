@@ -18,6 +18,8 @@ public:
 
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 5.0f));
 
+        m_TestScene.SetCamera(m_Camera);
+
         // Temporary triangle
         m_VertexArray = midori::VertexArray::Create();
 
@@ -70,6 +72,34 @@ public:
         m_Shader->Bind();
         m_Shader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
+        for (int y = 0; y < 20; y++) {
+            for (int x = 0; x < 20; x++) {
+                glm::vec3 pos(x * 0.11f, y * 0.11f, (x + y) * 0.11f * 0.5f);
+
+                auto thisObject = std::make_shared<midori::SceneObject>();
+                thisObject->SetScale(0.1f);
+                thisObject->SetPosition(pos);
+                thisObject->SetShader(m_BlueShader);
+                thisObject->SetVertexArray(m_SquareVA);
+
+                m_TestScene.AddOpaqueObject(thisObject);
+            }
+        }
+
+        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
+        for (int z = 0; z < 6; ++z) {
+            glm::vec3 trans = glm::vec3(0.0f, 0.0f, -3.5f + (1.0f * z));
+
+            auto thisObject = std::make_shared<midori::SceneObject>();
+            thisObject->SetPosition(trans);
+            thisObject->SetShader(m_Shader);
+            thisObject->SetVertexArray(m_VertexArray);
+
+            m_TestScene.AddAlphaObject(thisObject);
+
+        }
+
+
         midori::RenderCommand::Init();
     }
 
@@ -107,32 +137,10 @@ public:
             m_Camera->Move(midori::MovementDirection::down, delta * m_MoveSpeed);
         }
 
-
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
         midori::RenderCommand::Clear();
 
-        midori::Renderer::BeginScene(m_Camera);
-
-        glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.1f));
-
-        for (int y = 0; y < 20; y++) {
-            for (int x = 0; x < 20; x++) {
-                glm::vec3 pos(x * 0.11f, y * 0.11f, (x+y) * 0.11f * 0.5f);
-                glm::mat4 transform = glm::translate(glm::mat4(1.0f), pos) * scale;
-                midori::Renderer::Submit(m_BlueShader, m_SquareVA, transform);
-            }
-        }
-
-        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
-        for (int z = 0; z < 6 ; ++z) {
-            glm::vec3 trans = glm::vec3(0.0f, 0.0f,  -3.5f + (1.0f * z));
-            glm::mat4 transform = glm::translate(glm::mat4(1.0f), trans);
-
-            midori::Renderer::Submit(m_Shader, m_VertexArray, transform);
-        }
-
-
-        midori::Renderer::EndScene();
+        m_TestScene.Draw();
     }
 
     void OnImGuiRender() override {
@@ -173,6 +181,7 @@ private:
 
     midori::ref<midori::Texture2D> m_TextureCrate;
 
+    midori::Scene m_TestScene;
 
     midori::PerspectiveCamera* m_Camera;
     float m_MoveSpeed = 2.5f;

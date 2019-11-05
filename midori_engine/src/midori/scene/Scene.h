@@ -24,27 +24,21 @@ namespace midori {
         bool RemoveOpaqueObject(const ref<SceneObject>& object);
         bool RemoveAlphaObject(const ref<SceneObject>& object);
 
-        void SetCamera(const ref<Camera>& camera) { m_Camera = camera; }
+        void SetCamera(Camera* camera) { m_Camera = camera; }
 
         void Draw();
 
     private:
-        ref<Camera> m_Camera;
+        Camera* m_Camera;
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
 
-        static void SortBasedOnDistance(const glm::vec3& fromPos, std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
-            for (auto it = begin + 1; it < end; ++it) {
-                auto val = *it;
-                auto j = it - 1;
-
-                while (j >= begin && (*j)->GetDistTo(fromPos) < val->GetDistTo(fromPos)) {
-                    *(j + 1) = *j;
-                    --j;
-                }
-
-                *(j + 1) = val;
-            }
+        void SortBasedOnDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
+            std::sort(begin, end,
+           [this](ref<SceneObject> const &lhs, ref<SceneObject> const& rhs) {
+                    glm::vec3 pos = this->m_Camera->GetPosition();
+                    return lhs->GetDistTo(pos) < rhs->GetDistTo(pos);
+                });
         }
     };
 

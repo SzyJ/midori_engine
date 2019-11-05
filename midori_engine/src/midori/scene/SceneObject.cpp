@@ -66,11 +66,12 @@ namespace midori {
         m_Transform = m_TranslateTransform * m_RotationTransform * m_ScaleTransform;
     }
 
-    void SceneObject::Draw() const {
+    void SceneObject::Draw(const glm::mat4& transformMod) const {
         for (const ref<SceneObject>& child : m_ChildObjects) {
-            child->Draw();
+            child->Draw(m_Transform * transformMod);
         }
 
-        midori::Renderer::Submit(m_Shader, m_VertexArray, m_Transform);
+        midori::Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
     }
+
 };

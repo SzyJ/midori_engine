@@ -32,5 +32,9 @@
 
 #include "midori/renderer/camera/PerspectiveCamera.h"
 
+// Scene
+#include "midori/scene/SceneObject.h"
+#include "midori/scene/Scene.h"
+
 // == Entry Point == //
 #include "midori/core/EntryPoint.h"

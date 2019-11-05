@@ -7,6 +7,8 @@
 #include "mdpch.h"
 #include "Scene.h"
 
+#include "midori/renderer/Renderer.h"
+
 namespace midori {
 
     void Scene::AddOpaqueObject(const ref<SceneObject>& newObject) {
@@ -40,17 +42,23 @@ namespace midori {
     }
 
     void Scene::Draw() {
-        // TODO: make this insertion sort
-        SortBasedOnDistance(m_Camera->GetPosition(), m_OpaqueObjects.begin(), m_OpaqueObjects.end());
-        for (const ref<SceneObject>& obj : m_OpaqueObjects) {
-            obj->Draw();
+        midori::Renderer::BeginScene(m_Camera);
+
+        if (!m_OpaqueObjects.empty()) {
+            SortBasedOnDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
+            for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                obj->Draw();
+            }
         }
 
-        // TODO: make this insertion sort
-        SortBasedOnDistance(m_Camera->GetPosition(), m_AlphaObjects.begin(), m_AlphaObjects.end());
-        for (auto it = m_AlphaObjects.end(); it >= m_AlphaObjects.begin(); --it) {
-            (*it)->Draw();
+        if (!m_AlphaObjects.empty()) {
+            SortBasedOnDistance(m_AlphaObjects.begin(), m_AlphaObjects.end());
+            for (auto it = m_AlphaObjects.rbegin(); it != m_AlphaObjects.rend(); ++it) {
+                (*it)->Draw();
+            }
         }
+
+        midori::Renderer::EndScene();
     }
 
 };
