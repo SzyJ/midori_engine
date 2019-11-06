@@ -70,8 +70,14 @@ public:
         m_Shader = midori::Shader::Load(SHADER_TEXTURE_SQUARE);
         m_BlueShader = midori::Shader::Load(SHADER_SQUARE_GRID);
 
+        m_TextureFLogo = midori::Texture2D::Create(TEXTURE_FLOGO);
+        m_TextureFLogo->Bind(TEXTURE_FLOGO_ID);
+
         m_TextureCrate = midori::Texture2D::Create(TEXTURE_CRATE);
+        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
+
         m_Shader->Bind();
+        m_Shader->UploadUniformInt("u_TextureFLogo", TEXTURE_FLOGO_ID);
         m_Shader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
         for (int y = 0; y < 20; y++) {
@@ -89,7 +95,6 @@ public:
             }
         }
 
-        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
         for (int z = 0; z < 6; ++z) {
             glm::vec3 trans = glm::vec3(0.0f, 0.0f, -3.5f + (1.0f * z));
 
@@ -103,10 +108,16 @@ public:
         }
 
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
+
+        m_MeshLoadShader->Bind();
+        m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
+
+
         auto modelTeapot = std::make_shared<midori::SceneObject>();
         modelTeapot->SetShader(m_MeshLoadShader);
         modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_TEAPOT));
-
+        modelTeapot->SetScale(0.01f);
+        modelTeapot->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_TestScene.AddOpaqueObject(modelTeapot);
 
         midori::RenderCommand::Init();
@@ -192,6 +203,7 @@ private:
     midori::ref<midori::VertexArray> m_TeapotModel;
  
     midori::ref<midori::Texture2D> m_TextureCrate;
+    midori::ref<midori::Texture2D> m_TextureFLogo;
 
     midori::Scene m_TestScene;
 

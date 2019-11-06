@@ -342,3 +342,6 @@ ASALocalRun/
 !3rd_party/
 !3rd_party/premake/
 !3rd_party/premake/*
+
+## Include .obj files in resources folder
+!sandbox/res/models/*.obj
