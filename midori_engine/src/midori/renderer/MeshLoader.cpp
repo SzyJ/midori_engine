@@ -24,21 +24,12 @@ namespace midori {
         if (!warn.empty()) {
             MD_CORE_WARN("Warning when loading obj: {0}", warn);
         }
-
         if (!err.empty()) {
             MD_CORE_ERROR("Failed to load obj: {0}", err);
         }
-
         if (!ret) {
             return nullptr;
         }
-
-
-        BufferLayout bufferLayout = {
-            {ShaderDataType::Float3, "a_Position"},
-            {ShaderDataType::Float3, "a_Normal"},
-            {ShaderDataType::Float2, "a_TexCoord"}
-        };
 
         std::vector<uint32_t> indexBuffer;
         std::vector<float> meshBufferData;
@@ -99,8 +90,6 @@ namespace midori {
             vertexBuffer->SetLayout(bufferLayout);
             va->AddVertexBuffer(vertexBuffer);
         }
-
-
 
         va->SetIndexBuffer(IndexBuffer::Create(indexBuffer.data(), indexBuffer.size()));
 

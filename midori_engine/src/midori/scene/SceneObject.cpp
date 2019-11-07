@@ -71,7 +71,7 @@ namespace midori {
             child->Draw(m_Transform * transformMod);
         }
 
-        midori::Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
+        Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
     }
 
 };

@@ -15,7 +15,7 @@ namespace midori {
     ref<VertexArray> VertexArray::Create() {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:
-            return std::make_shared<OpenGLVertexArray>();
+            return make_ref<OpenGLVertexArray>();
         case RendererAPI::API::None:
         default:
             break;

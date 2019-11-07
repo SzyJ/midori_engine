@@ -34,7 +34,7 @@ namespace midori {
     ref<Shader> Shader::Create(std::string& vertexSrc, std::string& fragmentSrc) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:
-            return std::make_shared<OpenGLShader>(vertexSrc, fragmentSrc);
+            return make_ref<OpenGLShader>(vertexSrc, fragmentSrc);
         case RendererAPI::API::None:
         default:
             break;

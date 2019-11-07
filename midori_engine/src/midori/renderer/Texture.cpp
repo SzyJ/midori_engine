@@ -15,7 +15,7 @@ namespace midori {
     ref<Texture2D> Texture2D::Create(const std::string& path) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
-            return std::make_shared<OpenGLTexture2D>(path);
+            return make_ref<OpenGLTexture2D>(path);
         case RendererAPI::API::None:
         default:
             break;

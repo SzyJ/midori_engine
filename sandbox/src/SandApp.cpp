@@ -109,7 +109,7 @@ public:
 
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
 
-        m_MeshLoadShader->Bind();
+        //m_MeshLoadShader->Bind();
         m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
 

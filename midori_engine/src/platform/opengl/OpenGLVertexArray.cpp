@@ -14,17 +14,17 @@ namespace midori {
 
     static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type) {
         switch (type) {
-        case midori::ShaderDataType::Float:  return GL_FLOAT;
-        case midori::ShaderDataType::Float2: return GL_FLOAT;
-        case midori::ShaderDataType::Float3: return GL_FLOAT;
-        case midori::ShaderDataType::Float4: return GL_FLOAT;
-        case midori::ShaderDataType::Mat3:   return GL_FLOAT;
-        case midori::ShaderDataType::Mat4:   return GL_FLOAT;
-        case midori::ShaderDataType::Int:    return GL_INT;
-        case midori::ShaderDataType::Int2:   return GL_INT;
-        case midori::ShaderDataType::Int3:   return GL_INT;
-        case midori::ShaderDataType::Int4:   return GL_INT;
-        case midori::ShaderDataType::Bool:   return GL_BOOL;
+        case ShaderDataType::Float:  return GL_FLOAT;
+        case ShaderDataType::Float2: return GL_FLOAT;
+        case ShaderDataType::Float3: return GL_FLOAT;
+        case ShaderDataType::Float4: return GL_FLOAT;
+        case ShaderDataType::Mat3:   return GL_FLOAT;
+        case ShaderDataType::Mat4:   return GL_FLOAT;
+        case ShaderDataType::Int:    return GL_INT;
+        case ShaderDataType::Int2:   return GL_INT;
+        case ShaderDataType::Int3:   return GL_INT;
+        case ShaderDataType::Int4:   return GL_INT;
+        case ShaderDataType::Bool:   return GL_BOOL;
         }
 
         MD_CORE_WARN("Unknown ShaderDataType");

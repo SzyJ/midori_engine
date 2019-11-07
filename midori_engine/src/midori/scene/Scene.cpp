@@ -42,7 +42,7 @@ namespace midori {
     }
 
     void Scene::Draw() {
-        midori::Renderer::BeginScene(m_Camera);
+        Renderer::BeginScene(m_Camera);
 
         if (!m_OpaqueObjects.empty()) {
             SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
@@ -58,7 +58,7 @@ namespace midori {
             }
         }
 
-        midori::Renderer::EndScene();
+        Renderer::EndScene();
     }
 
 };
