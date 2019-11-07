@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: MeshLoader.cpp
-// Date: 05/11/2019
+// Date: 07/11/2019
 
 #include "mdpch.h"
 #include "MeshLoader.h"
@@ -19,7 +19,7 @@ namespace midori {
         std::string warn;
         std::string err;
 
-        bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), 0, true);
+        bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), nullptr, true);
 
         if (!warn.empty()) {
             MD_CORE_WARN("Warning when loading obj: {0}", warn);
@@ -44,42 +44,64 @@ namespace midori {
         std::vector<float> meshBufferData;
 
         ref<VertexArray> va = VertexArray::Create();
+
         uint32_t indexStepper = 0;
 
         for (tinyobj::shape_t shape : shapes) {
             size_t index_offset = 0;
 
-            for (unsigned int verticesInFace : shape.mesh.num_face_vertices) {
+            uint8_t vertexData = (uint8_t) MeshLoadedData::none;
+            BufferLayout bufferLayout;
 
+            for (unsigned int verticesInFace : shape.mesh.num_face_vertices) {
                 for (size_t vertexIndex = 0; vertexIndex < verticesInFace; ++vertexIndex) {
                     tinyobj::index_t idx = shape.mesh.indices[index_offset + vertexIndex];
 
-                    tinyobj::real_t vx = attrib.vertices[3 * idx.vertex_index + 0];
-                    tinyobj::real_t vy = attrib.vertices[3 * idx.vertex_index + 1];
-                    tinyobj::real_t vz = attrib.vertices[3 * idx.vertex_index + 2];
-                    tinyobj::real_t nx = attrib.normals[3 * idx.normal_index + 0];
-                    tinyobj::real_t ny = attrib.normals[3 * idx.normal_index + 1];
-                    tinyobj::real_t nz = attrib.normals[3 * idx.normal_index + 2];
-                    tinyobj::real_t tx = attrib.texcoords[2 * idx.texcoord_index + 0];
-                    tinyobj::real_t ty = attrib.texcoords[2 * idx.texcoord_index + 1];
+                    if (!attrib.vertices.empty()) {
+                        vertexData |= (uint8_t) MeshLoadedData::p;
 
-                    meshBufferData.push_back(vx);
-                    meshBufferData.push_back(vy);
-                    meshBufferData.push_back(vz);
-                    meshBufferData.push_back(nx);
-                    meshBufferData.push_back(ny);
-                    meshBufferData.push_back(nz);
-                    meshBufferData.push_back(tx);
-                    meshBufferData.push_back(ty);
+                        meshBufferData.push_back(attrib.vertices[3 * idx.vertex_index + 0]);
+                        meshBufferData.push_back(attrib.vertices[3 * idx.vertex_index + 1]);
+                        meshBufferData.push_back(attrib.vertices[3 * idx.vertex_index + 2]);
+                    }
 
+                    if (!attrib.normals.empty()) {
+                        vertexData |= (uint8_t) MeshLoadedData::n;
+
+                        meshBufferData.push_back(attrib.normals[3 * idx.normal_index + 0]);
+                        meshBufferData.push_back(attrib.normals[3 * idx.normal_index + 1]);
+                        meshBufferData.push_back(attrib.normals[3 * idx.normal_index + 2]);
+                    }
+
+                    if (!attrib.texcoords.empty()) {
+                        vertexData |= (uint8_t) MeshLoadedData::t;
+
+                        meshBufferData.push_back(attrib.texcoords[2 * idx.texcoord_index + 0]);
+                        meshBufferData.push_back(attrib.texcoords[2 * idx.texcoord_index + 1]);
+                    }
                     indexBuffer.push_back(indexStepper++);
                 }
                 index_offset += verticesInFace;
             }
+
+            if (vertexData & (uint8_t) MeshLoadedData::p) {
+                bufferLayout.AddElement(ShaderDataType::Float3, "a_Position");
+            }
+            if (vertexData & (uint8_t) MeshLoadedData::n) {
+                bufferLayout.AddElement(ShaderDataType::Float3, "a_Normal");
+            }
+            if (vertexData & (uint8_t) MeshLoadedData::t) {
+                bufferLayout.AddElement(ShaderDataType::Float2, "a_TexCoord");
+            }
+            bufferLayout.CalculateOffsetsAndStride();
+
+            ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(meshBufferData.data(), meshBufferData.size());
+            vertexBuffer->SetLayout(bufferLayout);
+            va->AddVertexBuffer(vertexBuffer);
         }
-        ref<VertexBuffer> vertexBuffer = VertexBuffer::Create(meshBufferData.data(), meshBufferData.size());
-        vertexBuffer->SetLayout(bufferLayout);
-        va->AddVertexBuffer(vertexBuffer);
+
+
+
         va->SetIndexBuffer(IndexBuffer::Create(indexBuffer.data(), indexBuffer.size()));
 
         return va;

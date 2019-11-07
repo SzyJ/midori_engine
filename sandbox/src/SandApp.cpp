@@ -115,8 +115,8 @@ public:
 
         auto modelTeapot = std::make_shared<midori::SceneObject>();
         modelTeapot->SetShader(m_MeshLoadShader);
-        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_TEAPOT));
-        modelTeapot->SetScale(0.01f);
+        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_CUBE));
+        modelTeapot->SetScale(0.1f);
         modelTeapot->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_TestScene.AddOpaqueObject(modelTeapot);
 
