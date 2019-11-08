@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: Shader.cpp
-// Date: 29/10/2019
+// Date: 08/11/2019
 
 #include "mdpch.h"
 #include "Shader.h"
@@ -17,8 +17,12 @@
 #define MD_VERT_EXT "_Vert.glsl"
 #endif
 
-#ifndef MD_TESS_EXT
-#define MD_TESS_EXT "_Tess.glsl"
+#ifndef MD_TESSC_EXT
+#define MD_TESSC_EXT "_Tess_C.glsl"
+#endif
+
+#ifndef MD_TESSE_EXT
+#define MD_TESSE_EXT "_Tess_E.glsl"
 #endif
 
 #ifndef MD_GEOM_EXT
@@ -31,10 +35,10 @@
 
 namespace midori {
 
-    ref<Shader> Shader::Create(std::string& vertexSrc, std::string& fragmentSrc) {
+    ref<Shader> Shader::Create(std::string_view& vertexSrc, std::string_view& fragmentSrc, std::string_view& tessellationCtlSrc, std::string_view& tessellationEvaSrc, std::string_view& geometrySrc) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:
-            return make_ref<OpenGLShader>(vertexSrc, fragmentSrc);
+            return make_ref<OpenGLShader>(vertexSrc, fragmentSrc, tessellationCtlSrc, tessellationEvaSrc, geometrySrc);
         case RendererAPI::API::None:
         default:
             break;
@@ -44,24 +48,46 @@ namespace midori {
         return nullptr;
     }
 
-    ref<Shader> Shader::Load(const std::string& shaderPath) {
+    ref<Shader> Shader::Load(const std::string& shaderPath, const uint8_t shaderPrograms) {
         std::string vertexShaderSrc;
         std::string fragmentShaderSrc;
-        //TODO: Add geom and tess shaders
-        //std::string tesselationShaderSrc;
-        //std::string geometryShaderSrc;
+        std::string tessellationCtlShaderSrc;
+        std::string tessellationEvaShaderSrc;
+        std::string geometryShaderSrc;
 
         char thisPath[MD_FILEPATH_MAX];
         std::strcpy(thisPath, shaderPath.c_str());
         char* const extPtr = thisPath + shaderPath.length();
 
-        strcpy(extPtr, MD_VERT_EXT);
-        GetSource(thisPath, vertexShaderSrc);
+        if (shaderPrograms & (uint8_t) ShaderProgramType::vertex) {
+            strcpy(extPtr, MD_VERT_EXT);
+            GetSource(thisPath, vertexShaderSrc);
+        }
 
-        strcpy(extPtr, MD_FRAG_EXT);
-        GetSource(thisPath, fragmentShaderSrc);
+        if (shaderPrograms & (uint8_t) ShaderProgramType::fragment) {
+            strcpy(extPtr, MD_FRAG_EXT);
+            GetSource(thisPath, fragmentShaderSrc);
+        }
 
-        return Create(vertexShaderSrc, fragmentShaderSrc);
+        if (shaderPrograms & (uint8_t) ShaderProgramType::tessellation) {
+            strcpy(extPtr, MD_TESSC_EXT);
+            GetSource(thisPath, tessellationCtlShaderSrc);
+            strcpy(extPtr, MD_TESSE_EXT);
+            GetSource(thisPath, tessellationEvaShaderSrc);
+        }
+
+        if (shaderPrograms & (uint8_t) ShaderProgramType::geometry) {
+            strcpy(extPtr, MD_GEOM_EXT);
+            GetSource(thisPath, geometryShaderSrc);
+        }
+
+        return Create(
+            std::string_view(vertexShaderSrc.c_str()),
+            std::string_view(fragmentShaderSrc.c_str()),
+            std::string_view(tessellationCtlShaderSrc.c_str()),
+            std::string_view(tessellationEvaShaderSrc.c_str()),
+            std::string_view(geometryShaderSrc.c_str())
+        );
     }
 
     inline bool Shader::GetSource(const char* pathFrom, std::string& to) {

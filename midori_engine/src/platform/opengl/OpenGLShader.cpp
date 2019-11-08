@@ -2,7 +2,7 @@
 // 
 // Project: midori_engine
 // File: OpenGLShader.cpp
-// Date: 01/11/2019
+// Date: 08/11/2019
 
 #include "mdpch.h"
 #include "OpenGLShader.h"
@@ -12,32 +12,32 @@
 
 namespace midori {
 
-    OpenGLShader::OpenGLShader(std::string& vertexSrc, std::string& fragmentSrc) {
-        GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-        GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-        bool vertexCompiled = CompileShader(vertexShaderID, vertexSrc);
-        bool fragmentCompiled = CompileShader(fragmentShaderID, fragmentSrc);
-
-        if (!vertexCompiled || !fragmentCompiled) {
-            return;
-        }
-
+    OpenGLShader::OpenGLShader(std::string_view& vertexSrc, std::string_view& fragmentSrc, std::string_view& tessellationCtlSrc, std::string_view& tessellationEvaSrc, std::string_view& geometrySrc) {
         m_ShaderID = glCreateProgram();
         GLint program = m_ShaderID;
 
-        glAttachShader(program, vertexShaderID);
-        glAttachShader(program, fragmentShaderID);
+        GLuint vertexShaderID = AddShader(program, vertexSrc, GL_VERTEX_SHADER);
+        GLuint fragmentShaderID = AddShader(program, fragmentSrc, GL_FRAGMENT_SHADER);
+        GLuint tessellationCtlShaderID = AddShader(program, tessellationCtlSrc, GL_TESS_CONTROL_SHADER);
+        GLuint tessellationEvaShaderID = AddShader(program, tessellationEvaSrc, GL_TESS_EVALUATION_SHADER);
+        GLuint geometryShaderID = AddShader(program, geometrySrc, GL_GEOMETRY_SHADER);
+
+        glDeleteShader(vertexShaderID);
+        glDeleteShader(fragmentShaderID);
+        glDeleteShader(tessellationCtlShaderID);
+        glDeleteShader(tessellationEvaShaderID);
+        glDeleteShader(geometryShaderID);
 
         bool programLinked = LinkProgram(program);
         if (!programLinked) {
-            glDeleteShader(vertexShaderID);
-            glDeleteShader(fragmentShaderID);
             glDeleteProgram(program);
+        } else {
+            glDetachShader(program, vertexShaderID);
+            glDetachShader(program, fragmentShaderID);
+            glDetachShader(program, tessellationCtlShaderID);
+            glDetachShader(program, tessellationEvaShaderID);
+            glDetachShader(program, geometryShaderID);
         }
-
-        glDetachShader(program, vertexShaderID);
-        glDetachShader(program, fragmentShaderID);
     }
 
     OpenGLShader::~OpenGLShader() {
@@ -68,10 +68,10 @@ namespace midori {
     }
 
 
-    bool OpenGLShader::CompileShader(const GLuint shaderID, std::string& shaderSrc) {
+    bool OpenGLShader::CompileShader(const GLuint shaderID, std::string_view& shaderSrc) {
         GLint compileSuccess;
 
-        const GLchar* shaderGLSrc = shaderSrc.c_str();
+        const GLchar* shaderGLSrc = shaderSrc.data();
         glShaderSource(shaderID, 1, &shaderGLSrc, NULL);
         glCompileShader(shaderID);
         glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compileSuccess);
@@ -106,5 +106,23 @@ namespace midori {
         }
 
         return true;
+    }
+
+    uint32_t OpenGLShader::AddShader(const uint32_t programID, std::string_view& shaderSrc, const uint32_t shaderType) {
+        if (shaderSrc.empty()) {
+            return 0;
+        }
+
+        uint32_t shaderID = glCreateShader(shaderType);
+        bool compiled = CompileShader(shaderID, shaderSrc);
+
+        if (!compiled) {
+            glDeleteShader(shaderID);
+            return 0;
+        }
+
+        glAttachShader(programID, shaderID);
+
+        return shaderID;
     }
 }

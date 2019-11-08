@@ -15,7 +15,7 @@ namespace midori {
     class OpenGLShader : public Shader {
     public:
         OpenGLShader() = delete;
-        OpenGLShader(std::string& vertexSrc, std::string& fragmentSrc);
+        OpenGLShader(std::string_view& vertexSrc, std::string_view& fragmentSrc, std::string_view& tessellationCtlSrc, std::string_view& tessellationEvaSrc, std::string_view& geometrySrc);
         ~OpenGLShader();
 
         void Bind() override;
@@ -31,8 +31,9 @@ namespace midori {
 
         uint32_t m_ShaderID = 0;
 
-        static inline bool CompileShader(const uint32_t shaderID, std::string& shaderSrc);
+        static inline bool CompileShader(const uint32_t shaderID, std::string_view& shaderSrc);
         static inline bool LinkProgram(const uint32_t programID);
+        static inline uint32_t AddShader(const uint32_t programID, std::string_view& shaderSrc, const uint32_t shaderType);
     };
 
 }
