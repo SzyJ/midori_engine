@@ -1,16 +1,39 @@
 #pragma once
+// Folders
+#define GAME_RESOURCES "res/"
+#define GAME_SHADERS GAME_RESOURCES"shaders/"
+#define GAME_TEXTURES GAME_RESOURCES"textures/"
+#define GAME_MODELS GAME_RESOURCES"models/"
 
+// General Configs
 #define CONF_FPS_SMOOTHING 0.9f
 
-#define SHADER_SQUARE_GRID "res/shaders/SquareGrid"
-#define SHADER_TEXTURE_SQUARE "res/shaders/TextureSquare"
-#define SHADER_MODEL_LOADER "res/shaders/MeshLoad"
+// Tarrain
+#define CONF_TERRAIN_SCALE 25.0f
+#define CONF_TERRAIN_WIDTH 20.0f
+#define CONF_TERRAIN_LENGTH 20.0f
+#define SHADER_TERRAIN GAME_SHADERS"Terrain"
+#define TEXTURE_TERRAIN_COLORMAP_ID 0
+#define TEXTURE_TERRAIN_COLORMAP GAME_TEXTURES"terrain/colormap.bmp"
+#define TEXTURE_TERRAIN_HEIGHTMAP_ID 1
+#define TEXTURE_TERRAIN_HEIGHTMAP GAME_TEXTURES"terrain/heightmap.bmp"
+#define TEXTURE_TERRAIN_TEXTURE_ID 2
+#define TEXTURE_TERRAIN_TEXTURE GAME_TEXTURES"terrain/dirt01d.tga"
+#define TEXTURE_TERRAIN_TEXTURE_NORMALS_ID 3
+#define TEXTURE_TERRAIN_TEXTURE_NORMALS GAME_TEXTURES"terrain/dirt01n.tga"
 
-#define TEXTURE_FLOGO_ID 0
-#define TEXTURE_FLOGO "res/textures/flower_logo.png"
-#define TEXTURE_CRATE_ID 1
-#define TEXTURE_CRATE "res/textures/container.jpg"
+// Shaders
+#define SHADER_SQUARE_GRID GAME_SHADERS"SquareGrid"
+#define SHADER_TEXTURE_SQUARE GAME_SHADERS"TextureSquare"
+#define SHADER_MODEL_LOADER GAME_SHADERS"MeshLoad"
 
-#define MODEL_TEAPOT "res/models/Teapot.obj"
-#define MODEL_CUBE "res/models/Cube.obj"
-#define MODEL_DINOSAUR "res/models/Dinosaur.obj"
+// Textures
+#define TEXTURE_FLOGO_ID 4
+#define TEXTURE_FLOGO GAME_TEXTURES"flower_logo.png"
+#define TEXTURE_CRATE_ID 5
+#define TEXTURE_CRATE GAME_TEXTURES"container.jpg"
+
+// Models
+#define MODEL_TEAPOT GAME_MODELS"Teapot.obj"
+#define MODEL_CUBE GAME_MODELS"Cube.obj"
+#define MODEL_DINOSAUR GAME_MODELS"Dinosaur.obj"

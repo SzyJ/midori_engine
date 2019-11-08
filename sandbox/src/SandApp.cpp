@@ -47,7 +47,7 @@ public:
         indexBuffer = midori::IndexBuffer::Create(indices, INDEX_COUNT);
         m_VertexArray->SetIndexBuffer(indexBuffer);
 
-        m_SquareVA = (midori::VertexArray::Create());
+        m_SquareVA = midori::VertexArray::Create();
         float squareVertices[3 * 4] = {
             -0.5f, -0.5f, 0.0f,
              0.5f, -0.5f, 0.0f,
@@ -84,7 +84,7 @@ public:
             for (int x = 0; x < 20; x++) {
                 glm::vec3 pos(x * 0.11f, y * 0.11f, (x + y) * 0.11f * 0.5f);
 
-                auto thisObject = std::make_shared<midori::SceneObject>();
+                auto thisObject = midori::make_ref<midori::SceneObject>();
                 thisObject->SetScale(0.1f);
                 thisObject->SetPosition(pos);
                 thisObject->SetRotation(pos);
@@ -98,27 +98,65 @@ public:
         for (int z = 0; z < 6; ++z) {
             glm::vec3 trans = glm::vec3(0.0f, 0.0f, -3.5f + (1.0f * z));
 
-            auto thisObject = std::make_shared<midori::SceneObject>();
+            auto thisObject = midori::make_ref<midori::SceneObject>();
             thisObject->SetPosition(trans);
             thisObject->SetShader(m_Shader);
             thisObject->SetVertexArray(m_VertexArray);
 
             m_TestScene.AddAlphaObject(thisObject);
-
         }
 
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
 
-        //m_MeshLoadShader->Bind();
+        m_MeshLoadShader->Bind();
         m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
 
-        auto modelTeapot = std::make_shared<midori::SceneObject>();
+        auto modelTeapot = midori::make_ref<midori::SceneObject>();
         modelTeapot->SetShader(m_MeshLoadShader);
-        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_CUBE));
-        modelTeapot->SetScale(0.1f);
+        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_TEAPOT));
+        modelTeapot->SetScale(0.01f);
         modelTeapot->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_TestScene.AddOpaqueObject(modelTeapot);
+
+
+        m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
+        m_TerrainHeightMap->Bind(TEXTURE_TERRAIN_HEIGHTMAP_ID);
+        m_TerrainColourMap = midori::Texture2D::Create(TEXTURE_TERRAIN_COLORMAP);
+        m_TerrainColourMap->Bind(TEXTURE_TERRAIN_COLORMAP_ID);
+
+        m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN);
+        m_TerrainShader->Bind();
+        m_TerrainShader->UploadUniformFloat("u_TerrainScale", CONF_TERRAIN_SCALE);
+        m_TerrainShader->UploadUniformInt("u_DepthMap", TEXTURE_TERRAIN_HEIGHTMAP_ID);
+        m_TerrainShader->UploadUniformInt("u_ColourMap", TEXTURE_TERRAIN_COLORMAP_ID);
+
+        m_TerrainModel = midori::VertexArray::Create();
+
+        const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
+        const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
+        const float terrainHeight = -10.0f;
+
+        float terrainPlane[4 * (3 + 2)] = {
+            -halfWidth, terrainHeight, -halfLength,   0.0f, 0.0f,
+            -halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f,
+             halfWidth, terrainHeight,  halfLength,   1.0f, 1.0f,
+             halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f
+        };
+
+        midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, 4 * (3 + 2));
+        terrainVB->SetLayout({
+            {midori::ShaderDataType::Float3, "a_Position"},
+            {midori::ShaderDataType::Float2, "a_TexCoord"}
+        });
+        m_TerrainModel->AddVertexBuffer(terrainVB);
+        uint32_t terrainIndexBuffer[6] = {0, 1, 2, 2, 3, 0};
+        m_TerrainModel->SetIndexBuffer(midori::IndexBuffer::Create(terrainIndexBuffer, 6));
+
+        auto terrainObject = midori::make_ref<midori::SceneObject>();
+        terrainObject->SetShader(m_TerrainShader);
+        terrainObject->SetVertexArray(m_TerrainModel);
+        m_TestScene.AddOpaqueObject(terrainObject);
 
         midori::RenderCommand::Init();
     }
@@ -201,6 +239,11 @@ private:
 
     midori::ref<midori::Shader> m_MeshLoadShader;
     midori::ref<midori::VertexArray> m_TeapotModel;
+
+    midori::ref<midori::Texture2D> m_TerrainHeightMap;
+    midori::ref<midori::Texture2D> m_TerrainColourMap;
+    midori::ref<midori::Shader> m_TerrainShader;
+    midori::ref<midori::VertexArray> m_TerrainModel;
  
     midori::ref<midori::Texture2D> m_TextureCrate;
     midori::ref<midori::Texture2D> m_TextureFLogo;

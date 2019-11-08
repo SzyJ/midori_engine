@@ -57,6 +57,11 @@ namespace midori {
         glUniform1i(location, value);
     }
 
+    void OpenGLShader::UploadUniformFloat(const std::string& name, float value) {
+        GLint location = glGetUniformLocation(m_ShaderID, name.c_str());
+        glUniform1f(location, value);
+    }
+
     void OpenGLShader::UploadUniformMat4(const std::string& name, const glm::mat4& matrix) {
         GLint location = glGetUniformLocation(m_ShaderID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));

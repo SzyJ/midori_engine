@@ -13,7 +13,6 @@
 
 #include <vector>
 
-
 namespace midori {
 
     class SceneObject {
