@@ -125,7 +125,12 @@ public:
         m_TerrainColourMap = midori::Texture2D::Create(TEXTURE_TERRAIN_COLORMAP);
         m_TerrainColourMap->Bind(TEXTURE_TERRAIN_COLORMAP_ID);
 
-        m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN);
+
+        uint8_t shaders =
+            (uint8_t)midori::ShaderProgramType::vertex |
+            (uint8_t)midori::ShaderProgramType::fragment |
+            (uint8_t) midori::ShaderProgramType::tessellation;
+        m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN, shaders);
         m_TerrainShader->Bind();
         m_TerrainShader->UploadUniformFloat("u_TerrainScale", CONF_TERRAIN_SCALE);
         m_TerrainShader->UploadUniformInt("u_DepthMap", TEXTURE_TERRAIN_HEIGHTMAP_ID);
@@ -135,7 +140,7 @@ public:
 
         const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
         const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
-        const float terrainHeight = -10.0f;
+        const float terrainHeight = 1.0f;
 
         float terrainPlane[4 * (3 + 2)] = {
             -halfWidth, terrainHeight, -halfLength,   0.0f, 0.0f,
@@ -150,7 +155,7 @@ public:
             {midori::ShaderDataType::Float2, "a_TexCoord"}
         });
         m_TerrainModel->AddVertexBuffer(terrainVB);
-        uint32_t terrainIndexBuffer[6] = {0, 1, 2, 2, 3, 0};
+        uint32_t terrainIndexBuffer[6] = {1, 0, 3, 3, 2, 1};
         m_TerrainModel->SetIndexBuffer(midori::IndexBuffer::Create(terrainIndexBuffer, 6));
 
         auto terrainObject = midori::make_ref<midori::SceneObject>();
