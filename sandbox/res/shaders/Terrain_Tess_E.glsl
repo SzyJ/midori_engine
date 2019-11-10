@@ -15,7 +15,7 @@ uniform mat4 u_ViewProjection;
 uniform mat4 u_Transform;
 
 uniform float u_TerrainScale;
-uniform sampler2D u_DapthMap;
+uniform sampler2D u_DepthMap;
 
 vec4 QuadMixVec4(vec4 a, vec4 b, vec4 c, vec4 d) {
     vec4 p0 = mix(a, c, gl_TessCoord.x);
@@ -39,12 +39,14 @@ vec2 QuadMixVec2(vec2 a, vec2 b, vec2 c, vec2 d) {
 }
 
 void main(){
-    OUT.e_TexCoord = QuadMixVec2(
+    
+    vec2 texCoord = QuadMixVec2(
         IN[0].c_TexCoord,
         IN[1].c_TexCoord,
         IN[2].c_TexCoord,
         IN[3].c_TexCoord
     );
+    OUT.e_TexCoord = texCoord;
 
     vec3 worldPos = QuadMixVec3(
         IN[0].c_Position,
@@ -52,6 +54,8 @@ void main(){
         IN[2].c_Position,
         IN[3].c_Position
     );
+
+    worldPos.y += u_TerrainScale * texture(u_DepthMap, texCoord).r;
 
     gl_Position = u_ViewProjection * u_Transform * vec4(worldPos, 1.0);
 }

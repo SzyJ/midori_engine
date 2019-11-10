@@ -37,8 +37,13 @@ namespace midori {
             internalFormat = GL_RGB8;
             dataFormat = GL_RGB;
             break;
+        case 1:
+            internalFormat = GL_RED;
+            dataFormat = GL_R8;
+            break;
         default:
             MD_CORE_ERROR("Attempt to load texture of unsupported format: {0}", path);
+            MD_CORE_ERROR("Channel count: {0}", channelCount);
         }
 
         glCreateTextures(GL_TEXTURE_2D, 1, &m_ImagesID);

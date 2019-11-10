@@ -7,11 +7,8 @@ in Vertex {
 } IN;
 
 uniform sampler2D u_ColourMap;
-uniform sampler2D u_DapthMap;
+uniform sampler2D u_DepthMap;
 
 void main() {
-    //color = texture(u_ColourMap, v_TexCoord);
-    //color = texture(u_DapthMap, v_TexCoord);
-    color = vec4(IN.e_TexCoord, 0.0f, 1.0f);
-    //color = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    color = texture(u_ColourMap, IN.e_TexCoord);
 }

@@ -14,13 +14,13 @@ out Vertex {
 
 void main(){
     if (gl_InvocationID == 0) {
-        gl_TessLevelInner[0] = 25.0f;
-        gl_TessLevelInner[1] = 25.0f;
+        gl_TessLevelInner[0] = 50.0f;
+        gl_TessLevelInner[1] = 50.0f;
 
-        gl_TessLevelOuter[0] = 25.0f;
-        gl_TessLevelOuter[1] = 25.0f;
-        gl_TessLevelOuter[2] = 25.0f;
-        gl_TessLevelOuter[3] = 25.0f;
+        gl_TessLevelOuter[0] = 50.0f;
+        gl_TessLevelOuter[1] = 50.0f;
+        gl_TessLevelOuter[2] = 50.0f;
+        gl_TessLevelOuter[3] = 50.0f;
     }
     
     OUT[gl_InvocationID].c_TexCoord = IN[gl_InvocationID].v_TexCoord;

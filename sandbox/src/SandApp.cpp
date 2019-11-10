@@ -140,7 +140,7 @@ public:
 
         const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
         const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
-        const float terrainHeight = -2.0f;
+        const float terrainHeight = -50.0f;
 
         const unsigned int Quad_Index_Count = 4;
         float terrainPlane[Quad_Index_Count * (3 + 2)] = {
@@ -257,7 +257,7 @@ private:
     midori::Scene m_TestScene;
 
     midori::PerspectiveCamera* m_Camera;
-    float m_MoveSpeed = 5.0f;
+    float m_MoveSpeed = 55.0f;
     float m_LookSens = 0.1f;
 
     bool m_CursorEnabled = false;
