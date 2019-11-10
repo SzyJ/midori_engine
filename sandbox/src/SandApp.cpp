@@ -257,7 +257,7 @@ private:
     midori::Scene m_TestScene;
 
     midori::PerspectiveCamera* m_Camera;
-    float m_MoveSpeed = 55.0f;
+    float m_MoveSpeed = 15.0f;
     float m_LookSens = 0.1f;
 
     bool m_CursorEnabled = false;

@@ -23,12 +23,18 @@ namespace midori {
 
     void OpenGLRendererAPI::Clear() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //TODO: Remove below code [DEBUG]
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glPatchParameteri(GL_PATCH_VERTICES, 4);
+    }
+
+    void OpenGLRendererAPI::SetDebugMode(const bool debugModeState) {
+        glPolygonMode(GL_FRONT_AND_BACK, debugModeState ? GL_LINES : GL_FILL);
     }
 
     void OpenGLRendererAPI::DrawVertices(const ref<VertexArray>& vertexArray) {
+        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+    }
+
+    void OpenGLRendererAPI::DrawPatches(const ref<VertexArray>& vertexArray, uint32_t verticesPerPatch) {
+        glPatchParameteri(GL_PATCH_VERTICES, verticesPerPatch);
         glDrawElements(GL_PATCHES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
     }
 

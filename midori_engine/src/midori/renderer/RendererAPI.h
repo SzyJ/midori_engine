@@ -26,7 +26,10 @@ namespace midori {
         virtual void SetClearColor(const glm::vec4& color) = 0;
         virtual void Clear() = 0;
 
+        virtual void SetDebugMode(const bool debugModeState) = 0;
+
         virtual void DrawVertices(const ref<VertexArray>& vertexArray) = 0;
+        virtual void DrawPatches(const ref<VertexArray>& vertexArray, uint32_t verticesPerPatch) = 0;
 
         virtual void SetViewport(const int xOffset, const int yOffset, const int width, const int height) = 0;
 
