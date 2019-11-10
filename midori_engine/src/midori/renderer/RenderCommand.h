@@ -28,6 +28,10 @@ namespace midori {
             s_RendererAPI->DrawVertices(vertexArray);
         }
 
+        inline static void DrawPatches(const ref<VertexArray>& vertexArray, uint32_t indicesInVertex) {
+            s_RendererAPI->DrawPatches(vertexArray, indicesInVertex);
+        }
+
         inline static void SetViewport(const int xOffset, const int yOffset, const int width, const int height) {
             s_RendererAPI->SetViewport(xOffset, yOffset, width, height);
         }

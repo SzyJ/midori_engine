@@ -71,7 +71,17 @@ namespace midori {
             child->Draw(m_Transform * transformMod);
         }
 
-        Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
+        switch(m_Primitive) {
+        case GeometryPrimitive::Triangles:
+            Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
+            break;
+        case GeometryPrimitive::QuadPatches:
+            Renderer::SubmitPatches(m_Shader, m_VertexArray, m_Transform * transformMod);
+            break;
+        case GeometryPrimitive::TrianglePatches:
+            Renderer::SubmitPatches(m_Shader, m_VertexArray, m_Transform * transformMod, 3);
+            break;
+        }
     }
 
 };

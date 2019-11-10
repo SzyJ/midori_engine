@@ -117,6 +117,7 @@ public:
         modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_TEAPOT));
         modelTeapot->SetScale(0.01f);
         modelTeapot->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
+        modelTeapot->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
         m_TestScene.AddOpaqueObject(modelTeapot);
 
 
@@ -162,6 +163,7 @@ public:
         auto terrainObject = midori::make_ref<midori::SceneObject>();
         terrainObject->SetShader(m_TerrainShader);
         terrainObject->SetVertexArray(m_TerrainModel);
+        terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
         m_TestScene.AddOpaqueObject(terrainObject);
 
         midori::RenderCommand::Init();

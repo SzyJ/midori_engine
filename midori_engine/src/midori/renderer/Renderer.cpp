@@ -23,7 +23,19 @@ namespace midori {
         shader->UploadUniformMat4("u_Transform", transform);
 
         vertexArray->Bind();
+
         RenderCommand::DrawVertices(vertexArray);
     }
+
+    void Renderer::SubmitPatches(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform, uint32_t vertices) {
+        shader->Bind();
+        shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+        shader->UploadUniformMat4("u_Transform", transform);
+
+        vertexArray->Bind();
+
+        RenderCommand::DrawPatches(vertexArray, vertices);
+    }
+
 
 }

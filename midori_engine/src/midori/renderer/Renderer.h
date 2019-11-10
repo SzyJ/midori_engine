@@ -18,6 +18,7 @@ namespace midori {
         static void EndScene();
 
         static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+        static void SubmitPatches(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), uint32_t vertices = 4);
 
         inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
     private:

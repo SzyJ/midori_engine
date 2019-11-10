@@ -15,6 +15,12 @@
 
 namespace midori {
 
+    enum class GeometryPrimitive {
+        Triangles,
+        QuadPatches,
+        TrianglePatches
+    };
+
     class SceneObject {
     public:
         SceneObject()
@@ -46,6 +52,7 @@ namespace midori {
         void AddChild(const ref<SceneObject>& child);
         bool DeleteChild(const ref<SceneObject>& child);
 
+        void SetGeometryPrimitive(const GeometryPrimitive newPrimitive) { m_Primitive = newPrimitive; }
         void SetVertexArray(const ref<VertexArray>& vertexArray) { m_VertexArray = vertexArray; }
 
         void SetShader(const ref<Shader>& shader) { m_Shader = shader; }
@@ -60,6 +67,7 @@ namespace midori {
         void Draw(const glm::mat4& transformMod = glm::mat4(1.0f)) const;
 
     private:
+        GeometryPrimitive m_Primitive = GeometryPrimitive::Triangles;
         std::vector<ref<SceneObject>> m_ChildObjects;
 
         ref<VertexArray> m_VertexArray;
