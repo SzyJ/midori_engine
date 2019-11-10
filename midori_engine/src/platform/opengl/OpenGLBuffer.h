@@ -20,8 +20,10 @@ namespace midori {
         virtual const BufferLayout& GetLayout() const override;
         virtual void SetLayout(const BufferLayout& bufferLayout) override;
 
+        virtual uint32_t GetSize() const override { return m_Size; }
+
     private:
-        uint32_t m_VertexBufferID;
+        uint32_t m_VertexBufferID, m_Size;
         BufferLayout m_Layout;
     };
 
@@ -33,7 +35,7 @@ namespace midori {
         virtual void Bind() const override;
         virtual void Unbind() const override;
 
-        virtual uint32_t GetCount() const { return m_Count; }
+        virtual uint32_t GetCount() const override { return m_Count; }
 
     private:
         uint32_t m_IndexBufferID, m_Count;

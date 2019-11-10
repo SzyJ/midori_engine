@@ -14,7 +14,8 @@ namespace midori {
     // Vertex Buffer //
     ///////////////////
 
-    OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size) {
+    OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
+        : m_Size(size) {
         glCreateBuffers(1, &m_VertexBufferID);
         glBindBuffer(GL_ARRAY_BUFFER, m_VertexBufferID);
         glBufferData(GL_ARRAY_BUFFER, size * sizeof(float), vertices, GL_STATIC_DRAW);

@@ -18,7 +18,7 @@ public:
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
-        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 5.0f));
+        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 10.0f));
 
         m_TestScene.SetCamera(m_Camera);
 
@@ -127,8 +127,8 @@ public:
 
 
         uint8_t shaders =
-            (uint8_t)midori::ShaderProgramType::vertex |
-            (uint8_t)midori::ShaderProgramType::fragment |
+            (uint8_t) midori::ShaderProgramType::vertex |
+            (uint8_t) midori::ShaderProgramType::fragment |
             (uint8_t) midori::ShaderProgramType::tessellation;
         m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN, shaders);
         m_TerrainShader->Bind();
@@ -140,23 +140,24 @@ public:
 
         const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
         const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
-        const float terrainHeight = 1.0f;
+        const float terrainHeight = -2.0f;
 
-        float terrainPlane[4 * (3 + 2)] = {
-            -halfWidth, terrainHeight, -halfLength,   0.0f, 0.0f,
-            -halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f,
-             halfWidth, terrainHeight,  halfLength,   1.0f, 1.0f,
-             halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f
+        const unsigned int Quad_Index_Count = 4;
+        float terrainPlane[Quad_Index_Count * (3 + 2)] = {
+            -halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f,
+            -halfWidth, terrainHeight,  halfLength,   0.0f, 0.0f,
+             halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f,
+             halfWidth, terrainHeight, -halfLength,   1.0f, 1.0f
         };
 
-        midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, 4 * (3 + 2));
+        midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, Quad_Index_Count * (3 + 2));
         terrainVB->SetLayout({
             {midori::ShaderDataType::Float3, "a_Position"},
             {midori::ShaderDataType::Float2, "a_TexCoord"}
         });
         m_TerrainModel->AddVertexBuffer(terrainVB);
-        uint32_t terrainIndexBuffer[6] = {1, 0, 3, 3, 2, 1};
-        m_TerrainModel->SetIndexBuffer(midori::IndexBuffer::Create(terrainIndexBuffer, 6));
+        uint32_t terrainIndexBuffer[Quad_Index_Count] = {0, 1, 3, 2};
+        m_TerrainModel->SetIndexBuffer(midori::IndexBuffer::Create(terrainIndexBuffer, Quad_Index_Count));
 
         auto terrainObject = midori::make_ref<midori::SceneObject>();
         terrainObject->SetShader(m_TerrainShader);
@@ -256,7 +257,7 @@ private:
     midori::Scene m_TestScene;
 
     midori::PerspectiveCamera* m_Camera;
-    float m_MoveSpeed = 2.5f;
+    float m_MoveSpeed = 5.0f;
     float m_LookSens = 0.1f;
 
     bool m_CursorEnabled = false;

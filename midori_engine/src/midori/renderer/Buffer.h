@@ -117,6 +117,8 @@ namespace midori {
         virtual const BufferLayout& GetLayout() const = 0;
         virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
 
+        virtual uint32_t GetSize() const = 0;
+
         static ref<VertexBuffer> Create(float* vertices, uint32_t size);
     };
 
