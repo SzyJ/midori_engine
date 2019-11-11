@@ -147,8 +147,8 @@ public:
         float terrainPlane[Quad_Index_Count * (3 + 2)] = {
             -halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f,
             -halfWidth, terrainHeight,  halfLength,   0.0f, 0.0f,
-             halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f,
-             halfWidth, terrainHeight, -halfLength,   1.0f, 1.0f
+             halfWidth, terrainHeight, -halfLength,   1.0f, 1.0f,
+             halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f
         };
 
         midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, Quad_Index_Count * (3 + 2));
@@ -157,8 +157,6 @@ public:
             {midori::ShaderDataType::Float2, "a_TexCoord"}
         });
         m_TerrainModel->AddVertexBuffer(terrainVB);
-        uint32_t terrainIndexBuffer[Quad_Index_Count] = {0, 1, 3, 2};
-        m_TerrainModel->SetIndexBuffer(midori::IndexBuffer::Create(terrainIndexBuffer, Quad_Index_Count));
 
         auto terrainObject = midori::make_ref<midori::SceneObject>();
         terrainObject->SetShader(m_TerrainShader);
