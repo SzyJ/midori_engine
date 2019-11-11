@@ -5,7 +5,7 @@
 // Date: 02/11/2019
 
 #include "mdpch.h"
-#include "OpenGLTexture.h"
+#include "OpenGLTexture2D.h"
 
 #include <glad/glad.h>
 #include <stb_image.h>

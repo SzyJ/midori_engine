@@ -18,7 +18,7 @@ namespace midori {
         const auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
         const auto state = glfwGetKey(window, keycode);
 
-        return state == GLFW_PRESS || state == GLFW_REPEAT;
+        return state == GLFW_PRESS;
     }
 
     bool WindowsInput::IsMouseButtonPressedImpl(int button) {

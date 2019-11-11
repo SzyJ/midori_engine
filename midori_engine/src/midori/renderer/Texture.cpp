@@ -8,7 +8,7 @@
 #include "Texture.h"
 
 #include "midori/renderer/Renderer.h"
-#include "platform/opengl/OpenGLTexture.h"
+#include "platform/opengl/textures/OpenGLTexture2D.h"
 
 namespace midori {
 

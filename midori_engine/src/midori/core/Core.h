@@ -10,6 +10,8 @@
 
 #ifdef MD_PLATFORM_WINDOWS
 
+#define MD_DEFAULT_RESOURCES "res/"
+
 #ifdef MD_CONFIG_DLL
 
     #ifdef MD_BUILD_DLL

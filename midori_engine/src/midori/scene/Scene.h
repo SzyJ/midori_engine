@@ -8,6 +8,7 @@
 
 #include "midori/core/Core.h"
 #include "midori/renderer/camera/Camera.h"
+#include "midori/scene/Skybox.h"
 #include "midori/scene/SceneObject.h"
 
 #include <vector>
@@ -30,6 +31,7 @@ namespace midori {
 
     private:
         Camera* m_Camera;
+        ref<Skybox> m_Skybox;
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
 
