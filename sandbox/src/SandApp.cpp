@@ -112,13 +112,13 @@ public:
         m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
 
-        auto modelTeapot = midori::make_ref<midori::SceneObject>();
-        modelTeapot->SetShader(m_MeshLoadShader);
-        modelTeapot->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
-        modelTeapot->SetScale(1.0f);
-        modelTeapot->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
-        modelTeapot->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_TestScene.AddOpaqueObject(modelTeapot);
+        m_Helicopter = midori::make_ref<midori::SceneObject>();
+        m_Helicopter->SetShader(m_MeshLoadShader);
+        m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
+        m_Helicopter->SetScale(1.0f);
+        m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
+        //m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
+        m_TestScene.AddOpaqueObject(m_Helicopter);
 
 
         m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
@@ -164,7 +164,9 @@ public:
         terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
         m_TestScene.AddOpaqueObject(terrainObject);
 
-        m_TestScene.AddSkybox(new midori::Skybox(TEXTURE_SKYBOX));
+        m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
+
+        m_TestScene.AddLight(new midori::Light(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)));
 
         midori::RenderCommand::Init();
     }
@@ -183,6 +185,14 @@ public:
 
     void OnUpdate(midori::DeltaTime delta) override {
         m_DeltaAverage = (m_DeltaAverage * CONF_FPS_SMOOTHING) + (delta * (1.0f - CONF_FPS_SMOOTHING));
+
+        m_TotalTime += delta;
+
+
+
+        //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
+        m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
+
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {
             m_Camera->Move(midori::MovementDirection::forward, delta * m_MoveSpeed);
@@ -258,8 +268,14 @@ private:
 
     midori::Scene m_TestScene;
 
+    midori::ref<midori::SceneObject> m_Helicopter;
+
+    float m_TotalTime = 0.0f;
+
+    float m_FlightSpeed = 5.0f;
+
     midori::PerspectiveCamera* m_Camera;
-    float m_MoveSpeed = 15.0f;
+    float m_MoveSpeed = 5.0f;
     float m_LookSens = 0.1f;
 
     bool m_CursorEnabled = false;

@@ -19,12 +19,20 @@ namespace midori {
 
     void Renderer::EndScene() {}
 
+    void Renderer::SetLights(Light* light) {
+        m_SceneData->light = light;
+    }
+
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform) {
         shader->Bind();
         shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
         shader->UploadUniformMat4("u_Projection", m_SceneData->ProjectionMatrix);
         shader->UploadUniformMat4("u_StaticView", m_SceneData->StaticViewMatrix);
         shader->UploadUniformMat4("u_Transform", transform);
+        if (m_SceneData->light) {
+            shader->UploadUniformFloat3("u_LightPos", m_SceneData->light->GetPosition());
+            shader->UploadUniformFloat3("u_LightCol", m_SceneData->light->GetColor());
+        }
 
         vertexArray->Bind();
 

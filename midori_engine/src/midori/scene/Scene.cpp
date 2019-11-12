@@ -44,6 +44,8 @@ namespace midori {
     void Scene::Draw() {
         Renderer::BeginScene(m_Camera);
 
+        Renderer::SetLights(m_Light);
+
         if (m_Skybox) {
             m_Skybox->Draw();
         }

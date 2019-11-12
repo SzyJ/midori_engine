@@ -9,6 +9,7 @@
 #include "midori/renderer/camera/Camera.h"
 #include "midori/renderer/RenderCommand.h"
 #include "midori/renderer/Shader.h"
+#include "midori/scene/lighting/Light.h"
 
 namespace midori {
 
@@ -16,6 +17,8 @@ namespace midori {
     public:
         static void BeginScene(Camera* camera);
         static void EndScene();
+
+        static void SetLights(Light* light);
 
         static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
         static void SubmitPatches(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), uint32_t vertices = 4);
@@ -26,6 +29,8 @@ namespace midori {
             glm::mat4 ViewProjectionMatrix;
             glm::mat4 ProjectionMatrix;
             glm::mat4 StaticViewMatrix;
+
+            Light* light = nullptr;
         };
 
         static SceneData* m_SceneData;
