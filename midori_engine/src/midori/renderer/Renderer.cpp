@@ -15,6 +15,8 @@ namespace midori {
         m_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
         m_SceneData->ProjectionMatrix = camera->GetProjectionMatrix();
         m_SceneData->StaticViewMatrix = glm::mat4(glm::mat3(camera->GetViewMatrix()));
+
+        m_SceneData->CameraPosition = camera->GetPosition();
     }
 
     void Renderer::EndScene() {}
@@ -29,6 +31,8 @@ namespace midori {
         shader->UploadUniformMat4("u_Projection", m_SceneData->ProjectionMatrix);
         shader->UploadUniformMat4("u_StaticView", m_SceneData->StaticViewMatrix);
         shader->UploadUniformMat4("u_Transform", transform);
+        shader->UploadUniformFloat3("u_CameraPos", m_SceneData->CameraPosition);
+
         if (m_SceneData->light) {
             shader->UploadUniformFloat3("u_LightPos", m_SceneData->light->GetPosition());
             shader->UploadUniformFloat3("u_LightCol", m_SceneData->light->GetColor());

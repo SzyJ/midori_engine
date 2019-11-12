@@ -19,107 +19,22 @@ public:
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 10.0f));
-
         m_TestScene.SetCamera(m_Camera);
-
-        // Temporary triangle
-        m_VertexArray = midori::VertexArray::Create();
-
-        float vertices[4 * 7] = {
-           -0.5f, -0.5f, 1.0f,   0.0f, 0.0f, // [x, y, z], [texX, texY]
-            0.5f, -0.5f, 1.0f,   1.0f, 0.0f, // [x, y, z], [texX, texY]
-            0.5f,  0.5f, 1.0f,   1.0f, 1.0f, // [x, y, z], [texX, texY]
-           -0.5f,  0.5f, 1.0f,   0.0f, 1.0f  // [x, y, z], [texX, texY]
-        };
-
-        midori::ref<midori::VertexBuffer> vertexBuffer;
-        vertexBuffer = midori::VertexBuffer::Create(vertices, sizeof(vertices));
-        midori::BufferLayout layout = {
-            { midori::ShaderDataType::Float3, "a_Position" },
-            { midori::ShaderDataType::Float2, "a_TexCoord" }
-        };
-        vertexBuffer->SetLayout(layout);
-        m_VertexArray->AddVertexBuffer(vertexBuffer);
-
-        const uint32_t INDEX_COUNT = 6;
-        uint32_t indices[INDEX_COUNT] = { 0, 1, 2, 2, 3, 0};
-        midori::ref<midori::IndexBuffer> indexBuffer;
-        indexBuffer = midori::IndexBuffer::Create(indices, INDEX_COUNT);
-        m_VertexArray->SetIndexBuffer(indexBuffer);
-
-        m_SquareVA = midori::VertexArray::Create();
-        float squareVertices[3 * 4] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.5f,  0.5f, 0.0f,
-            -0.5f,  0.5f, 0.0f
-        };
-
-        midori::ref<midori::VertexBuffer> squareVB;
-        squareVB = midori::VertexBuffer::Create(squareVertices, sizeof(squareVertices));
-        squareVB->SetLayout({
-            { midori::ShaderDataType::Float3, "a_Position" }
-            });
-        m_SquareVA->AddVertexBuffer(squareVB);
-
-        uint32_t squareIndices[6] = { 0, 1, 2, 2, 3, 0 };
-        midori::ref<midori::IndexBuffer> squareIB;
-        squareIB = midori::IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t));
-        m_SquareVA->SetIndexBuffer(squareIB);
-
-        m_Shader = midori::Shader::Load(SHADER_TEXTURE_SQUARE);
-        m_BlueShader = midori::Shader::Load(SHADER_SQUARE_GRID);
-
-        m_TextureFLogo = midori::Texture2D::Create(TEXTURE_FLOGO);
-        m_TextureFLogo->Bind(TEXTURE_FLOGO_ID);
 
         m_TextureCrate = midori::Texture2D::Create(TEXTURE_CRATE);
         m_TextureCrate->Bind(TEXTURE_CRATE_ID);
 
-        m_Shader->Bind();
-        m_Shader->UploadUniformInt("u_TextureFLogo", TEXTURE_FLOGO_ID);
-        m_Shader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
-
-        for (int y = 0; y < 20; y++) {
-            for (int x = 0; x < 20; x++) {
-                glm::vec3 pos(x * 0.11f, y * 0.11f, (x + y) * 0.11f * 0.5f);
-
-                auto thisObject = midori::make_ref<midori::SceneObject>();
-                thisObject->SetScale(0.1f);
-                thisObject->SetPosition(pos);
-                thisObject->SetRotation(pos);
-                thisObject->SetShader(m_BlueShader);
-                thisObject->SetVertexArray(m_SquareVA);
-
-                m_TestScene.AddOpaqueObject(thisObject);
-            }
-        }
-
-        for (int z = 0; z < 6; ++z) {
-            glm::vec3 trans = glm::vec3(0.0f, 0.0f, -3.5f + (1.0f * z));
-
-            auto thisObject = midori::make_ref<midori::SceneObject>();
-            thisObject->SetPosition(trans);
-            thisObject->SetShader(m_Shader);
-            thisObject->SetVertexArray(m_VertexArray);
-
-            m_TestScene.AddAlphaObject(thisObject);
-        }
-
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
-
         m_MeshLoadShader->Bind();
         m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
-
         m_Helicopter = midori::make_ref<midori::SceneObject>();
         m_Helicopter->SetShader(m_MeshLoadShader);
-        m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
+        m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_CUBE));
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
-        //m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
+        m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
         m_TestScene.AddOpaqueObject(m_Helicopter);
-
 
         m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
         m_TerrainHeightMap->Bind(TEXTURE_TERRAIN_HEIGHTMAP_ID);
@@ -166,7 +81,8 @@ public:
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
-        m_TestScene.AddLight(new midori::Light(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f)));
+        m_SceneLight = new midori::Light(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
+        m_TestScene.AddLight(m_SceneLight);
 
         midori::RenderCommand::Init();
     }
@@ -189,9 +105,9 @@ public:
         m_TotalTime += delta;
 
 
-
+        //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
         //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
+        //m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {
@@ -249,26 +165,20 @@ public:
 
 private:
     midori::DeltaTime m_DeltaAverage = 0.0f;
-    midori::ref<midori::Shader> m_Shader;
-    midori::ref<midori::VertexArray> m_VertexArray;
 
-    midori::ref<midori::Shader> m_BlueShader;
-    midori::ref<midori::VertexArray> m_SquareVA;
+    midori::Light* m_SceneLight;
 
     midori::ref<midori::Shader> m_MeshLoadShader;
-    midori::ref<midori::VertexArray> m_TeapotModel;
-
+    
     midori::ref<midori::Texture2D> m_TerrainHeightMap;
     midori::ref<midori::Texture2D> m_TerrainColourMap;
     midori::ref<midori::Shader> m_TerrainShader;
     midori::ref<midori::VertexArray> m_TerrainModel;
  
     midori::ref<midori::Texture2D> m_TextureCrate;
-    midori::ref<midori::Texture2D> m_TextureFLogo;
-
-    midori::Scene m_TestScene;
-
     midori::ref<midori::SceneObject> m_Helicopter;
+    
+    midori::Scene m_TestScene;
 
     float m_TotalTime = 0.0f;
 

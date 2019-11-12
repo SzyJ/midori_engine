@@ -30,6 +30,8 @@ namespace midori {
             glm::mat4 ProjectionMatrix;
             glm::mat4 StaticViewMatrix;
 
+            glm::vec3 CameraPosition;
+
             Light* light = nullptr;
         };
 
