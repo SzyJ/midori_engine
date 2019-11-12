@@ -29,6 +29,10 @@ namespace midori {
         glPolygonMode(GL_FRONT_AND_BACK, debugModeState ? GL_LINE : GL_FILL);
     }
 
+    void OpenGLRendererAPI::SetDepthMask(const bool newState) {
+        glDepthMask(newState ? GL_TRUE : GL_FALSE);
+    }
+
     void OpenGLRendererAPI::DrawVertices(const ref<VertexArray>& vertexArray) {
         if (vertexArray->GetIndexBuffer()) {
             glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);

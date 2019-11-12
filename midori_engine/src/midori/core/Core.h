@@ -10,7 +10,7 @@
 
 #ifdef MD_PLATFORM_WINDOWS
 
-#define MD_DEFAULT_RESOURCES "res/"
+#define MD_DEFAULT_RESOURCES "../midori_engine/res/"
 
 #ifdef MD_CONFIG_DLL
 

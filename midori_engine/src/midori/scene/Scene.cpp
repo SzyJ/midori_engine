@@ -44,6 +44,10 @@ namespace midori {
     void Scene::Draw() {
         Renderer::BeginScene(m_Camera);
 
+        if (m_Skybox) {
+            m_Skybox->Draw();
+        }
+
         if (!m_OpaqueObjects.empty()) {
             SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
             for (const ref<SceneObject>& obj : m_OpaqueObjects) {

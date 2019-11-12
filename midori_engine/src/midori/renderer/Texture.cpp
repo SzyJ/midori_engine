@@ -9,6 +9,7 @@
 
 #include "midori/renderer/Renderer.h"
 #include "platform/opengl/textures/OpenGLTexture2D.h"
+#include "platform/opengl/textures/OpenGLTextureCubeMap.h"
 
 namespace midori {
 
@@ -16,6 +17,18 @@ namespace midori {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
             return make_ref<OpenGLTexture2D>(path);
+        case RendererAPI::API::None:
+        default:
+            break;
+        }
+        MD_CORE_ERROR("An unsupported Rendering API has been selected");
+        return nullptr;
+    }
+
+    ref<TextureCubeMap> TextureCubeMap::Create(const std::string& path) {
+        switch (Renderer::GetAPI()) {
+        case RendererAPI::API::OpenGL:;
+            return make_ref<OpenGLTextureCubeMap>(path);
         case RendererAPI::API::None:
         default:
             break;

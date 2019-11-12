@@ -24,6 +24,8 @@ namespace midori {
     private:
         struct SceneData {
             glm::mat4 ViewProjectionMatrix;
+            glm::mat4 ProjectionMatrix;
+            glm::mat4 StaticViewMatrix;
         };
 
         static SceneData* m_SceneData;

@@ -25,13 +25,15 @@ namespace midori {
         bool RemoveOpaqueObject(const ref<SceneObject>& object);
         bool RemoveAlphaObject(const ref<SceneObject>& object);
 
+        void AddSkybox(Skybox* newSkybox) { m_Skybox = newSkybox; }
+
         void SetCamera(Camera* camera) { m_Camera = camera; }
 
         void Draw();
 
     private:
         Camera* m_Camera;
-        ref<Skybox> m_Skybox;
+        Skybox* m_Skybox;
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
 

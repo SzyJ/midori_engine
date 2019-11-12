@@ -24,6 +24,14 @@ namespace midori {
             s_RendererAPI->Clear();
         }
 
+        inline static void SetDebugMode(const bool debugModeState) {
+            s_RendererAPI->SetDebugMode(debugModeState);
+        }
+
+        inline static void SetDepthMask(const bool newState) {
+            s_RendererAPI->SetDepthMask(newState);
+        }
+
         inline static void DrawVertices(const ref<VertexArray>& vertexArray) {
             s_RendererAPI->DrawVertices(vertexArray);
         }
