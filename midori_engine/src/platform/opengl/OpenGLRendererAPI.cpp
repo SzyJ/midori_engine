@@ -26,16 +26,33 @@ namespace midori {
     }
 
     void OpenGLRendererAPI::SetDebugMode(const bool debugModeState) {
-        glPolygonMode(GL_FRONT_AND_BACK, debugModeState ? GL_LINES : GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, debugModeState ? GL_LINE : GL_FILL);
+    }
+
+    void OpenGLRendererAPI::SetDepthMask(const bool newState) {
+        glDepthMask(newState ? GL_TRUE : GL_FALSE);
     }
 
     void OpenGLRendererAPI::DrawVertices(const ref<VertexArray>& vertexArray) {
-        glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        if (vertexArray->GetIndexBuffer()) {
+            glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        } else {
+            for (const auto& vertexBuffer : vertexArray->GetVertexBuffers()) {
+                glDrawArrays(GL_TRIANGLES, 0, vertexBuffer->GetSize());
+            }
+        }
     }
 
     void OpenGLRendererAPI::DrawPatches(const ref<VertexArray>& vertexArray, uint32_t verticesPerPatch) {
         glPatchParameteri(GL_PATCH_VERTICES, verticesPerPatch);
-        glDrawElements(GL_PATCHES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+        if (vertexArray->GetIndexBuffer()) {
+            glDrawElements(GL_PATCHES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+        } else {
+            for (const auto& vertexBuffer : vertexArray->GetVertexBuffers()) {
+                glDrawArrays(GL_PATCHES, 0, vertexBuffer->GetSize());
+            }
+        }
     }
 
     void OpenGLRendererAPI::SetViewport(const int xOffset, const int yOffset, const int width, const int height) {

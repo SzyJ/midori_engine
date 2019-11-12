@@ -9,7 +9,7 @@ in vec2 v_TexCoord;
 
 void main() {
     color = mix(texture(u_TextureFLogo, v_TexCoord), texture(u_TextureCrate, v_TexCoord), 0.5);
-    color.a = 1.0f;
+    //color.a = 1.0f;
     //color = vec4(v_TexCoord, 0.0f, 1.0f);
-    //color.a = 0.5f;
+    color.a = 0.5f;
 }

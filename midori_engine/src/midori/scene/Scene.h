@@ -8,6 +8,7 @@
 
 #include "midori/core/Core.h"
 #include "midori/renderer/camera/Camera.h"
+#include "midori/scene/Skybox.h"
 #include "midori/scene/SceneObject.h"
 
 #include <vector>
@@ -24,12 +25,15 @@ namespace midori {
         bool RemoveOpaqueObject(const ref<SceneObject>& object);
         bool RemoveAlphaObject(const ref<SceneObject>& object);
 
+        void AddSkybox(Skybox* newSkybox) { m_Skybox = newSkybox; }
+
         void SetCamera(Camera* camera) { m_Camera = camera; }
 
         void Draw();
 
     private:
         Camera* m_Camera;
+        Skybox* m_Skybox;
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
 

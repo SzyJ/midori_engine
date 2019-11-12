@@ -29,4 +29,10 @@ namespace midori {
         static ref<Texture2D> Create(const std::string& path);
     };
 
+    class TextureCubeMap : public Texture {
+    public:
+        static ref<TextureCubeMap> Create(const std::string& path);
+
+        virtual void GetBindLocation(uint32_t& bindLocation) const = 0;
+    };
 }

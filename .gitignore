@@ -345,3 +345,4 @@ ASALocalRun/
 
 ## Include .obj files in resources folder
 !sandbox/res/models/*.obj
+!sandbox/res/models/buildings/*.obj

@@ -13,6 +13,8 @@ namespace midori {
 
     void Renderer::BeginScene(Camera* camera) {
         m_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
+        m_SceneData->ProjectionMatrix = camera->GetProjectionMatrix();
+        m_SceneData->StaticViewMatrix = glm::mat4(glm::mat3(camera->GetViewMatrix()));
     }
 
     void Renderer::EndScene() {}
@@ -20,6 +22,8 @@ namespace midori {
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform) {
         shader->Bind();
         shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
+        shader->UploadUniformMat4("u_Projection", m_SceneData->ProjectionMatrix);
+        shader->UploadUniformMat4("u_StaticView", m_SceneData->StaticViewMatrix);
         shader->UploadUniformMat4("u_Transform", transform);
 
         vertexArray->Bind();

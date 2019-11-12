@@ -24,6 +24,7 @@ namespace midori {
         void UploadUniformInt(const std::string& name, int value) override;
 
         void UploadUniformFloat(const std::string& name, float value) override;
+        void UploadUniformFloat3(const std::string& name, const glm::vec3& vector) override;
 
         void UploadUniformMat4(const std::string& name, const glm::mat4& matrix) override;
 

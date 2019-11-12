@@ -22,6 +22,8 @@ namespace midori {
 
         virtual void SetDebugMode(const bool debugModeState) override;
 
+        virtual void SetDepthMask(const bool newState) override;
+
         virtual void DrawVertices(const ref<VertexArray>& vertexArray) override;
         virtual void DrawPatches(const ref<VertexArray>& vertexArray, uint32_t verticesPerPatch) override;
 

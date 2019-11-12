@@ -33,7 +33,10 @@
 #define TEXTURE_CRATE_ID 5
 #define TEXTURE_CRATE GAME_TEXTURES"container.jpg"
 
+#define TEXTURE_SKYBOX GAME_TEXTURES"skybox/Sunset" 
+
 // Models
 #define MODEL_TEAPOT GAME_MODELS"Teapot.obj"
 #define MODEL_CUBE GAME_MODELS"Cube.obj"
 #define MODEL_DINOSAUR GAME_MODELS"Dinosaur.obj"
+#define MODEL_HELICOPTER GAME_MODELS"Helicopter.obj"
