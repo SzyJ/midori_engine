@@ -36,6 +36,8 @@
 #include "midori/scene/SceneObject.h"
 #include "midori/scene/Scene.h"
 #include "midori/scene/Skybox.h"
+#include "midori/scene/lighting/Lights.h"
+#include "midori/scene/lighting/LightingManager.h"
 
 // == Entry Point == //
 #include "midori/core/EntryPoint.h"

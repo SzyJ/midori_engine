@@ -10,7 +10,7 @@
 #include "midori/renderer/camera/Camera.h"
 #include "midori/scene/Skybox.h"
 #include "midori/scene/SceneObject.h"
-#include "midori/scene/lighting/Light.h"
+#include "midori/scene/lighting/LightingManager.h"
 
 #include <vector>
 
@@ -28,7 +28,7 @@ namespace midori {
 
         void SetSkybox(Skybox* newSkybox) { m_Skybox = newSkybox; }
 
-        void AddLight(Light* newLight) { m_Light = newLight; }
+        void SetLightManager(const ref<LightingManager>& newLights) { m_Lights = newLights; }
 
         void SetCamera(Camera* camera) { m_Camera = camera; }
 
@@ -37,7 +37,8 @@ namespace midori {
     private:
         Camera* m_Camera;
         Skybox* m_Skybox;
-        Light* m_Light;
+
+        ref<LightingManager> m_Lights;
 
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;

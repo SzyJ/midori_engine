@@ -34,13 +34,14 @@ public:
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
+        m_Helicopter->SetMaterial(midori::Material::Copper());
+
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
         m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
         m_TerrainHeightMap->Bind(TEXTURE_TERRAIN_HEIGHTMAP_ID);
         m_TerrainColourMap = midori::Texture2D::Create(TEXTURE_TERRAIN_COLORMAP);
         m_TerrainColourMap->Bind(TEXTURE_TERRAIN_COLORMAP_ID);
-
 
         uint8_t shaders =
             (uint8_t) midori::ShaderProgramType::vertex |
@@ -81,8 +82,12 @@ public:
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
-        m_SceneLight = new midori::Light(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec4(1.0f, 0.0f, 0.0f, 1.0f));
-        m_TestScene.AddLight(m_SceneLight);
+        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+
+        m_LightManager = midori::make_ref<midori::LightingManager>();
+        m_LightManager->AddPointLight(m_SceneLight);
+
+        m_TestScene.SetLightManager(m_LightManager);
 
         midori::RenderCommand::Init();
     }
@@ -104,7 +109,7 @@ public:
 
         m_TotalTime += delta;
 
-
+        //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
         //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
         //m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
@@ -166,7 +171,9 @@ public:
 private:
     midori::DeltaTime m_DeltaAverage = 0.0f;
 
-    midori::Light* m_SceneLight;
+    midori::ref<midori::LightingManager> m_LightManager;
+    midori::ref<midori::PointLight> m_SceneLight;
+
 
     midori::ref<midori::Shader> m_MeshLoadShader;
     

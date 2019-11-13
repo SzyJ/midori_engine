@@ -9,7 +9,8 @@
 #include "midori/renderer/camera/Camera.h"
 #include "midori/renderer/RenderCommand.h"
 #include "midori/renderer/Shader.h"
-#include "midori/scene/lighting/Light.h"
+#include "midori/scene/lighting/LightingManager.h"
+#include "midori/scene/lighting/Materials.h"
 
 namespace midori {
 
@@ -18,9 +19,11 @@ namespace midori {
         static void BeginScene(Camera* camera);
         static void EndScene();
 
-        static void SetLights(Light* light);
+        static void SetLights(const ref<LightingManager>& lights) { m_SceneData->Lights = lights; }
 
-        static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+        static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const Material& material = Material());
+        static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const Material& material);
+
         static void SubmitPatches(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), uint32_t vertices = 4);
 
         inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
@@ -32,7 +35,7 @@ namespace midori {
 
             glm::vec3 CameraPosition;
 
-            Light* light = nullptr;
+            ref<LightingManager> Lights = nullptr;
         };
 
         static SceneData* m_SceneData;
