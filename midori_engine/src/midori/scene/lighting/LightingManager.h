@@ -24,7 +24,9 @@ namespace midori {
     private:
         float m_AmbientStrength;
         glm::vec3 m_AmbientColour;
+
         std::vector<ref<PointLight>> m_PointLights;
+        ref<DirectionalLight> m_DirectionalLight;
     };
 
 }

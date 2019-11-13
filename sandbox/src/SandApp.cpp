@@ -30,11 +30,11 @@ public:
 
         m_Helicopter = midori::make_ref<midori::SceneObject>();
         m_Helicopter->SetShader(m_MeshLoadShader);
-        m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_CUBE));
+        m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_Helicopter->SetMaterial(midori::Material::Copper());
+        m_Helicopter->SetMaterial(midori::Material::Emerald());
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
@@ -111,8 +111,8 @@ public:
 
         //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        //m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
+        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
+        m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {

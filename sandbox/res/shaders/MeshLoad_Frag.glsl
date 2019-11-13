@@ -22,7 +22,6 @@ uniform vec3 u_LightCol;
 uniform vec3 u_CameraPos;
 
 void main() {
-
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
 
     // Diffuse
