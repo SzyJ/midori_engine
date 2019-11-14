@@ -52,6 +52,11 @@ namespace midori {
         glUseProgram(0);
     }
 
+    void OpenGLShader::BindUniformBuffer(const char* name, const uint32_t bindingBlock) {
+        const uint32_t uniformBlockIndex = glGetUniformBlockIndex(m_ShaderID, name);
+        glUniformBlockBinding(m_ShaderID, uniformBlockIndex, bindingBlock);
+    }
+
     void OpenGLShader::UploadUniformInt(const std::string& name, int value) {
         GLint location = glGetUniformLocation(m_ShaderID, name.c_str());
         glUniform1i(location, value);

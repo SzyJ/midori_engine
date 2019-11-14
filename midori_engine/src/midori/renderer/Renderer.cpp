@@ -46,11 +46,12 @@ namespace midori {
 
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform, const Material& material) {
         shader->Bind();
-        shader->UploadUniformMat4("u_ViewProjection", m_SceneData->ViewProjectionMatrix);
-        shader->UploadUniformMat4("u_Projection", m_SceneData->ProjectionMatrix);
-        shader->UploadUniformMat4("u_StaticView", m_SceneData->StaticViewMatrix);
+        const uint32_t cameraDataBindingBlock = 0;
+        m_Uniforms->Camera->Bind(cameraDataBindingBlock);
+        shader->BindUniformBuffer("MVP", cameraDataBindingBlock);
+
         shader->UploadUniformMat4("u_Transform", transform);
-        shader->UploadUniformFloat3("u_CameraPos", m_SceneData->CameraPosition);
+
 
         if (m_SceneData->Lights) {
             shader->UploadUniformFloat3("u_LightPos", m_SceneData->Lights->GetPointLights().at(0)->Position);

@@ -21,6 +21,8 @@ namespace midori {
         void Bind() override;
         void Unbind() override;
 
+        void BindUniformBuffer(const char* name, uint32_t bindingBlock) override;
+
         void UploadUniformInt(const std::string& name, int value) override;
 
         void UploadUniformFloat(const std::string& name, float value) override;
