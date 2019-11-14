@@ -16,8 +16,6 @@ struct Material {
 uniform Material u_Material;
 
 uniform sampler2D u_TextureCrate;
-uniform vec3 u_LightPos;
-uniform vec3 u_LightCol;
 
 layout (std140) uniform MVP {
     mat4 u_ViewProjection;
@@ -25,6 +23,19 @@ layout (std140) uniform MVP {
     float u_Padding;
     mat4 u_Projection;
     mat4 u_StaticView;
+};
+
+layout (std140) uniform SpotLights {
+    vec3 u_LightCol;
+    float u_Padding0;
+
+    vec3 u_LightPos;
+    float u_Padding1;
+
+    float u_Distance;
+    float u_ConstAttenuation;
+    float u_LinearAttenuation;
+    float u_QuadraticAttenuation;
 };
 
 void main() {
@@ -43,5 +54,5 @@ void main() {
     vec3 specular = u_LightCol * (spec * u_Material.specular);
 
     vec3 result = (0.5f + diffuse + specular) * baseColor.xyz;
-    color = vec4(result, 1.0);
+    color = vec4(u_LightPos, 1.0);
 }

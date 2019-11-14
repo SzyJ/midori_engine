@@ -34,7 +34,7 @@ public:
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_Helicopter->SetMaterial(midori::Material::Emerald());
+        m_Helicopter->SetMaterial(midori::Material::Chrome());
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
@@ -82,7 +82,7 @@ public:
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
-        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         m_LightManager = midori::make_ref<midori::LightingManager>();
         m_LightManager->AddPointLight(m_SceneLight);
@@ -192,7 +192,7 @@ private:
     float m_FlightSpeed = 5.0f;
 
     midori::PerspectiveCamera* m_Camera;
-    float m_MoveSpeed = 5.0f;
+    float m_MoveSpeed = 10.0f;
     float m_LookSens = 0.1f;
 
     bool m_CursorEnabled = false;

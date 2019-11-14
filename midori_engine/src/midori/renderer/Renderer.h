@@ -40,9 +40,16 @@ namespace midori {
 
         struct Uniforms {
             ref<UniformBuffer> Camera;
+            ref<UniformBuffer> PointLights;
         };
+
+        const static BufferLayout s_CamDataLayout;
+
         static SceneData* m_SceneData;
         static Uniforms* m_Uniforms;
+
+        static inline void PopulateCameraUniforms();
+        static inline void PopulatePointLightUniforms();
     };
 
 }

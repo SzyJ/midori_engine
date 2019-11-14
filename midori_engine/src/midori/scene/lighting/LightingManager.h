@@ -21,12 +21,12 @@ namespace midori {
         void AddPointLight(const ref<PointLight>& newLight) { m_PointLights.push_back(newLight); }
         const std::vector<ref<PointLight>>& GetPointLights() { return m_PointLights; }
 
-    private:
-        float m_AmbientStrength;
-        glm::vec3 m_AmbientColour;
+        void AddDirectionalLight(const ref<DirectionalLight>& newLight) { m_DirectionalLight.push_back(newLight); }
+        const std::vector<ref<DirectionalLight>>& GetDirectionalLights() { return m_DirectionalLight; }
 
+    private:
         std::vector<ref<PointLight>> m_PointLights;
-        ref<DirectionalLight> m_DirectionalLight;
+        std::vector<ref<DirectionalLight>> m_DirectionalLight;
     };
 
 }

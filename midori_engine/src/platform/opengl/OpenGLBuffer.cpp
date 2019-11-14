@@ -10,6 +10,7 @@
 
 namespace midori {
 
+
     ///////////////////
     // Vertex Buffer //
     ///////////////////

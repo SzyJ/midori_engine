@@ -11,16 +11,20 @@
 namespace midori {
 
     struct Light {
-        Light()
-            : Color(1.0f) {}
-
+ 
         virtual ~Light() = default;
 
         glm::vec3 Color;
+        float Distance = 7.0f;
+        float ConstantAttenuation = 1.0f;
+        float LinearAttenuation = 0.09f;
+        float QuadraticAttenuation = 0.032f;
 
     protected:
         Light(const glm::vec3& color)
             : Color(color) {}
+        Light()
+            : Color(1.0f) {}
     };
 
     struct PointLight : public Light {
@@ -34,6 +38,21 @@ namespace midori {
             : Light(glm::vec3(1.0f)), Position(0.0f) {}
 
         ~PointLight() = default;
+
+        static inline BufferLayout GetBufferLayout() {
+            return BufferLayout({
+                {ShaderDataType::Float3, "Color"},
+                {ShaderDataType::Float, "Padding0"},
+
+                {ShaderDataType::Float3, "Position"},
+                {ShaderDataType::Float, "Padding1"},
+
+                {ShaderDataType::Float, "Distance"},
+                {ShaderDataType::Float, "ConstAttenuation"},
+                {ShaderDataType::Float, "LinearAttenuation"},
+                {ShaderDataType::Float, "QuadraticAttenuation"}
+            });
+        }
 
         glm::vec3 Position;
     };
@@ -50,6 +69,21 @@ namespace midori {
 
         ~DirectionalLight() = default;
 
+        static inline BufferLayout GetBufferLayout() {
+            return BufferLayout({
+                {ShaderDataType::Float3, "Color"},
+                {ShaderDataType::Float, "Padding0"},
+
+                {ShaderDataType::Float3, "Direction"},
+                {ShaderDataType::Float, "Padding1"},
+
+                {ShaderDataType::Float, "Distance"},
+                {ShaderDataType::Float, "ConstAttenuation"},
+                {ShaderDataType::Float, "LinearAttenuation"},
+                {ShaderDataType::Float, "QuadraticAttenuation"}
+                });
+        }
+
         glm::vec3 Direction;
     };
 
@@ -64,7 +98,11 @@ namespace midori {
             : Light(glm::vec3(1.0f)), Position(0.0f), Direction(0.0f, -1.0f, 0.0f) {}
 
         ~SpotLight() = default;
-
+        static inline BufferLayout GetBufferLayout() {
+            return BufferLayout({
+                // TODO
+                });
+        }
         glm::vec3 Position;
         glm::vec3 Direction;
     };
