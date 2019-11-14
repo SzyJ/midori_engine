@@ -27,8 +27,6 @@ layout (std140) uniform MVP {
     mat4 u_StaticView;
 };
 
-//uniform vec3 u_CameraPos;
-
 void main() {
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
 

@@ -19,8 +19,6 @@ layout (std140) uniform MVP {
     mat4 u_StaticView;
 };
 
-//uniform mat4 u_ViewProjection;
-
 uniform mat4 u_Transform;
 
 uniform float u_TerrainScale;
