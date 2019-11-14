@@ -122,7 +122,6 @@ namespace midori {
         static ref<VertexBuffer> Create(float* vertices, uint32_t size);
     };
 
-
     class IndexBuffer {
     public:
         virtual ~IndexBuffer() = default;
@@ -133,6 +132,21 @@ namespace midori {
         virtual uint32_t GetCount() const = 0;
 
         static ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
+    };
+
+    class UniformBuffer {
+    public:
+        virtual ~UniformBuffer() = default;
+
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+
+        virtual void SetData(void* newData) = 0;
+        virtual void SetSubData(uint32_t offset, uint32_t dataSize, void* newData) = 0;
+
+        virtual uint32_t GetSize() const = 0;
+
+        static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data);
     };
 
 }

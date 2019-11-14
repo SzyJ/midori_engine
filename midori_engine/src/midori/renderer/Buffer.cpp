@@ -36,4 +36,17 @@ namespace midori {
         return nullptr;
     }
 
+
+    ref<UniformBuffer> UniformBuffer::Create(uint32_t bytesToAssign, void* data) {
+        switch (Renderer::GetAPI()) {
+        case RendererAPI::API::OpenGL:;
+            return make_ref<OpenGLUniformBuffer>(bytesToAssign, data);
+        case RendererAPI::API::None:
+        default:
+            break;
+        }
+        MD_CORE_ERROR("An unspported Rendering API has been selected");
+        return nullptr;
+    }
+
 }

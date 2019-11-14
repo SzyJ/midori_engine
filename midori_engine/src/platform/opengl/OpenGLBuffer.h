@@ -41,4 +41,21 @@ namespace midori {
         uint32_t m_IndexBufferID, m_Count;
     };
 
+    class OpenGLUniformBuffer : public UniformBuffer {
+    public:
+        OpenGLUniformBuffer(uint32_t bytesToAssign, void* data);
+        ~OpenGLUniformBuffer();
+
+        virtual void Bind() const override;
+        virtual void Unbind() const override;
+
+        virtual void SetData(void* newData) override;
+        virtual void SetSubData(uint32_t offset, uint32_t dataSize, void* newData) override;
+
+        virtual uint32_t GetSize() const override { return m_Size; }
+
+    private:
+        uint32_t m_UniformBufferID, m_Size;
+    };
+
 }
