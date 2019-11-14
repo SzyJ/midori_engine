@@ -71,17 +71,20 @@ namespace midori {
 
         glGenBuffers(1, &m_UniformBufferID);
         glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferID);
-        glBufferData(GL_UNIFORM_BUFFER, bytesToAssign, data, GL_STATIC_DRAW);
-
-        glBindBufferRange(GL_UNIFORM_BUFFER, 0, m_UniformBufferID, 0, bytesToAssign);
+        if (data) {
+            glBufferData(GL_UNIFORM_BUFFER, bytesToAssign, data, GL_STATIC_DRAW);
+        } else {
+            glBufferData(GL_UNIFORM_BUFFER, bytesToAssign, NULL, GL_STATIC_DRAW);
+        }
     }
 
     OpenGLUniformBuffer::~OpenGLUniformBuffer() {
         glDeleteBuffers(1, &m_UniformBufferID);
     }
 
-    void OpenGLUniformBuffer::Bind() const {
+    void OpenGLUniformBuffer::Bind(uint32_t bindingBlock) const {
         glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferID);
+        glBindBufferBase(GL_UNIFORM_BUFFER, bindingBlock, m_UniformBufferID);
     }
 
     void OpenGLUniformBuffer::Unbind() const {
@@ -92,8 +95,8 @@ namespace midori {
         glBufferData(GL_UNIFORM_BUFFER, m_Size, newData, GL_STATIC_DRAW);
     }
 
-    void OpenGLUniformBuffer::SetSubData(uint32_t offset, uint32_t dataSize, void* newData) {
-        glBufferSubData(GL_UNIFORM_BUFFER, offset, dataSize, newData);
+    void OpenGLUniformBuffer::SetSubData(uint32_t index, void* newData) {
+        glBufferSubData(GL_UNIFORM_BUFFER, m_Layout.GetIndexOffset(index), m_Layout.GetIndexSize(index), newData);
     }
 
 }

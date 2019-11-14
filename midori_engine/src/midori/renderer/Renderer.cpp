@@ -7,16 +7,39 @@
 #include "mdpch.h"
 #include "Renderer.h"
 
+#include <glm/gtc/type_ptr.hpp>
+
 namespace midori {
 
+    const static BufferLayout s_CamDataLayout = BufferLayout({
+        {ShaderDataType::Mat4, "ViewProjection"},
+        {ShaderDataType::Float3, "Position"},
+        {ShaderDataType::Float, "Padding"},
+        {ShaderDataType::Mat4, "Projection"},
+        {ShaderDataType::Mat4, "StaticView"}
+    });
+
     Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
+    Renderer::Uniforms* Renderer::m_Uniforms = new Renderer::Uniforms;
 
     void Renderer::BeginScene(Camera* camera) {
         m_SceneData->ViewProjectionMatrix = camera->GetViewProjectionMatrix();
+        m_SceneData->CameraPosition = camera->GetPosition();
+
         m_SceneData->ProjectionMatrix = camera->GetProjectionMatrix();
         m_SceneData->StaticViewMatrix = glm::mat4(glm::mat3(camera->GetViewMatrix()));
 
-        m_SceneData->CameraPosition = camera->GetPosition();
+        if (!m_Uniforms->Camera) {
+            m_Uniforms->Camera = UniformBuffer::Create(s_CamDataLayout.GetStride(), nullptr);
+            m_Uniforms->Camera->SetLayout(s_CamDataLayout);
+        }
+
+        float paddingData = 0.0f;
+        m_Uniforms->Camera->SetSubData(0, glm::value_ptr(m_SceneData->ViewProjectionMatrix));
+        m_Uniforms->Camera->SetSubData(1, glm::value_ptr(m_SceneData->CameraPosition));
+        m_Uniforms->Camera->SetSubData(2, &paddingData);
+        m_Uniforms->Camera->SetSubData(3, glm::value_ptr(m_SceneData->ProjectionMatrix));
+        m_Uniforms->Camera->SetSubData(4, glm::value_ptr(m_SceneData->StaticViewMatrix));
     }
 
     void Renderer::EndScene() {}

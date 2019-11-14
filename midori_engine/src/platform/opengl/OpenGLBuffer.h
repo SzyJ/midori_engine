@@ -46,16 +46,20 @@ namespace midori {
         OpenGLUniformBuffer(uint32_t bytesToAssign, void* data);
         ~OpenGLUniformBuffer();
 
-        virtual void Bind() const override;
+        virtual void Bind(uint32_t bindingBlock = 0) const override;
         virtual void Unbind() const override;
 
+        virtual const BufferLayout& GetLayout() const override { return m_Layout; }
+        virtual void SetLayout(const BufferLayout& bufferLayout) override { m_Layout = bufferLayout; }
+      
         virtual void SetData(void* newData) override;
-        virtual void SetSubData(uint32_t offset, uint32_t dataSize, void* newData) override;
+        virtual void SetSubData(uint32_t index, void* newData) override;
 
         virtual uint32_t GetSize() const override { return m_Size; }
 
     private:
         uint32_t m_UniformBufferID, m_Size;
+        BufferLayout m_Layout;
     };
 
 }

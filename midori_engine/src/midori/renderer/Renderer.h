@@ -38,7 +38,11 @@ namespace midori {
             ref<LightingManager> Lights = nullptr;
         };
 
+        struct Uniforms {
+            ref<UniformBuffer> Camera;
+        };
         static SceneData* m_SceneData;
+        static Uniforms* m_Uniforms;
     };
 
 }
