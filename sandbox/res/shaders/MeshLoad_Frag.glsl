@@ -1,4 +1,4 @@
-#version 330 core
+#version 420 core
 
 layout(location = 0) out vec4 color;
 
@@ -19,7 +19,13 @@ uniform sampler2D u_TextureCrate;
 uniform vec3 u_LightPos;
 uniform vec3 u_LightCol;
 
-uniform vec3 u_CameraPos;
+layout (std140) uniform MVP {
+    mat4 u_ViewProjection;
+    vec3 u_CameraPos;
+    float u_Padding;
+    mat4 u_Projection;
+    mat4 u_StaticView;
+};
 
 void main() {
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);

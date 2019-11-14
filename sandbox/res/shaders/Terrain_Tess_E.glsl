@@ -1,4 +1,4 @@
-#version 400 core
+#version 420 core
 
 layout(quads, cw) in;
 
@@ -11,7 +11,14 @@ out Vertex {
     vec2 e_TexCoord;
 } OUT;
 
-uniform mat4 u_ViewProjection;
+layout (std140) uniform MVP {
+    mat4 u_ViewProjection;
+    vec3 u_CameraPos;
+    float u_Padding;
+    mat4 u_Projection;
+    mat4 u_StaticView;
+};
+
 uniform mat4 u_Transform;
 
 uniform float u_TerrainScale;

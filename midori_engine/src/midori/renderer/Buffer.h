@@ -84,6 +84,8 @@ namespace midori {
         inline uint32_t GetStride() const { return m_Stride; }
         inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
         inline void AddElement(ShaderDataType type, const std::string& name, bool normalized = false) { m_Elements.emplace_back(type, name, normalized); }
+        inline const uint64_t GetIndexOffset(uint32_t index) const { return m_Elements.at(index).Offset; }
+        inline const uint32_t GetIndexSize(uint32_t index) const { return m_Elements.at(index).Size; }
 
         void CalculateOffsetsAndStride() {
             uint32_t offset = 0;
@@ -122,7 +124,6 @@ namespace midori {
         static ref<VertexBuffer> Create(float* vertices, uint32_t size);
     };
 
-
     class IndexBuffer {
     public:
         virtual ~IndexBuffer() = default;
@@ -133,6 +134,24 @@ namespace midori {
         virtual uint32_t GetCount() const = 0;
 
         static ref<IndexBuffer> Create(uint32_t* indices, uint32_t count);
+    };
+
+    class UniformBuffer {
+    public:
+        virtual ~UniformBuffer() = default;
+
+        virtual void Bind(uint32_t bindingBlock) const = 0;
+        virtual void Unbind() const = 0;
+
+        virtual const BufferLayout& GetLayout() const = 0;
+        virtual void SetLayout(const BufferLayout& bufferLayout) = 0;
+
+        virtual void SetData(void* newData) = 0;
+        virtual void SetSubData(uint32_t index, void* newData) = 0;
+
+        virtual uint32_t GetSize() const = 0;
+
+        static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data);
     };
 
 }
