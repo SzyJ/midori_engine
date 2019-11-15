@@ -43,7 +43,10 @@ namespace midori {
             ref<UniformBuffer> PointLights;
         };
 
-        const static BufferLayout s_CamDataLayout;
+        const static BufferLayout c_CamDataLayout;
+
+        static const uint32_t c_CameraDataBindingBlock = 0;
+        static const uint32_t c_PointLightDataBindingBlock = 1;
 
         static SceneData* m_SceneData;
         static Uniforms* m_Uniforms;

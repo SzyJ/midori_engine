@@ -67,7 +67,7 @@ namespace midori {
     // Uniform Buffer //
     ////////////////////
 
-    OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t bytesToAssign, void* data)
+    OpenGLUniformBuffer::OpenGLUniformBuffer(uint32_t bytesToAssign, void* data, uint32_t bindingBlock)
         : m_Size(bytesToAssign) {
 
         glGenBuffers(1, &m_UniformBufferID);
@@ -77,15 +77,16 @@ namespace midori {
         } else {
             glBufferData(GL_UNIFORM_BUFFER, bytesToAssign, NULL, GL_STATIC_DRAW);
         }
+
+        glBindBufferBase(GL_UNIFORM_BUFFER, bindingBlock, m_UniformBufferID);
     }
 
     OpenGLUniformBuffer::~OpenGLUniformBuffer() {
         glDeleteBuffers(1, &m_UniformBufferID);
     }
 
-    void OpenGLUniformBuffer::Bind(uint32_t bindingBlock) const {
+    void OpenGLUniformBuffer::Bind() const {
         glBindBuffer(GL_UNIFORM_BUFFER, m_UniformBufferID);
-        glBindBufferBase(GL_UNIFORM_BUFFER, bindingBlock, m_UniformBufferID);
     }
 
     void OpenGLUniformBuffer::Unbind() const {

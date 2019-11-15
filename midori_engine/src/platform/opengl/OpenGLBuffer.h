@@ -43,10 +43,10 @@ namespace midori {
 
     class OpenGLUniformBuffer : public UniformBuffer {
     public:
-        OpenGLUniformBuffer(uint32_t bytesToAssign, void* data);
+        OpenGLUniformBuffer(uint32_t bytesToAssign, void* data, uint32_t bindingBlock);
         ~OpenGLUniformBuffer();
 
-        virtual void Bind(uint32_t bindingBlock = 0) const override;
+        virtual void Bind() const override;
         virtual void Unbind() const override;
 
         virtual const BufferLayout& GetLayout() const override { return m_Layout; }

@@ -37,10 +37,10 @@ namespace midori {
     }
 
 
-    ref<UniformBuffer> UniformBuffer::Create(uint32_t bytesToAssign, void* data) {
+    ref<UniformBuffer> UniformBuffer::Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
-            return make_ref<OpenGLUniformBuffer>(bytesToAssign, data);
+            return make_ref<OpenGLUniformBuffer>(bytesToAssign, data, bindingBlock);
         case RendererAPI::API::None:
         default:
             break;

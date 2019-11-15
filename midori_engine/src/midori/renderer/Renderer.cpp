@@ -14,7 +14,7 @@ namespace midori {
     Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
     Renderer::Uniforms* Renderer::m_Uniforms = new Renderer::Uniforms;
 
-    const BufferLayout Renderer::s_CamDataLayout = BufferLayout({
+    const BufferLayout Renderer::c_CamDataLayout = BufferLayout({
         {ShaderDataType::Mat4, "ViewProjection"},
         {ShaderDataType::Float3, "Position"},
         {ShaderDataType::Float, "Padding"},
@@ -37,15 +37,14 @@ namespace midori {
 
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform, const Material& material) {
         shader->Bind();
-        const uint32_t cameraDataBindingBlock = 0;
-        m_Uniforms->Camera->Bind(cameraDataBindingBlock);
-        shader->BindUniformBuffer("MVP", cameraDataBindingBlock);
 
-        //if (m_Uniforms->PointLights) {
-        //    const uint32_t pointLightDataBindingBlock = 1;
-        //    m_Uniforms->PointLights->Bind(pointLightDataBindingBlock);
-        //    shader->BindUniformBuffer("PointLight", pointLightDataBindingBlock);
-        //}
+        m_Uniforms->Camera->Bind();
+        shader->BindUniformBuffer("MVP", c_CameraDataBindingBlock);
+
+        if (m_Uniforms->PointLights) {
+            m_Uniforms->PointLights->Bind();
+            shader->BindUniformBuffer("PointLight", c_PointLightDataBindingBlock);
+        }
 
         shader->UploadUniformMat4("u_Transform", transform);
 
@@ -80,9 +79,11 @@ namespace midori {
 
     void Renderer::PopulateCameraUniforms() {
         if (!m_Uniforms->Camera) {
-            m_Uniforms->Camera = UniformBuffer::Create(s_CamDataLayout.GetStride(), nullptr);
-            m_Uniforms->Camera->SetLayout(s_CamDataLayout);
+            m_Uniforms->Camera = UniformBuffer::Create(c_CamDataLayout.GetStride(), nullptr, c_CameraDataBindingBlock);
+            m_Uniforms->Camera->SetLayout(c_CamDataLayout);
         }
+
+        m_Uniforms->Camera->Bind();
 
         float paddingData = 0.0f;
         m_Uniforms->Camera->SetSubData(0, glm::value_ptr(m_SceneData->ViewProjectionMatrix));
@@ -99,9 +100,11 @@ namespace midori {
 
         if (!m_Uniforms->PointLights) {
             BufferLayout layout = PointLight::GetBufferLayout();
-            m_Uniforms->PointLights = UniformBuffer::Create(layout.GetStride(), nullptr);
+            m_Uniforms->PointLights = UniformBuffer::Create(layout.GetStride(), nullptr, c_PointLightDataBindingBlock);
             m_Uniforms->PointLights->SetLayout(layout);
         }
+
+        m_Uniforms->PointLights->Bind();
 
         float paddingData = 0.0f;
         m_Uniforms->PointLights->SetSubData(0, glm::value_ptr(m_SceneData->Lights->GetPointLights().at(0)->Color));
@@ -115,6 +118,5 @@ namespace midori {
         m_Uniforms->PointLights->SetSubData(6, &m_SceneData->Lights->GetPointLights().at(0)->LinearAttenuation);
         m_Uniforms->PointLights->SetSubData(7, &m_SceneData->Lights->GetPointLights().at(0)->QuadraticAttenuation);
     }
-
 
 }

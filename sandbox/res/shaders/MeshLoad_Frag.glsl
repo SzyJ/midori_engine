@@ -17,7 +17,7 @@ uniform Material u_Material;
 
 uniform sampler2D u_TextureCrate;
 
-layout (std140) uniform MVP {
+layout (std140, binding = 0) uniform MVP {
     mat4 u_ViewProjection;
     vec3 u_CameraPos;
     float u_Padding;
@@ -25,7 +25,8 @@ layout (std140) uniform MVP {
     mat4 u_StaticView;
 };
 
-layout (std140) uniform SpotLights {
+
+layout (std140, binding = 1) uniform SpotLights {
     vec3 u_LightCol;
     float u_Padding0;
 
@@ -54,5 +55,6 @@ void main() {
     vec3 specular = u_LightCol * (spec * u_Material.specular);
 
     vec3 result = (0.5f + diffuse + specular) * baseColor.xyz;
-    color = vec4(u_LightPos, 1.0);
+    //color = vec4(u_ViewProjection[0][0], u_ViewProjection[0][1], u_ViewProjection[0][2], 1.0);
+    color = vec4(result, 1.0);
 }

@@ -140,7 +140,7 @@ namespace midori {
     public:
         virtual ~UniformBuffer() = default;
 
-        virtual void Bind(uint32_t bindingBlock) const = 0;
+        virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
 
         virtual const BufferLayout& GetLayout() const = 0;
@@ -151,7 +151,7 @@ namespace midori {
 
         virtual uint32_t GetSize() const = 0;
 
-        static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data);
+        static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock = 0);
     };
 
 }

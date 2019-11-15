@@ -77,7 +77,6 @@ namespace midori {
         glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
-
     bool OpenGLShader::CompileShader(const GLuint shaderID, std::string_view& shaderSrc) {
         GLint compileSuccess;
 
