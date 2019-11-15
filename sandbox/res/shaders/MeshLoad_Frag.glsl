@@ -25,7 +25,6 @@ layout (std140, binding = 0) uniform MVP {
     mat4 u_StaticView;
 };
 
-
 layout (std140, binding = 1) uniform SpotLights {
     vec3 u_LightCol;
     float u_Padding0;
@@ -39,8 +38,19 @@ layout (std140, binding = 1) uniform SpotLights {
     float u_QuadraticAttenuation;
 };
 
+float GetAttenuation(float dist, float constant, float linear, float quadratic);
+
 void main() {
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
+
+    float distanceToLight = length(u_LightPos - v_Position);
+
+    if (distanceToLight > u_Distance) {
+        color = baseColor
+        return;
+    }
+
+    float attenuation = GetAttenuation(distanceToLight, u_ConstAttenuation, u_LinearAttenuation, u_QuadraticAttenuation);
 
     // Diffuse
     vec3 norm = normalize(v_Normal);
@@ -54,7 +64,16 @@ void main() {
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32);
     vec3 specular = u_LightCol * (spec * u_Material.specular);
 
+    // Attenuation
+    diffuse *= attenuation;
+    specular *= attenuation;
+
+    // Apply
     vec3 result = (0.5f + diffuse + specular) * baseColor.xyz;
-    //color = vec4(u_ViewProjection[0][0], u_ViewProjection[0][1], u_ViewProjection[0][2], 1.0);
-    color = vec4(result, 1.0);
+    color = vec4(result, 1.0f);
+}
+
+float GetAttenuation(float dist, float constant, float linear, float quadratic) {
+    float denom = constant + (linear * dist) + (quadratic * dist * dist);
+    return 1.0f / denom;
 }
