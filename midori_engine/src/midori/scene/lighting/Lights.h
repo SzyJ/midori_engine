@@ -97,7 +97,7 @@ namespace midori {
                 {ShaderDataType::Float, "OuterCutoff"},
 
                 {ShaderDataType::Float3, "Direction"},
-                {ShaderDataType::Float, "Padding0"},
+                {ShaderDataType::Float, "Padding0"}
                 });
         }
         glm::vec3 Position;

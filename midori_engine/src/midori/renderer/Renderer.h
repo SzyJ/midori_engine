@@ -40,7 +40,7 @@ namespace midori {
 
         struct Uniforms {
             ref<UniformBuffer> Camera;
-            ref<UniformBuffer> PointLights;
+            ref<UniformBuffer> AllLights;
         };
 
         const static BufferLayout c_CamDataLayout;

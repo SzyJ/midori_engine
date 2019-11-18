@@ -7,14 +7,26 @@
 #pragma once
 
 #include "midori/scene/lighting/Lights.h"
+#include "midori/renderer/Buffer.h"
 
-#include <glm/glm.hpp>
 #include <vector>
 
 namespace midori {
 
     class LightingManager {
     public:
+        static inline const BufferLayout c_LightDataLayout = BufferLayout({
+            {ShaderDataType::Float3, "AmbientColor"},
+            {ShaderDataType::Float, "AmbientStrength"},
+
+            {ShaderDataType::Int, "PointLightCount"},
+            {ShaderDataType::Int, "DirectionalLightCount"},
+            {ShaderDataType::Int, "SpotLightCount"},
+            {ShaderDataType::Float, "Padding0"}
+        });
+        glm::vec3 AmbientColor = glm::vec3(1.0f, 1.0f, 1.0f);
+        float AmbientStrength = 0.5f;
+
         LightingManager() = default;
         ~LightingManager() = default;
 
@@ -25,6 +37,8 @@ namespace midori {
         const std::vector<ref<DirectionalLight>>& GetDirectionalLights() { return m_DirectionalLight; }
 
     private:
+
+
         std::vector<ref<PointLight>> m_PointLights;
         std::vector<ref<DirectionalLight>> m_DirectionalLight;
     };

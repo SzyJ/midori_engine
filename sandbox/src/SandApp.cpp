@@ -34,7 +34,7 @@ public:
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_Helicopter->SetMaterial(midori::Material::Chrome());
+        m_Helicopter->SetMaterial(midori::Material::Silver());
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
@@ -82,10 +82,13 @@ public:
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
-        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+        m_CenterLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
+        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(-10.0f, 1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        m_SceneLight1 = midori::make_ref<midori::PointLight>(glm::vec3(10.0f, 1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 
         m_LightManager = midori::make_ref<midori::LightingManager>();
         m_LightManager->AddPointLight(m_SceneLight);
+        m_LightManager->AddPointLight(m_SceneLight1);
 
         m_TestScene.SetLightManager(m_LightManager);
 
@@ -172,8 +175,9 @@ private:
     midori::DeltaTime m_DeltaAverage = 0.0f;
 
     midori::ref<midori::LightingManager> m_LightManager;
+    midori::ref<midori::PointLight> m_CenterLight;
     midori::ref<midori::PointLight> m_SceneLight;
-
+    midori::ref<midori::PointLight> m_SceneLight1;
 
     midori::ref<midori::Shader> m_MeshLoadShader;
     

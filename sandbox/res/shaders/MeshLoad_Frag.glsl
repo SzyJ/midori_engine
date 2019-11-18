@@ -53,41 +53,67 @@ layout (std140, binding = 0) uniform MVP {
 };
 
 layout (std140, binding = 1) uniform Lights {
-    PointLight u_PointLights[];
+    vec3 u_AmbientColor;
+    float u_AmbientStrength;
+
+    uint u_PointLightCount;
+    uint u_DirectionalLightCount;
+    uint u_SpotLightCount;
+    float u_Padding0;
+
+    PointLight u_PointLights[70];
+    DirectionalLight u_DirectionalLights[10];
+    SpotLight u_SpotLights[10];
 };
+
+vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir);
+vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
 void main() {
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
+    
+    vec3 diffuse = vec3(0.0f);
+    vec3 specular = vec3(0.0f);
 
-    float distanceToLight = length(u_PointLights[0].Position - v_Position);
-    float attenuationCutoff = 0.013f;
-    float attenuation = GetAttenuation(distanceToLight, 1.0f, u_PointLights[0].LinearAttenuation, u_PointLights[0].QuadraticAttenuation);
-    if (attenuation < attenuationCutoff) {
-        color = baseColor;
-        return;
+    for (int i = 0; i < u_PointLightCount; ++i) {
+        float distanceToLight = length(u_PointLights[i].Position - v_Position);
+        float attenuationCutoff = 0.013f;
+        float attenuation = GetAttenuation(distanceToLight, 1.0f, u_PointLights[i].LinearAttenuation, u_PointLights[i].QuadraticAttenuation);
+
+        if (attenuation > attenuationCutoff) {
+            vec3 lightDir = normalize(u_PointLights[i].Position - v_Position);
+
+            diffuse += attenuation * CalculateDiffuse(u_PointLights[i].Color, lightDir);
+            specular += attenuation * CalculateSpecular(u_PointLights[i].Color, lightDir);
+        } else {
+            diffuse = vec3(0.0f, 0.0f, 0.0f);
+            specular = vec3(0.0f, 0.0f, 0.0f);
+        }
     }
+    
 
-    // Diffuse
+    vec3 ambient = u_AmbientColor * u_AmbientStrength;
+
+    vec3 result = (ambient + diffuse + specular) * baseColor.xyz;
+    color = vec4(result, 1.0f);
+}
+
+
+vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir) {
     vec3 norm = normalize(v_Normal);
-    vec3 lightDir = normalize(u_PointLights[0].Position - v_Position);
     float diff = max(dot(norm, lightDir), 0.0f);
-    vec3 diffuse = u_PointLights[0].Color * (diff * u_Material.diffuse);
+    return lightCol * (diff * u_Material.diffuse);
+}
 
-    // Specular
+vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir) {
+    vec3 norm = normalize(v_Normal);
+
     vec3 viewDir = normalize(u_CameraPos - v_Position);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32);
-    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular);
-
-    // Attenuation
-    diffuse *= attenuation;
-    specular *= attenuation;
-
-    // Apply
-    vec3 result = (0.5f + diffuse + specular) * baseColor.xyz;
-    color = vec4(diffuse, 1.0f);
+    return lightCol * (spec * u_Material.specular);
 }
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic) {
