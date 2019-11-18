@@ -13,6 +13,33 @@ struct Material {
     float shininess;
 };
 
+struct PointLight {
+    vec3 Color;
+    float LinearAttenuation;
+
+    vec3 Position;
+    float QuadraticAttenuation;
+};
+
+struct DirectionalLight {
+    vec3 Color;
+    float Padding0;
+
+    vec3 Direction;
+    float Padding1;
+};
+
+struct SpotLight {
+    vec3 Color;
+    float InnerCutoff;
+
+    vec3 Position;
+    float OuterCutoff;
+
+    vec3 Direction;
+    float Padding0;
+};
+
 uniform Material u_Material;
 
 uniform sampler2D u_TextureCrate;
@@ -25,17 +52,8 @@ layout (std140, binding = 0) uniform MVP {
     mat4 u_StaticView;
 };
 
-layout (std140, binding = 1) uniform SpotLights {
-    vec3 u_LightCol;
-    float u_Padding0;
-
-    vec3 u_LightPos;
-    float u_Padding1;
-
-    float u_Distance;
-    float u_ConstAttenuation;
-    float u_LinearAttenuation;
-    float u_QuadraticAttenuation;
+layout (std140, binding = 1) uniform Lights {
+    PointLight u_PointLights[];
 };
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
@@ -43,26 +61,25 @@ float GetAttenuation(float dist, float constant, float linear, float quadratic);
 void main() {
     vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
 
-    float distanceToLight = length(u_LightPos - v_Position);
-
-    if (distanceToLight > u_Distance) {
-        color = baseColor
+    float distanceToLight = length(u_PointLights[0].Position - v_Position);
+    float attenuationCutoff = 0.013f;
+    float attenuation = GetAttenuation(distanceToLight, 1.0f, u_PointLights[0].LinearAttenuation, u_PointLights[0].QuadraticAttenuation);
+    if (attenuation < attenuationCutoff) {
+        color = baseColor;
         return;
     }
 
-    float attenuation = GetAttenuation(distanceToLight, u_ConstAttenuation, u_LinearAttenuation, u_QuadraticAttenuation);
-
     // Diffuse
     vec3 norm = normalize(v_Normal);
-    vec3 lightDir = normalize(u_LightPos - v_Position);
+    vec3 lightDir = normalize(u_PointLights[0].Position - v_Position);
     float diff = max(dot(norm, lightDir), 0.0f);
-    vec3 diffuse = u_LightCol * (diff * u_Material.diffuse);
+    vec3 diffuse = u_PointLights[0].Color * (diff * u_Material.diffuse);
 
     // Specular
     vec3 viewDir = normalize(u_CameraPos - v_Position);
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32);
-    vec3 specular = u_LightCol * (spec * u_Material.specular);
+    vec3 specular = u_PointLights[0].Color * (spec * u_Material.specular);
 
     // Attenuation
     diffuse *= attenuation;
@@ -70,7 +87,7 @@ void main() {
 
     // Apply
     vec3 result = (0.5f + diffuse + specular) * baseColor.xyz;
-    color = vec4(result, 1.0f);
+    color = vec4(diffuse, 1.0f);
 }
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic) {

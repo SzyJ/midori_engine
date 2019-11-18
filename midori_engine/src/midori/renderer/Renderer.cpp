@@ -43,7 +43,7 @@ namespace midori {
 
         if (m_Uniforms->PointLights) {
             m_Uniforms->PointLights->Bind();
-            shader->BindUniformBuffer("PointLight", c_PointLightDataBindingBlock);
+            shader->BindUniformBuffer("Lights", c_PointLightDataBindingBlock);
         }
 
         shader->UploadUniformMat4("u_Transform", transform);
@@ -108,15 +108,10 @@ namespace midori {
 
         float paddingData = 0.0f;
         m_Uniforms->PointLights->SetSubData(0, glm::value_ptr(m_SceneData->Lights->GetPointLights().at(0)->Color));
-        m_Uniforms->PointLights->SetSubData(1, &paddingData);
+        m_Uniforms->PointLights->SetSubData(1, &m_SceneData->Lights->GetPointLights().at(0)->LinearAttenuation);
 
         m_Uniforms->PointLights->SetSubData(2, glm::value_ptr(m_SceneData->Lights->GetPointLights().at(0)->Position));
-        m_Uniforms->PointLights->SetSubData(3, &paddingData);
-
-        m_Uniforms->PointLights->SetSubData(4, &m_SceneData->Lights->GetPointLights().at(0)->Distance);
-        m_Uniforms->PointLights->SetSubData(5, &m_SceneData->Lights->GetPointLights().at(0)->ConstantAttenuation);
-        m_Uniforms->PointLights->SetSubData(6, &m_SceneData->Lights->GetPointLights().at(0)->LinearAttenuation);
-        m_Uniforms->PointLights->SetSubData(7, &m_SceneData->Lights->GetPointLights().at(0)->QuadraticAttenuation);
+        m_Uniforms->PointLights->SetSubData(3, &m_SceneData->Lights->GetPointLights().at(0)->QuadraticAttenuation);
     }
 
 }

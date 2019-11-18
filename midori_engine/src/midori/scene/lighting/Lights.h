@@ -42,14 +42,9 @@ namespace midori {
         static inline BufferLayout GetBufferLayout() {
             return BufferLayout({
                 {ShaderDataType::Float3, "Color"},
-                {ShaderDataType::Float, "Padding0"},
+                {ShaderDataType::Float, "LinearAttenuation"},
 
                 {ShaderDataType::Float3, "Position"},
-                {ShaderDataType::Float, "Padding1"},
-
-                {ShaderDataType::Float, "Distance"},
-                {ShaderDataType::Float, "ConstAttenuation"},
-                {ShaderDataType::Float, "LinearAttenuation"},
                 {ShaderDataType::Float, "QuadraticAttenuation"}
             });
         }
@@ -76,11 +71,6 @@ namespace midori {
 
                 {ShaderDataType::Float3, "Direction"},
                 {ShaderDataType::Float, "Padding1"},
-
-                {ShaderDataType::Float, "Distance"},
-                {ShaderDataType::Float, "ConstAttenuation"},
-                {ShaderDataType::Float, "LinearAttenuation"},
-                {ShaderDataType::Float, "QuadraticAttenuation"}
                 });
         }
 
@@ -100,7 +90,14 @@ namespace midori {
         ~SpotLight() = default;
         static inline BufferLayout GetBufferLayout() {
             return BufferLayout({
-                // TODO
+                {ShaderDataType::Float3, "Color"},
+                {ShaderDataType::Float, "InnerCutoff"},
+
+                {ShaderDataType::Float3, "Position"},
+                {ShaderDataType::Float, "OuterCutoff"},
+
+                {ShaderDataType::Float3, "Direction"},
+                {ShaderDataType::Float, "Padding0"},
                 });
         }
         glm::vec3 Position;

@@ -11,7 +11,7 @@ out Vertex {
     vec2 e_TexCoord;
 } OUT;
 
-layout (std140) uniform MVP {
+layout (std140, binding = 0) uniform MVP {
     mat4 u_ViewProjection;
     vec3 u_CameraPos;
     float u_Padding;

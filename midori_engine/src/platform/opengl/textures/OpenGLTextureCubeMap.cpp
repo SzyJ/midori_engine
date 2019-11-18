@@ -50,7 +50,6 @@ namespace midori {
         std::strcpy(thisPath, path.c_str());
         char* const extPtr = thisPath + path.length();
 
-        stbi_set_flip_vertically_on_load(1);
         BindTextureData(thisPath, extPtr, MD_CM_RIGHT_EXT, GL_TEXTURE_CUBE_MAP_POSITIVE_X);
         BindTextureData(thisPath, extPtr, MD_CM_LEFT_EXT, GL_TEXTURE_CUBE_MAP_NEGATIVE_X);
         BindTextureData(thisPath, extPtr, MD_CM_UP_EXT, GL_TEXTURE_CUBE_MAP_NEGATIVE_Y);

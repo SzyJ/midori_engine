@@ -82,7 +82,7 @@ public:
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
-        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        m_SceneLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
 
         m_LightManager = midori::make_ref<midori::LightingManager>();
         m_LightManager->AddPointLight(m_SceneLight);
