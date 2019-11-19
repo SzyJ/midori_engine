@@ -7,10 +7,10 @@ in vec3 v_Normal;
 in vec2 v_TexCoord;
 
 struct Material {
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-    float shininess;
+    vec3 Ambient;
+    vec3 Diffuse;
+    vec3 Specular;
+    float Shininess;
 };
 
 struct PointLight {
@@ -87,12 +87,8 @@ void main() {
 
             diffuse += attenuation * CalculateDiffuse(u_PointLights[i].Color, lightDir);
             specular += attenuation * CalculateSpecular(u_PointLights[i].Color, lightDir);
-        } else {
-            diffuse = vec3(0.0f, 0.0f, 0.0f);
-            specular = vec3(0.0f, 0.0f, 0.0f);
         }
     }
-    
 
     vec3 ambient = u_AmbientColor * u_AmbientStrength;
 
@@ -104,7 +100,7 @@ void main() {
 vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir) {
     vec3 norm = normalize(v_Normal);
     float diff = max(dot(norm, lightDir), 0.0f);
-    return lightCol * (diff * u_Material.diffuse);
+    return lightCol * (diff * u_Material.Diffuse);
 }
 
 vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir) {
@@ -112,8 +108,8 @@ vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir) {
 
     vec3 viewDir = normalize(u_CameraPos - v_Position);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32);
-    return lightCol * (spec * u_Material.specular);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.Shininess);
+    return lightCol * (spec * u_Material.Specular);
 }
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic) {

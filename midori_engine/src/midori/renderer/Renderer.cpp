@@ -57,10 +57,10 @@ namespace midori {
         //    shader->UploadUniformFloat3("u_LightCol", m_SceneData->Lights->GetPointLights().at(0)->Color);
         //}
 
-        shader->UploadUniformFloat3("u_Material.ambient", material.ambient);
-        shader->UploadUniformFloat3("u_Material.diffuse", material.diffuse);
-        shader->UploadUniformFloat3("u_Material.specular", material.specular);
-        shader->UploadUniformFloat("u_Material.shininess", material.shininess);
+        shader->UploadUniformFloat3("u_Material.Ambient", material.ambient);
+        shader->UploadUniformFloat3("u_Material.Diffuse", material.diffuse);
+        shader->UploadUniformFloat3("u_Material.Specular", material.specular);
+        shader->UploadUniformFloat("u_Material.Shininess", material.shininess);
 
         vertexArray->Bind();
 

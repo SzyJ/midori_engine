@@ -17,8 +17,8 @@ namespace midori {
         glm::vec3 Color;
         float Distance = 7.0f;
         float ConstantAttenuation = 1.0f;
-        float LinearAttenuation = 0.09f;
-        float QuadraticAttenuation = 0.032f;
+        float LinearAttenuation = 0.045f;
+        float QuadraticAttenuation = 0.0075f;
 
     protected:
         Light(const glm::vec3& color)
