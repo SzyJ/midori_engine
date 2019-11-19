@@ -28,6 +28,41 @@ public:
         m_MeshLoadShader->Bind();
         m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
 
+
+        unsigned int indexBuffer[6] = {
+            0, 1, 2, 1, 2, 3
+        };
+        auto groundIB = midori::IndexBuffer::Create(indexBuffer, 6);
+
+
+
+        const int bufferSize = 4 * (3 + 3 + 2);
+        float vertexBuffer[bufferSize]{
+            -1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
+            -1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+             1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+             1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f
+        };
+        midori::ref<midori::VertexBuffer> groundVB = midori::VertexBuffer::Create(vertexBuffer, bufferSize);
+        groundVB->SetLayout({
+            {midori::ShaderDataType::Float3, "a_Position"},
+            {midori::ShaderDataType::Float3, "a_Normal"},
+            {midori::ShaderDataType::Float2, "a_TexCoord"}
+            });
+
+        auto groundVA = midori::VertexArray::Create();
+        groundVA->AddVertexBuffer(groundVB);
+        groundVA->SetIndexBuffer(groundIB);
+
+        auto ground = midori::make_ref<midori::SceneObject>();
+        ground->SetShader(m_MeshLoadShader);
+        ground->SetVertexArray(groundVA);
+        ground->SetPosition(glm::vec3(0.0f, -3.0f, 0.0f));
+        ground->SetScale(75.0f);
+        ground->SetMaterial(midori::Material::Chrome());
+
+        m_TestScene.AddOpaqueObject(ground);
+
         m_Helicopter = midori::make_ref<midori::SceneObject>();
         m_Helicopter->SetShader(m_MeshLoadShader);
         m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
@@ -38,47 +73,49 @@ public:
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
-        m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
-        m_TerrainHeightMap->Bind(TEXTURE_TERRAIN_HEIGHTMAP_ID);
-        m_TerrainColourMap = midori::Texture2D::Create(TEXTURE_TERRAIN_COLORMAP);
-        m_TerrainColourMap->Bind(TEXTURE_TERRAIN_COLORMAP_ID);
+        //m_TerrainHeightMap = midori::Texture2D::Create(TEXTURE_TERRAIN_HEIGHTMAP);
+        //m_TerrainHeightMap->Bind(TEXTURE_TERRAIN_HEIGHTMAP_ID);
+        //m_TerrainColourMap = midori::Texture2D::Create(TEXTURE_TERRAIN_COLORMAP);
+        //m_TerrainColourMap->Bind(TEXTURE_TERRAIN_COLORMAP_ID);
 
-        uint8_t shaders =
-            (uint8_t) midori::ShaderProgramType::vertex |
-            (uint8_t) midori::ShaderProgramType::fragment |
-            (uint8_t) midori::ShaderProgramType::tessellation;
-        m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN, shaders);
-        m_TerrainShader->Bind();
-        m_TerrainShader->UploadUniformFloat("u_TerrainScale", CONF_TERRAIN_SCALE);
-        m_TerrainShader->UploadUniformInt("u_DepthMap", TEXTURE_TERRAIN_HEIGHTMAP_ID);
-        m_TerrainShader->UploadUniformInt("u_ColourMap", TEXTURE_TERRAIN_COLORMAP_ID);
+        //uint8_t shaders =
+        //    (uint8_t) midori::ShaderProgramType::vertex |
+        //    (uint8_t) midori::ShaderProgramType::fragment |
+        //    (uint8_t) midori::ShaderProgramType::tessellation;
+        //m_TerrainShader = midori::Shader::Load(SHADER_TERRAIN, shaders);
+        //m_TerrainShader->Bind();
+        //m_TerrainShader->UploadUniformFloat("u_TerrainScale", CONF_TERRAIN_SCALE);
+        //m_TerrainShader->UploadUniformInt("u_DepthMap", TEXTURE_TERRAIN_HEIGHTMAP_ID);
+        //m_TerrainShader->UploadUniformInt("u_ColourMap", TEXTURE_TERRAIN_COLORMAP_ID);
 
-        m_TerrainModel = midori::VertexArray::Create();
+        //m_TerrainModel = midori::VertexArray::Create();
 
-        const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
-        const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
-        const float terrainHeight = -50.0f;
+        //const float halfWidth = CONF_TERRAIN_WIDTH * 0.5f;
+        //const float halfLength = CONF_TERRAIN_LENGTH * 0.5f;
+        //const float terrainHeight = -50.0f;
 
-        const unsigned int Quad_Index_Count = 4;
-        float terrainPlane[Quad_Index_Count * (3 + 2)] = {
-            -halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f,
-            -halfWidth, terrainHeight,  halfLength,   0.0f, 0.0f,
-             halfWidth, terrainHeight, -halfLength,   1.0f, 1.0f,
-             halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f
-        };
+        //const unsigned int Quad_Index_Count = 4;
+        //float terrainPlane[Quad_Index_Count * (3 + 2)] = {
+        //    -halfWidth, terrainHeight, -halfLength,   0.0f, 1.0f,
+        //    -halfWidth, terrainHeight,  halfLength,   0.0f, 0.0f,
+        //     halfWidth, terrainHeight, -halfLength,   1.0f, 1.0f,
+        //     halfWidth, terrainHeight,  halfLength,   1.0f, 0.0f
+        //};
 
-        midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, Quad_Index_Count * (3 + 2));
-        terrainVB->SetLayout({
-            {midori::ShaderDataType::Float3, "a_Position"},
-            {midori::ShaderDataType::Float2, "a_TexCoord"}
-        });
-        m_TerrainModel->AddVertexBuffer(terrainVB);
+        //midori::ref<midori::VertexBuffer> terrainVB = midori::VertexBuffer::Create(terrainPlane, Quad_Index_Count * (3 + 2));
+        //terrainVB->SetLayout({
+        //    {midori::ShaderDataType::Float3, "a_Position"},
+        //    {midori::ShaderDataType::Float2, "a_TexCoord"}
+        //});
+        //m_TerrainModel->AddVertexBuffer(terrainVB);
 
-        auto terrainObject = midori::make_ref<midori::SceneObject>();
-        terrainObject->SetShader(m_TerrainShader);
-        terrainObject->SetVertexArray(m_TerrainModel);
-        terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
-        m_TestScene.AddOpaqueObject(terrainObject);
+        //auto terrainObject = midori::make_ref<midori::SceneObject>();
+        //terrainObject->SetShader(m_TerrainShader);
+        //terrainObject->SetVertexArray(m_TerrainModel);
+        //terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
+        //m_TestScene.AddOpaqueObject(terrainObject);
+
+        
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 

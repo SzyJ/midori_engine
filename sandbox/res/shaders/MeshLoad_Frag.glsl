@@ -77,6 +77,7 @@ void main() {
     vec3 diffuse = vec3(0.0f);
     vec3 specular = vec3(0.0f);
 
+    // Point Lights
     for (int i = 0; i < u_PointLightCount; ++i) {
         float distanceToLight = length(u_PointLights[i].Position - v_Position);
         float attenuationCutoff = 0.013f;
@@ -90,6 +91,7 @@ void main() {
         }
     }
 
+    // Directional Lights
     for (int i = 0; i < u_DirectionalLightCount; ++i) {
         diffuse += u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
         specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
