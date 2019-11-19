@@ -125,11 +125,15 @@ vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir) {
 }
 
 vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir) {
-    vec3 norm = normalize(v_Normal);
-
+    vec3 norm = normalize(-v_Normal);
     vec3 viewDir = normalize(u_CameraPos - v_Position);
-    vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.Shininess);
+
+    vec3 halfWayDir = normalize(lightDir + viewDir);
+
+    float spec = pow(max(dot(norm, halfWayDir), 0.0f), u_Material.Shininess);
+
+    //vec3 reflectDir = reflect(-lightDir, norm);
+    //float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.Shininess);
     return lightCol * (spec * u_Material.Specular);
 }
 
