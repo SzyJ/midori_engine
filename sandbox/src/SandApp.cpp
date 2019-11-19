@@ -57,7 +57,7 @@ public:
         ground->SetVertexArray(groundVA);
         ground->SetPosition(glm::vec3(0.0f, -3.0f, 0.0f));
         ground->SetScale(75.0f);
-        ground->SetMaterial(midori::Material::Chrome());
+        ground->SetMaterial(midori::Material::WhiteRubber());
 
         m_TestScene.AddOpaqueObject(ground);
 
@@ -67,7 +67,7 @@ public:
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_Helicopter->SetMaterial(midori::Material::Chrome());
+        m_Helicopter->SetMaterial(midori::Material::Silver());
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 

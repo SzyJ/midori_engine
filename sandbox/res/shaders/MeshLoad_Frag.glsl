@@ -114,6 +114,10 @@ void main() {
     vec3 ambient = u_AmbientColor * u_AmbientStrength;
 
     vec3 result = (ambient + diffuse + specular) * baseColor.xyz;
+
+    float gamma = 2.2f;
+    
+    result = pow(result, vec3(gamma));
     color = vec4(result, 1.0f);
 }
 
