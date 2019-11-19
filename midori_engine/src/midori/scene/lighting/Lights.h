@@ -67,14 +67,15 @@ namespace midori {
         static inline BufferLayout GetBufferLayout() {
             return BufferLayout({
                 {ShaderDataType::Float3, "Color"},
-                {ShaderDataType::Float, "Padding0"},
+                {ShaderDataType::Float, "Strength"},
 
                 {ShaderDataType::Float3, "Direction"},
-                {ShaderDataType::Float, "Padding1"},
+                {ShaderDataType::Float, "Padding0"},
                 });
         }
 
         glm::vec3 Direction;
+        float Strength = 0.25f;
     };
 
     struct SpotLight : public Light {

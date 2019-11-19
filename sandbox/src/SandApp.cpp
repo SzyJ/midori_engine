@@ -34,7 +34,7 @@ public:
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
         m_Helicopter->SetRotation(glm::vec3(-0.2f, 0.8f, 0.35f));
-        m_Helicopter->SetMaterial(midori::Material::Silver());
+        m_Helicopter->SetMaterial(midori::Material::Chrome());
 
         m_TestScene.AddOpaqueObject(m_Helicopter);
 
@@ -89,6 +89,8 @@ public:
         m_LightManager = midori::make_ref<midori::LightingManager>();
         m_LightManager->AddPointLight(m_SceneLight);
         m_LightManager->AddPointLight(m_SceneLight1);
+
+        m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
 
         m_TestScene.SetLightManager(m_LightManager);
 

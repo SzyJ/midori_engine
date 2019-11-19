@@ -23,10 +23,10 @@ struct PointLight {
 
 struct DirectionalLight {
     vec3 Color;
-    float Padding0;
+    float Strength;
 
     vec3 Direction;
-    float Padding1;
+    float Padding0;
 };
 
 struct SpotLight {
@@ -72,8 +72,8 @@ vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
 void main() {
-    vec4 baseColor = vec4(vec3(1.0f, 1.0f, 1.0f), 1.0f);
-    
+    vec4 baseColor = vec4(vec3(0.4f, 0.4f, 0.4f), 1.0f);
+
     vec3 diffuse = vec3(0.0f);
     vec3 specular = vec3(0.0f);
 
@@ -88,6 +88,11 @@ void main() {
             diffuse += attenuation * CalculateDiffuse(u_PointLights[i].Color, lightDir);
             specular += attenuation * CalculateSpecular(u_PointLights[i].Color, lightDir);
         }
+    }
+
+    for (int i = 0; i < u_DirectionalLightCount; ++i) {
+        diffuse += u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
+        specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }
 
     vec3 ambient = u_AmbientColor * u_AmbientStrength;

@@ -171,7 +171,7 @@ namespace midori {
         for (uint32_t dirLightStepper = 0; dirLightStepper < MD_MAX_DIR_LIGHTS; ++dirLightStepper) {
             if (dirLightStepper < dirLightCount) {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetDirectionalLights().at(dirLightStepper)->Color));
-                m_Uniforms->AllLights->SetSubData(elementIndex++, &(paddingData));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetDirectionalLights().at(dirLightStepper)->Strength));
 
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetDirectionalLights().at(dirLightStepper)->Direction));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(paddingData));
