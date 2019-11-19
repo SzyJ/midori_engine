@@ -145,7 +145,7 @@ namespace midori {
         m_Uniforms->AllLights->SetSubData(elementIndex++, &pointLightCount);
         dirLightCount = static_cast<uint32_t>(m_SceneData->Lights->GetDirectionalLights().size());
         m_Uniforms->AllLights->SetSubData(elementIndex++, &dirLightCount);
-        spotLightCount = static_cast<uint32_t>(0);
+        spotLightCount = static_cast<uint32_t>(m_SceneData->Lights->GetSpotLights().size());
         m_Uniforms->AllLights->SetSubData(elementIndex++, &spotLightCount);
 
         m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
@@ -175,8 +175,7 @@ namespace midori {
 
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetDirectionalLights().at(dirLightStepper)->Direction));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(paddingData));
-            }
-            else {
+            } else {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
 
@@ -186,14 +185,25 @@ namespace midori {
         }
 
         for (int spotLightStepper = 0; spotLightStepper < MD_MAX_SPOT_LIGHTS; ++spotLightStepper) {
-            m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
-            m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+            if (spotLightStepper < spotLightCount) {
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Color));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->InnerCutoff));
 
-            m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
-            m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Position));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->OuterCutoff));
 
-            m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
-            m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Direction));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+            } else {
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+
+                m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+            }
         }
     }
 

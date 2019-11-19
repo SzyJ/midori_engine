@@ -33,14 +33,16 @@ namespace midori {
         void AddPointLight(const ref<PointLight>& newLight) { m_PointLights.push_back(newLight); }
         const std::vector<ref<PointLight>>& GetPointLights() { return m_PointLights; }
 
-        void AddDirectionalLight(const ref<DirectionalLight>& newLight) { m_DirectionalLight.push_back(newLight); }
-        const std::vector<ref<DirectionalLight>>& GetDirectionalLights() { return m_DirectionalLight; }
+        void AddDirectionalLight(const ref<DirectionalLight>& newLight) { m_DirectionalLights.push_back(newLight); }
+        const std::vector<ref<DirectionalLight>>& GetDirectionalLights() { return m_DirectionalLights; }
+
+        void AddSpotLight(const ref<SpotLight>& newLight) { m_SpotLights.push_back(newLight); }
+        const std::vector<ref<SpotLight>>& GetSpotLights() { return m_SpotLights; }
 
     private:
-
-
         std::vector<ref<PointLight>> m_PointLights;
-        std::vector<ref<DirectionalLight>> m_DirectionalLight;
+        std::vector<ref<DirectionalLight>> m_DirectionalLights;
+        std::vector<ref<SpotLight>> m_SpotLights;
     };
 
 }

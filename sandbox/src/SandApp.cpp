@@ -34,14 +34,12 @@ public:
         };
         auto groundIB = midori::IndexBuffer::Create(indexBuffer, 6);
 
-
-
         const int bufferSize = 4 * (3 + 3 + 2);
         float vertexBuffer[bufferSize]{
-            -1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
-            -1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f,
-             1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
-             1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f
+            -1.0f,  0.0f, -1.0f,    0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
+            -1.0f,  0.0f,  1.0f,    0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
+             1.0f,  0.0f, -1.0f,    0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
+             1.0f,  0.0f,  1.0f,    0.0f, -1.0f, 0.0f,    1.0f, 0.0f
         };
         midori::ref<midori::VertexBuffer> groundVB = midori::VertexBuffer::Create(vertexBuffer, bufferSize);
         groundVB->SetLayout({
@@ -129,6 +127,12 @@ public:
 
         m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
 
+        m_SpotLight = midori::make_ref<midori::SpotLight>();
+        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.0f);
+        m_SpotLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+        m_LightManager->AddSpotLight(m_SpotLight);
+
         m_TestScene.SetLightManager(m_LightManager);
 
         midori::RenderCommand::Init();
@@ -155,6 +159,13 @@ public:
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
         m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
+
+
+        m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
+        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.5f);
+
+        //m_SpotLight->Position = m_Camera->GetPosition();
+        //m_SpotLight->Direction = m_Camera->GetDirection();
 
 
         if (midori::Input::IsKeyPressed(MD_KEY_W)) {
@@ -227,7 +238,9 @@ private:
  
     midori::ref<midori::Texture2D> m_TextureCrate;
     midori::ref<midori::SceneObject> m_Helicopter;
-    
+
+    midori::ref<midori::SpotLight> m_SpotLight;
+
     midori::Scene m_TestScene;
 
     float m_TotalTime = 0.0f;

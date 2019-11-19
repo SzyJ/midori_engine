@@ -97,6 +97,20 @@ void main() {
         specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }
 
+    // Spot Lights
+    for (int i = 0; i < u_SpotLightCount; ++i) {
+        vec3 lightDir = normalize(u_SpotLights[i].Position - v_Position);
+
+        float theta = dot(lightDir, normalize(-u_SpotLights[i].Direction));
+        float epsilon = u_SpotLights[i].InnerCutoff - u_SpotLights[i].OuterCutoff;
+        float intensity = clamp((theta - u_SpotLights[i].OuterCutoff) / epsilon, 0.0f, 1.0f);
+
+        if (theta > u_SpotLights[i].OuterCutoff) {
+            diffuse += intensity * CalculateDiffuse(u_SpotLights[i].Color, u_SpotLights[i].Direction);
+            specular += intensity * CalculateSpecular(u_SpotLights[i].Color, u_SpotLights[i].Direction);
+        }
+    }
+
     vec3 ambient = u_AmbientColor * u_AmbientStrength;
 
     vec3 result = (ambient + diffuse + specular) * baseColor.xyz;
