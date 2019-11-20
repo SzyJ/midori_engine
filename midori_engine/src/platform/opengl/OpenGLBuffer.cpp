@@ -101,4 +101,18 @@ namespace midori {
         glBufferSubData(GL_UNIFORM_BUFFER, m_Layout.GetIndexOffset(index), m_Layout.GetIndexSize(index), newData);
     }
 
+
+    //////////////////
+    // Frame Buffer //
+    //////////////////
+
+    OpenGLFrameBuffer::OpenGLFrameBuffer() {}
+
+    void OpenGLFrameBuffer::Bind() const {
+
+    }
+
+    void OpenGLFrameBuffer::Unbind() const {
+        
+    }
 }

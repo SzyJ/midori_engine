@@ -62,4 +62,13 @@ namespace midori {
         BufferLayout m_Layout;
     };
 
+    class OpenGLFrameBuffer : public FrameBuffer {
+    public:
+        OpenGLFrameBuffer();
+        ~OpenGLFrameBuffer() = default;
+
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+    };
+    
 }

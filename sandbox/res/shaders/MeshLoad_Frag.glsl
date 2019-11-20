@@ -42,7 +42,7 @@ struct SpotLight {
 
 uniform Material u_Material;
 
-uniform sampler2D u_TextureCrate;
+uniform sampler2D u_Texture;
 
 layout (std140, binding = 0) uniform MVP {
     mat4 u_ViewProjection;
@@ -72,7 +72,11 @@ vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
 void main() {
-    vec4 baseColor = vec4(vec3(0.4f, 0.4f, 0.4f), 1.0f);
+    vec4 baseColor;
+    //baseColor = texture(u_Texture, v_TexCoord);
+    
+    float grayscale = 1.0f;
+    baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);
 
     vec3 diffuse = vec3(0.0f);
     vec3 specular = vec3(0.0f);
@@ -107,7 +111,7 @@ void main() {
 
         if (theta > u_SpotLights[i].OuterCutoff) {
             diffuse += intensity * CalculateDiffuse(u_SpotLights[i].Color, u_SpotLights[i].Direction);
-            specular += intensity * CalculateSpecular(u_SpotLights[i].Color, u_SpotLights[i].Direction);
+            //specular += intensity * CalculateSpecular(u_SpotLights[i].Color, u_SpotLights[i].Direction);
         }
     }
 

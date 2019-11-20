@@ -21,12 +21,19 @@ public:
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 10.0f));
         m_TestScene.SetCamera(m_Camera);
 
-        m_TextureCrate = midori::Texture2D::Create(TEXTURE_CRATE);
-        m_TextureCrate->Bind(TEXTURE_CRATE_ID);
+        m_TextureWhite = midori::Texture2D::Create(TEXTURE_WHITE);
+        m_TextureWhite->Bind(TEXTURE_WHITE_ID);
+
+        m_TextureMetal = midori::Texture2D::Create(TEXTURE_METAL);
+        m_TextureMetal->Bind(TEXTURE_METAL_ID);
 
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
         m_MeshLoadShader->Bind();
-        m_MeshLoadShader->UploadUniformInt("u_TextureCrate", TEXTURE_CRATE_ID);
+        m_MeshLoadShader->UploadUniformInt("u_Texture", TEXTURE_WHITE_ID);
+
+        m_HelicopterShader = midori::Shader::Load(SHADER_MODEL_LOADER);
+        m_HelicopterShader->Bind();
+        m_HelicopterShader->UploadUniformInt("u_Texture", TEXTURE_METAL_ID);
 
 
         unsigned int indexBuffer[6] = {
@@ -57,12 +64,20 @@ public:
         ground->SetVertexArray(groundVA);
         ground->SetPosition(glm::vec3(0.0f, -3.0f, 0.0f));
         ground->SetScale(75.0f);
-        ground->SetMaterial(midori::Material::WhiteRubber());
+        ground->SetMaterial(midori::Material::Chrome());
 
         m_TestScene.AddOpaqueObject(ground);
 
+        auto building = midori::make_ref<midori::SceneObject>();
+        building->SetShader(m_MeshLoadShader);
+        building->SetVertexArray(midori::MeshLoader::Load(MODEL_BUILDING));
+        building->SetPosition(glm::vec3(0.0f, -3.0f, 7.5f));
+        building->SetMaterial(midori::Material::WhitePlastic());
+
+        m_TestScene.AddOpaqueObject(building);
+
         m_Helicopter = midori::make_ref<midori::SceneObject>();
-        m_Helicopter->SetShader(m_MeshLoadShader);
+        m_Helicopter->SetShader(m_HelicopterShader);
         m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
         m_Helicopter->SetScale(1.0f);
         m_Helicopter->SetPosition(glm::vec3(-3.0f, 0.0f, 0.0f));
@@ -125,10 +140,11 @@ public:
         m_LightManager->AddPointLight(m_SceneLight);
         m_LightManager->AddPointLight(m_SceneLight1);
 
-        m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f)));
+        m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
-        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.0f);
+        m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
+        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.8f);
         m_SpotLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
         m_LightManager->AddSpotLight(m_SpotLight);
@@ -157,12 +173,12 @@ public:
 
         //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
+        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::abs(glm::sin(m_TotalTime) * -m_FlightSpeed)));
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
 
-        m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
-        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.5f);
+        //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
+        //m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.5f);
 
         //m_SpotLight->Position = m_Camera->GetPosition();
         //m_SpotLight->Direction = m_Camera->GetDirection();
@@ -236,7 +252,10 @@ private:
     midori::ref<midori::Shader> m_TerrainShader;
     midori::ref<midori::VertexArray> m_TerrainModel;
  
-    midori::ref<midori::Texture2D> m_TextureCrate;
+    midori::ref<midori::Texture2D> m_TextureWhite;
+    midori::ref<midori::Texture2D> m_TextureMetal;
+
+    midori::ref<midori::Shader> m_HelicopterShader;
     midori::ref<midori::SceneObject> m_Helicopter;
 
     midori::ref<midori::SpotLight> m_SpotLight;

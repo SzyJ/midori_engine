@@ -152,4 +152,14 @@ namespace midori {
         static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock = 0);
     };
 
+    class FrameBuffer {
+    public:
+        virtual ~FrameBuffer() = default;
+
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+
+        static ref<FrameBuffer> Create();
+    };
+
 }

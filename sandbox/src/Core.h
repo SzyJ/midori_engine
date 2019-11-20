@@ -28,10 +28,10 @@
 #define SHADER_MODEL_LOADER GAME_SHADERS"MeshLoad"
 
 // Textures
-#define TEXTURE_FLOGO_ID 4
-#define TEXTURE_FLOGO GAME_TEXTURES"flower_logo.png"
-#define TEXTURE_CRATE_ID 5
-#define TEXTURE_CRATE GAME_TEXTURES"container.jpg"
+#define TEXTURE_WHITE_ID 4
+#define TEXTURE_WHITE GAME_TEXTURES"White.png"
+#define TEXTURE_METAL_ID 5
+#define TEXTURE_METAL GAME_TEXTURES"Metal.png"
 
 #define TEXTURE_SKYBOX GAME_TEXTURES"skybox/Sunset" 
 
@@ -40,3 +40,4 @@
 #define MODEL_CUBE GAME_MODELS"Cube.obj"
 #define MODEL_DINOSAUR GAME_MODELS"Dinosaur.obj"
 #define MODEL_HELICOPTER GAME_MODELS"Helicopter.obj"
+#define MODEL_BUILDING GAME_MODELS"buildings/building_1.obj"
