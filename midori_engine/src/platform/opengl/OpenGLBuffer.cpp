@@ -106,13 +106,44 @@ namespace midori {
     // Frame Buffer //
     //////////////////
 
-    OpenGLFrameBuffer::OpenGLFrameBuffer() {}
+    OpenGLFrameBuffer::OpenGLFrameBuffer(uint32_t frameWidth, uint32_t frameHeight) {
+        // Make buffer
+        glGenFramebuffers(1, &m_FrameBufferID);
+
+        // Make Texture
+        SetUpTexture(frameWidth, frameHeight);
+    }
+
+    OpenGLFrameBuffer::~OpenGLFrameBuffer() {
+        glDeleteFramebuffers(1, &m_FrameBufferID);
+        glDeleteTextures(1, &m_TextureID);
+    }
 
     void OpenGLFrameBuffer::Bind() const {
-
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
     }
 
     void OpenGLFrameBuffer::Unbind() const {
-        
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
+
+    void OpenGLFrameBuffer::UpdateFrameSize(uint32_t width, uint32_t height) {
+        glDeleteTextures(1, &m_TextureID);
+        SetUpTexture(width, height);
+    }
+
+    // TODO: Allow for other options rather than just depth
+    void OpenGLFrameBuffer::SetUpTexture(uint32_t width, uint32_t height) {
+        // TODO: Move this to a texture class
+        glGenTextures(1, &m_TextureID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    }
+
 }

@@ -47,10 +47,10 @@ namespace midori {
         return nullptr;
     }
 
-    ref<FrameBuffer> FrameBuffer::Create() {
+    ref<FrameBuffer> FrameBuffer::Create(uint32_t frameWidth, uint32_t frameHeight) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
-            return make_ref<OpenGLFrameBuffer>();
+            return make_ref<OpenGLFrameBuffer>(frameWidth, frameHeight);
         case RendererAPI::API::None:
         default:
             break;

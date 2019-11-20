@@ -159,7 +159,9 @@ namespace midori {
         virtual void Bind() const = 0;
         virtual void Unbind() const = 0;
 
-        static ref<FrameBuffer> Create();
+        virtual void UpdateFrameSize(uint32_t width, uint32_t height) = 0;
+
+        static ref<FrameBuffer> Create(uint32_t frameWidth, uint32_t frameHeight);
     };
 
 }

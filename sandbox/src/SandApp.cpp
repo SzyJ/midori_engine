@@ -128,7 +128,6 @@ public:
         //terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
         //m_TestScene.AddOpaqueObject(terrainObject);
 
-        
 
         m_TestScene.SetSkybox(new midori::Skybox(TEXTURE_SKYBOX));
 
@@ -278,6 +277,7 @@ private:
 
         midori::RenderCommand::SetViewport(0, 0, newWidth, newHeight);
         m_Camera->OnWindowResize(newWidth, newHeight);
+        m_LightManager->UpdateFrameBufferSize(newWidth, newHeight);
     }
 };
 
