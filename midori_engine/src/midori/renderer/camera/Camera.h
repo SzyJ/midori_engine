@@ -1,6 +1,10 @@
+// Author: Szymon Jackiewicz
+// 
+// Project: midori_engine
+// File: Camera.h
+// Date: 12/11/2019
+
 #pragma once
-#include "midori/events/KeyEvent.h"
-#include "midori/events/MouseEvent.h"
 
 #include <glm/glm.hpp>
 

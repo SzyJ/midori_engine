@@ -10,6 +10,7 @@
 #include "midori/renderer/VertexArray.h"
 #include "midori/renderer/Shader.h"
 #include "midori/renderer/camera/Camera.h"
+#include "midori/scene/lighting/Materials.h"
 
 #include <vector>
 
@@ -61,6 +62,9 @@ namespace midori {
         void SetRotation(const glm::vec3& newRotation);
         void SetScale(const float newScale);
 
+        void SetMaterial(const Material& newMaterial) { m_Material = newMaterial; }
+        const Material& GetMaterial() { return m_Material; }
+
         glm::mat4 GetTransform() const { return m_Transform; }
         float GetDistTo(const glm::vec3& distanceTo) const { return glm::distance(m_Position, distanceTo); }
 
@@ -73,6 +77,8 @@ namespace midori {
         ref<VertexArray> m_VertexArray;
 
         ref<Shader> m_Shader;
+
+        Material m_Material;
 
         glm::mat4 m_ScaleTransform;
         glm::mat4 m_RotationTransform;

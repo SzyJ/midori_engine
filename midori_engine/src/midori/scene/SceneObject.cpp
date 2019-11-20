@@ -73,7 +73,7 @@ namespace midori {
 
         switch(m_Primitive) {
         case GeometryPrimitive::Triangles:
-            Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod);
+            Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod, m_Material);
             break;
         case GeometryPrimitive::QuadPatches:
             Renderer::SubmitPatches(m_Shader, m_VertexArray, m_Transform * transformMod);

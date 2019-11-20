@@ -26,6 +26,8 @@ namespace midori {
         virtual void Bind() = 0;
         virtual void Unbind() = 0;
 
+        virtual void BindUniformBuffer(const char* name, uint32_t bindingBlock) = 0;
+
         virtual void UploadUniformInt(const std::string& name, int value) = 0;
 
         virtual void UploadUniformFloat(const std::string& name, float value) = 0;
