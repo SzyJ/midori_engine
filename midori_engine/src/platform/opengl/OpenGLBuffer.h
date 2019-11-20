@@ -67,8 +67,8 @@ namespace midori {
         OpenGLFrameBuffer();
         ~OpenGLFrameBuffer() = default;
 
-        virtual void Bind() const = 0;
-        virtual void Unbind() const = 0;
+        virtual void Bind() const override;
+        virtual void Unbind() const override;
     };
     
 }

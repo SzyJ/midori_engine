@@ -43,10 +43,10 @@ public:
 
         const int bufferSize = 4 * (3 + 3 + 2);
         float vertexBuffer[bufferSize]{
-            -1.0f,  0.0f, -1.0f,    0.0f, -1.0f, 0.0f,    0.0f, 1.0f,
-            -1.0f,  0.0f,  1.0f,    0.0f, -1.0f, 0.0f,    0.0f, 0.0f,
-             1.0f,  0.0f, -1.0f,    0.0f, -1.0f, 0.0f,    1.0f, 1.0f,
-             1.0f,  0.0f,  1.0f,    0.0f, -1.0f, 0.0f,    1.0f, 0.0f
+            -1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 1.0f,
+            -1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    0.0f, 0.0f,
+             1.0f,  0.0f, -1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 1.0f,
+             1.0f,  0.0f,  1.0f,    0.0f, 1.0f, 0.0f,    1.0f, 0.0f
         };
         midori::ref<midori::VertexBuffer> groundVB = midori::VertexBuffer::Create(vertexBuffer, bufferSize);
         groundVB->SetLayout({
@@ -72,7 +72,7 @@ public:
         building->SetShader(m_MeshLoadShader);
         building->SetVertexArray(midori::MeshLoader::Load(MODEL_BUILDING));
         building->SetPosition(glm::vec3(0.0f, -3.0f, 7.5f));
-        building->SetMaterial(midori::Material::WhitePlastic());
+        building->SetMaterial(midori::Material::WhiteRubber());
 
         m_TestScene.AddOpaqueObject(building);
 

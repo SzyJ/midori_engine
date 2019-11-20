@@ -15,10 +15,6 @@ namespace midori {
         virtual ~Light() = default;
 
         glm::vec3 Color;
-        float Distance = 7.0f;
-        float ConstantAttenuation = 1.0f;
-        float LinearAttenuation = 0.045f;
-        float QuadraticAttenuation = 0.0075f;
 
     protected:
         Light(const glm::vec3& color)
@@ -50,6 +46,8 @@ namespace midori {
         }
 
         glm::vec3 Position;
+        float LinearAttenuation = 0.14f;
+        float QuadraticAttenuation = 0.07f;
     };
 
     struct DirectionalLight : public Light {

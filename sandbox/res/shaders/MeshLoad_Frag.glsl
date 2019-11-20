@@ -91,14 +91,14 @@ void main() {
             vec3 lightDir = normalize(u_PointLights[i].Position - v_Position);
 
             diffuse += attenuation * CalculateDiffuse(u_PointLights[i].Color, lightDir);
-            specular += attenuation * CalculateSpecular(u_PointLights[i].Color, lightDir);
+            specular += attenuation * CalculateSpecular(u_PointLights[i].Color, -lightDir);
         }
     }
 
     // Directional Lights
     for (int i = 0; i < u_DirectionalLightCount; ++i) {
         diffuse += u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
-        specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
+        //specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }
 
     // Spot Lights
@@ -110,8 +110,9 @@ void main() {
         float intensity = clamp((theta - u_SpotLights[i].OuterCutoff) / epsilon, 0.0f, 1.0f);
 
         if (theta > u_SpotLights[i].OuterCutoff) {
-            diffuse += intensity * CalculateDiffuse(u_SpotLights[i].Color, u_SpotLights[i].Direction);
-            //specular += intensity * CalculateSpecular(u_SpotLights[i].Color, u_SpotLights[i].Direction);
+            vec3 invDir = -u_SpotLights[i].Direction;
+            diffuse += intensity * CalculateDiffuse(u_SpotLights[i].Color, invDir);
+            specular += intensity * CalculateSpecular(u_SpotLights[i].Color, invDir);
         }
     }
 
@@ -140,9 +141,7 @@ vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir) {
 
     float spec = pow(max(dot(norm, halfWayDir), 0.0f), u_Material.Shininess);
 
-    //vec3 reflectDir = reflect(-lightDir, norm);
-    //float spec = pow(max(dot(viewDir, reflectDir), 0.0f), u_Material.Shininess);
-    return lightCol * (spec * u_Material.Specular);
+    return lightCol * (spec *u_Material.Specular);
 }
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic) {
