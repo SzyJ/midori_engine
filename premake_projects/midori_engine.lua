@@ -28,9 +28,13 @@ project "midori_engine"
         "%{prj.location}/3rd_Party/glm/glm/**.inl"
     }
 
+    if not rel_midori_path then
+        rel_midori_path = "../"
+    end
+
     defines {
         "_CRT_SECURE_NO_WARNINGS",
-        ("MD_DEFAULT_RESOURCES=\"%{prj.location}/res/\"")
+        ("MD_DEFAULT_RESOURCES=\"" .. rel_midori_path .. "midori_engine/res/\"")
     }
 
     includedirs {
