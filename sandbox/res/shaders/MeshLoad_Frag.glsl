@@ -78,8 +78,6 @@ float ShadowCalculation(vec3 lightPos);
 void main() {
     vec4 baseColor;
 
-    //baseColor = texture(u_DepthMap, v_TexCoord);
-
     float grayscale = 1.0f;
     baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);
 

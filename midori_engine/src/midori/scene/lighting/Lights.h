@@ -108,7 +108,7 @@ namespace midori {
         glm::vec3 Direction;
         float InnerCutoff = glm::cos(glm::radians(12.5f));
         float OuterCutoff = glm::cos(glm::radians(17.5f));
-        float DistanceCutoff = 20.0f;
+        float DistanceCutoff = 25.0f;
 
         SpotLightShadowMap ShadowMap;
     };

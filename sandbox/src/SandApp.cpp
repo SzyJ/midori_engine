@@ -193,7 +193,7 @@ public:
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
 
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
-        //m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.5f);
+        //m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
 
         //m_SpotLight->Position = m_Camera->GetPosition();
         //m_SpotLight->Direction = m_Camera->GetDirection();
