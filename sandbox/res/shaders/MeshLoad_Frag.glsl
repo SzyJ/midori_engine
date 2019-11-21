@@ -37,7 +37,7 @@ struct SpotLight {
     float OuterCutoff;
 
     vec3 Direction;
-    float Padding0;
+    uint DepthMap;
 };
 
 uniform Material u_Material;
@@ -73,7 +73,8 @@ float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
 void main() {
     vec4 baseColor;
-    //baseColor = texture(u_Texture, v_TexCoord);
+
+    //baseColor = texture(u_SpotLights[0].DepthMap, v_TexCoord);
     
     float grayscale = 1.0f;
     baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);

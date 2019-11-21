@@ -150,6 +150,8 @@ public:
 
         m_TestScene.SetLightManager(m_LightManager);
 
+        m_LightManager->UpdateFrameBufferSize(screenWidth, screenHeight);
+
         midori::RenderCommand::Init();
     }
 

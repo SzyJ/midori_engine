@@ -39,28 +39,31 @@ namespace midori {
         SpotLightShadowMap() = default;
         SpotLightShadowMap(uint32_t width, uint32_t height) {
             m_DepthMap = FrameBuffer::Create(width, height);
-            m_DepthMapShader = Shader::Load(MD_DEPTH_MAP_SHADER);
             m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
             m_Initialized = true;
         }
         ~SpotLightShadowMap() = default;
 
         void SetFrameSize(uint32_t width, uint32_t height) {
-            m_DepthMap->UpdateFrameSize(width, height);
+            if (!m_DepthMap) {
+                m_DepthMap = FrameBuffer::Create(width, height);
+            } else {
+                m_DepthMap->UpdateFrameSize(width, height);
+            }
             m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
             m_Initialized = true;
         }
 
         void BeginShadowMapScene(glm::vec3 position, glm::vec3 direction) {
-            m_DepthMapShader->Bind();
-            m_DepthMapShader->UploadUniformMat4("u_LightViewProjection", GetPerspectiveViewProjection(position, direction));
+            ShadowMap::GetShader()->Bind();
+            ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetPerspectiveViewProjection(position, direction));
 
             m_DepthMap->Bind();
             RenderCommand::Clear();
         }
 
         void EndShadowMapScene() {
-            m_DepthMapShader->Unbind();
+            ShadowMap::GetShader()->Unbind();
             m_DepthMap->Unbind();
         }
 
@@ -72,7 +75,6 @@ namespace midori {
         float m_AspectRatio;
         bool m_Initialized = false;
         ref<FrameBuffer> m_DepthMap;
-        ref<Shader> m_DepthMapShader;
 
         glm::mat4 GetPerspectiveViewProjection(glm::vec3 position, glm::vec3 direction) {
             glm::mat4 lightProjection, lightView;

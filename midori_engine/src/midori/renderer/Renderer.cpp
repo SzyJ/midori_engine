@@ -189,6 +189,7 @@ namespace midori {
             }
         }
 
+        uint32_t tempData;
         for (int spotLightStepper = 0; spotLightStepper < MD_MAX_SPOT_LIGHTS; ++spotLightStepper) {
             if (spotLightStepper < spotLightCount) {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Color));
@@ -198,7 +199,8 @@ namespace midori {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->OuterCutoff));
 
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Direction));
-                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+                tempData = m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->ShadowMap.GetDepthTextureID();
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &tempData);
             } else {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
