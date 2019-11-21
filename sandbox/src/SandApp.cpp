@@ -16,12 +16,14 @@
 class ExampleLayer : public midori::Layer {
 public:
     ExampleLayer() : Layer("Test_Layer") {
+        m_CursorEnabled = true;
         midori::Application::Get().GetWindow().SetCursorEnabled(m_CursorEnabled);
 
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
-        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 3.0f));
+        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 5.0f, -10.0f));
+        m_Camera->Rotate(180.0f, -15.0f);
 
         m_TestScene.SetCamera(m_Camera);
 
