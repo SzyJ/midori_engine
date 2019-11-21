@@ -41,19 +41,20 @@ namespace midori {
 
         void GenerateShadowMaps() {
             for (const ref<SpotLight>& spotlight : m_SpotLights) {
-                if (!spotlight->ShadowMap) {
+                if (!spotlight->ShadowMap.IsInitialized()) {
                     continue;
                 }
+                spotlight->ShadowMap.BeginShadowMapScene(spotlight->Position, spotlight->Direction);
+
                 // TODO: Generate Shadow Maps
 
+                spotlight->ShadowMap.EndShadowMapScene();
             }
         }
 
         void UpdateFrameBufferSize(uint32_t newWidth, uint32_t newHeight) {
             for (const ref<SpotLight>& spotlight : m_SpotLights) {
-                if (spotlight->ShadowMap) {
-                    spotlight->ShadowMap->UpdateFrameSize(newWidth, newHeight);
-                }
+                spotlight->ShadowMap.SetFrameSize(newWidth, newHeight);
             }
         }
 

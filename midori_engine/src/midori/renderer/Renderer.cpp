@@ -39,6 +39,16 @@ namespace midori {
 
     void Renderer::EndScene() {}
 
+    void Renderer::SubmitPositions(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform) {
+        shader->Bind();
+
+        shader->UploadUniformMat4("u_Transform", transform);
+
+        vertexArray->Bind();
+
+        RenderCommand::DrawVertices(vertexArray);
+    }
+
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform, const Material& material) {
         shader->Bind();
 
@@ -51,11 +61,6 @@ namespace midori {
         }
 
         shader->UploadUniformMat4("u_Transform", transform);
-
-        //if (m_SceneData->Lights) {
-        //    shader->UploadUniformFloat3("u_LightPos", m_SceneData->Lights->GetPointLights().at(0)->Position);
-        //    shader->UploadUniformFloat3("u_LightCol", m_SceneData->Lights->GetPointLights().at(0)->Color);
-        //}
 
         shader->UploadUniformFloat3("u_Material.Ambient", material.ambient);
         shader->UploadUniformFloat3("u_Material.Diffuse", material.diffuse);

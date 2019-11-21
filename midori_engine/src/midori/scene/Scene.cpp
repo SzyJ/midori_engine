@@ -7,7 +7,7 @@
 #include "mdpch.h"
 #include "Scene.h"
 
-#include "midori/renderer/Renderer.h"
+
 
 namespace midori {
 
@@ -43,7 +43,6 @@ namespace midori {
 
     void Scene::Draw() {
         Renderer::BeginScene(m_Camera);
-        Renderer::SetLights(m_Lights);
 
         if (m_Skybox) {
             m_Skybox->Draw();
@@ -64,6 +63,15 @@ namespace midori {
         }
 
         Renderer::EndScene();
+    }
+
+    void Scene::DrawDepth(ref<Shader> depthMapShader) {
+        if (!m_OpaqueObjects.empty()) {
+            SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
+            for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                obj->DrawDepth(depthMapShader);
+            }
+        }
     }
 
 };

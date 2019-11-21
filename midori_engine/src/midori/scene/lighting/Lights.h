@@ -6,9 +6,13 @@
 
 #pragma once
 
+#include "midori/scene/lighting/ShadowMap.h"
+
 #include <glm/glm.hpp>
 
 namespace midori {
+
+    class SpotLightShadowMap;
 
     struct Light {
  
@@ -99,12 +103,13 @@ namespace midori {
                 {ShaderDataType::Float, "Padding0"}
                 });
         }
+
         glm::vec3 Position;
         glm::vec3 Direction;
         float InnerCutoff = glm::cos(glm::radians(12.5f));
         float OuterCutoff = glm::cos(glm::radians(17.5f));
 
-        ref<FrameBuffer> ShadowMap = nullptr;
+        SpotLightShadowMap ShadowMap;
     };
 
 }
