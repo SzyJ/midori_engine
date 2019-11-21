@@ -20,6 +20,20 @@
 
 namespace midori {
 
+    class ShadowMap {
+    public:
+        static ref<Shader> GetShader() {
+            if (!s_Initialized) {
+                s_DepthMapShader = Shader::Load(MD_DEPTH_MAP_SHADER);
+                s_Initialized = true;
+            }
+            return s_DepthMapShader;
+        }
+    private:
+        static inline ref<Shader> s_DepthMapShader;
+        static inline bool s_Initialized = false;
+    };
+
     class SpotLightShadowMap {
     public:
         SpotLightShadowMap() = default;
@@ -51,6 +65,8 @@ namespace midori {
         }
 
         bool IsInitialized() { return m_Initialized; }
+
+        uint32_t GetDepthTextureID() { return m_DepthMap->GetDepthTextureID(); }
 
     private:
         float m_AspectRatio;

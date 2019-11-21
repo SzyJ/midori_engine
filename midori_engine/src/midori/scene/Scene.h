@@ -29,13 +29,16 @@ namespace midori {
 
         void SetSkybox(Skybox* newSkybox) { m_Skybox = newSkybox; }
 
-        void SetLightManager(const ref<LightingManager>& newLights) { Renderer::SetLights(newLights); }
+        void SetLightManager(const ref<LightingManager>& newLights) {
+            m_LightingManager = newLights;
+            Renderer::SetLights(newLights);
+        }
 
         void SetCamera(Camera* camera) { m_Camera = camera; }
 
         void Draw();
 
-        void DrawDepth(ref<Shader> depthMapShader);
+        void DrawDepth();
 
     private:
         Camera* m_Camera;
@@ -43,6 +46,8 @@ namespace midori {
 
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
+
+        ref<LightingManager> m_LightingManager;
 
         inline void SortBasedOnCameraDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
             // TODO: Make this insertion sort

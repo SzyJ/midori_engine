@@ -65,13 +65,24 @@ namespace midori {
         Renderer::EndScene();
     }
 
-    void Scene::DrawDepth(ref<Shader> depthMapShader) {
-        if (!m_OpaqueObjects.empty()) {
-            SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
-            for (const ref<SceneObject>& obj : m_OpaqueObjects) {
-                obj->DrawDepth(depthMapShader);
+    void Scene::DrawDepth() {
+
+        for (const ref<SpotLight>& spotlight : m_LightingManager->GetSpotLights()) {
+            if (!spotlight->ShadowMap.IsInitialized()) {
+                continue;
             }
+            spotlight->ShadowMap.BeginShadowMapScene(spotlight->Position, spotlight->Direction);
+
+            if (!m_OpaqueObjects.empty()) {
+                SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
+                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                    obj->DrawDepth(ShadowMap::GetShader());
+                }
+            }
+
+            spotlight->ShadowMap.EndShadowMapScene();
         }
+
     }
 
 };

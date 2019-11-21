@@ -161,6 +161,8 @@ namespace midori {
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) = 0;
 
+        virtual uint32_t GetDepthTextureID() = 0;
+
         static ref<FrameBuffer> Create(uint32_t frameWidth, uint32_t frameHeight);
     };
 

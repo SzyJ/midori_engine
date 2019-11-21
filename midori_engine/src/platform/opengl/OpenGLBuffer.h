@@ -72,6 +72,8 @@ namespace midori {
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) override;
 
+        virtual uint32_t GetDepthTextureID() override { return m_TextureID; }
+
     private:
         uint32_t m_FrameBufferID, m_TextureID;
 
