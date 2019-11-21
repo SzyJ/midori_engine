@@ -2,14 +2,14 @@
 -- 
 -- Project: midori_engine
 -- File: glfw.lua
--- Date: 09/10/2019
+-- Date: 21/11/2019
 
 -- This GLFW project configuration is a modified version of the file
 -- from TheCherno's fork of GLFW.
 -- The repository can be found here: https://github.com/TheCherno/glfw/.
 
 project "glfw"
-    location "%{wks.location}/midori_engine/3rd_party/glfw"
+    location "../midori_engine/3rd_party/glfw"
     kind "StaticLib"
     language "C"
     staticruntime "on"

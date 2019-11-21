@@ -2,10 +2,10 @@
 -- 
 -- Project: midori_engine
 -- File: glad.lua
--- Date: 09/10/2019
+-- Date: 21/11/2019
 
 project "glad"
-    location "%{wks.location}/midori_engine/3rd_party/glad"
+    location "../midori_engine/3rd_party/glad"
     kind "StaticLib"
     language "C"
     staticruntime "on"
