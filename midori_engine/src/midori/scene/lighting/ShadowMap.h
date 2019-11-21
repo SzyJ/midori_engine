@@ -14,7 +14,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #define MD_DEF_SHADOW_MAP_NEAR_Z 1.0f
-#define MD_DEF_SHADOW_MAP_FAR_Z 7.5f
+#define MD_DEF_SHADOW_MAP_FAR_Z 25.0f
 
 #define MD_DEPTH_MAP_SHADER MD_DEFAULT_RESOURCES"shaders/SpotLightShadowMap"
 
@@ -55,10 +55,12 @@ namespace midori {
         }
 
         void BeginShadowMapScene(glm::vec3 position, glm::vec3 direction) {
+            m_DepthMap->Bind();
+
             ShadowMap::GetShader()->Bind();
             ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetPerspectiveViewProjection(position, direction));
 
-            m_DepthMap->Bind();
+            
             RenderCommand::Clear();
         }
 
@@ -71,19 +73,19 @@ namespace midori {
 
         uint32_t GetDepthTextureID() { return m_DepthMap->GetDepthTextureID(); }
 
-    private:
-        float m_AspectRatio;
-        bool m_Initialized = false;
-        ref<FrameBuffer> m_DepthMap;
-
         glm::mat4 GetPerspectiveViewProjection(glm::vec3 position, glm::vec3 direction) {
             glm::mat4 lightProjection, lightView;
             // TODO: Change fov based on light size
             lightProjection = glm::perspective(glm::radians(45.0f), m_AspectRatio, MD_DEF_SHADOW_MAP_NEAR_Z, MD_DEF_SHADOW_MAP_FAR_Z);
-            lightView = glm::lookAt(position, direction, glm::vec3(0.0f, 1.0f, 0.0f));
+            lightView = glm::lookAt(position, position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
 
             return lightProjection * lightView;
         }
+        
+    private:
+        float m_AspectRatio;
+        bool m_Initialized = false;
+        ref<FrameBuffer> m_DepthMap;
     };
 
 }

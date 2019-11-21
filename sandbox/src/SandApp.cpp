@@ -10,6 +10,9 @@
 
 #include <midori/renderer/MeshLoader.h>
 
+#include <glm/gtx/string_cast.hpp>
+
+
 class ExampleLayer : public midori::Layer {
 public:
     ExampleLayer() : Layer("Test_Layer") {
@@ -18,22 +21,23 @@ public:
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
-        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 10.0f));
+        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 3.0f));
+
         m_TestScene.SetCamera(m_Camera);
 
         m_TextureWhite = midori::Texture2D::Create(TEXTURE_WHITE);
-        m_TextureWhite->Bind(TEXTURE_WHITE_ID);
+        //m_TextureWhite->Bind(TEXTURE_WHITE_ID);
 
         m_TextureMetal = midori::Texture2D::Create(TEXTURE_METAL);
-        m_TextureMetal->Bind(TEXTURE_METAL_ID);
+        //m_TextureMetal->Bind(TEXTURE_METAL_ID);
 
         m_MeshLoadShader = midori::Shader::Load(SHADER_MODEL_LOADER);
         m_MeshLoadShader->Bind();
-        m_MeshLoadShader->UploadUniformInt("u_Texture", TEXTURE_WHITE_ID);
+        //m_MeshLoadShader->UploadUniformInt("u_Texture", TEXTURE_WHITE_ID);
 
         m_HelicopterShader = midori::Shader::Load(SHADER_MODEL_LOADER);
         m_HelicopterShader->Bind();
-        m_HelicopterShader->UploadUniformInt("u_Texture", TEXTURE_METAL_ID);
+        //m_HelicopterShader->UploadUniformInt("u_Texture", TEXTURE_METAL_ID);
 
 
         unsigned int indexBuffer[6] = {
@@ -67,6 +71,16 @@ public:
         ground->SetMaterial(midori::Material::Chrome());
 
         m_TestScene.AddOpaqueObject(ground);
+
+        //auto testSquare = midori::make_ref<midori::SceneObject>();
+        //testSquare->SetShader(m_MeshLoadShader);
+        //testSquare->SetVertexArray(groundVA);
+        //testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
+        //testSquare->SetScale(1.0f);
+        //testSquare->SetRotation(glm::vec3(0.5f, 0.0f, 0.0f));
+        //testSquare->SetMaterial(midori::Material::Chrome());
+        //
+        //m_TestScene.AddOpaqueObject(testSquare);
 
         auto building = midori::make_ref<midori::SceneObject>();
         building->SetShader(m_MeshLoadShader);
@@ -143,7 +157,6 @@ public:
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
-        m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.8f);
         m_SpotLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
         m_LightManager->AddSpotLight(m_SpotLight);
@@ -174,9 +187,10 @@ public:
 
         //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::abs(glm::sin(m_TotalTime) * -m_FlightSpeed)));
+        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * -m_FlightSpeed));
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
+        m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
 
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
         //m_SpotLight->Direction = glm::vec3(0.0f, -0.5f, 0.5f);
@@ -204,6 +218,9 @@ public:
             m_Camera->Move(midori::MovementDirection::down, delta * m_MoveSpeed);
         }
 
+
+        m_TestScene.DrawDepth();
+
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
         midori::RenderCommand::Clear();
 
@@ -213,6 +230,10 @@ public:
     void OnImGuiRender() override {
         ImGui::Begin("FPS");
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
+
+        ImGui::Text(std::string("Cam Pos:").append(glm::to_string(m_Camera->GetDirection())).c_str());
+        ImGui::Text(std::string("SpL Pos:").append(glm::to_string(m_SpotLight->Direction)).c_str());
+
         ImGui::End();
     }
 

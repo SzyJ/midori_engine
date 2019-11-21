@@ -7,6 +7,7 @@ layout(location = 2) in vec2 a_TexCoord;
 out vec3 v_Position;
 out vec3 v_Normal;
 out vec2 v_TexCoord;
+//out vec4 v_FragPosLightSpace;
 
 layout (std140) uniform MVP {
     mat4 u_ViewProjection;

@@ -52,8 +52,8 @@ namespace midori {
         inline void SortBasedOnCameraDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
             // TODO: Make this insertion sort
             std::sort(begin, end,
-           [this](ref<SceneObject> const &lhs, ref<SceneObject> const& rhs) {
-                    glm::vec3 pos = this->m_Camera->GetPosition();
+                [this](ref<SceneObject> const &lhs, ref<SceneObject> const& rhs) {
+                    glm::vec3 pos = m_Camera->GetPosition();
                     return lhs->GetDistTo(pos) < rhs->GetDistTo(pos);
                 });
         }

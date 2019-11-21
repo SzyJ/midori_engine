@@ -74,7 +74,6 @@ namespace midori {
             spotlight->ShadowMap.BeginShadowMapScene(spotlight->Position, spotlight->Direction);
 
             if (!m_OpaqueObjects.empty()) {
-                SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
                 for (const ref<SceneObject>& obj : m_OpaqueObjects) {
                     obj->DrawDepth(ShadowMap::GetShader());
                 }

@@ -28,6 +28,9 @@ namespace midori {
         virtual void DrawPatches(const ref<VertexArray>& vertexArray, uint32_t verticesPerPatch) override;
 
         virtual void SetViewport(const int xOffset, const int yOffset, const int width, const int height) override;
+
+        virtual void SetActiveTexture0() override;
+        virtual void SetActiveTexture1() override;
     };
 
 }

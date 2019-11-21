@@ -86,7 +86,7 @@ namespace midori {
 
     void SceneObject::DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod) const {
         for (const ref<SceneObject>& child : m_ChildObjects) {
-            child->Draw(m_Transform * transformMod);
+            child->DrawDepth(depthMapShader,m_Transform * transformMod);
         }
 
         // TODO: Add shadows to patches

@@ -100,7 +100,7 @@ namespace midori {
                 {ShaderDataType::Float, "OuterCutoff"},
 
                 {ShaderDataType::Float3, "Direction"},
-                {ShaderDataType::Int, "DepthMap"}
+                {ShaderDataType::Float, "DistanceCutoff"}
                 });
         }
 
@@ -108,6 +108,7 @@ namespace midori {
         glm::vec3 Direction;
         float InnerCutoff = glm::cos(glm::radians(12.5f));
         float OuterCutoff = glm::cos(glm::radians(17.5f));
+        float DistanceCutoff = 20.0f;
 
         SpotLightShadowMap ShadowMap;
     };

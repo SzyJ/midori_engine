@@ -67,6 +67,10 @@ namespace midori {
         shader->UploadUniformFloat3("u_Material.Specular", material.specular);
         shader->UploadUniformFloat("u_Material.Shininess", material.shininess);
 
+        shader->UploadUniformInt("u_DepthMap", 1);
+        shader->UploadUniformMat4("u_SpotLightViewProjection", m_SceneData->Lights->GetSpotLights().at(0)->ShadowMap.GetPerspectiveViewProjection(m_SceneData->Lights->GetSpotLights().at(0)->Position, m_SceneData->Lights->GetSpotLights().at(0)->Direction));
+
+
         vertexArray->Bind();
 
         RenderCommand::DrawVertices(vertexArray);
@@ -199,8 +203,7 @@ namespace midori {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->OuterCutoff));
 
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Direction));
-                tempData = m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->ShadowMap.GetDepthTextureID();
-                m_Uniforms->AllLights->SetSubData(elementIndex++, &tempData);
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->DistanceCutoff));
             } else {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);

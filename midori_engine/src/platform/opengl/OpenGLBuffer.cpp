@@ -121,6 +121,8 @@ namespace midori {
 
     void OpenGLFrameBuffer::Bind() const {
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
 
     void OpenGLFrameBuffer::Unbind() const {
