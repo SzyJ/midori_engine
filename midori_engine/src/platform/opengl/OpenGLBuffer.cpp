@@ -102,11 +102,11 @@ namespace midori {
     }
 
 
-    //////////////////
-    // Frame Buffer //
-    //////////////////
+    ////////////////////////////
+    // Frame Buffer: 2D Depth //
+    ////////////////////////////
 
-    OpenGLFrameBuffer::OpenGLFrameBuffer(uint32_t frameWidth, uint32_t frameHeight) {
+    OpenGLFrameBufferDepth2D::OpenGLFrameBufferDepth2D(uint32_t frameWidth, uint32_t frameHeight) {
         // Make buffer
         glGenFramebuffers(1, &m_FrameBufferID);
 
@@ -114,28 +114,28 @@ namespace midori {
         SetUpTexture(frameWidth, frameHeight);
     }
 
-    OpenGLFrameBuffer::~OpenGLFrameBuffer() {
+    OpenGLFrameBufferDepth2D::~OpenGLFrameBufferDepth2D() {
         glDeleteFramebuffers(1, &m_FrameBufferID);
         glDeleteTextures(1, &m_TextureID);
     }
 
-    void OpenGLFrameBuffer::Bind() const {
+    void OpenGLFrameBufferDepth2D::Bind() const {
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
 
-    void OpenGLFrameBuffer::Unbind() const {
+    void OpenGLFrameBufferDepth2D::Unbind() const {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void OpenGLFrameBuffer::UpdateFrameSize(uint32_t width, uint32_t height) {
+    void OpenGLFrameBufferDepth2D::UpdateFrameSize(uint32_t width, uint32_t height) {
         glDeleteTextures(1, &m_TextureID);
         SetUpTexture(width, height);
     }
 
     // TODO: Allow for other options rather than just depth
-    void OpenGLFrameBuffer::SetUpTexture(uint32_t width, uint32_t height) {
+    void OpenGLFrameBufferDepth2D::SetUpTexture(uint32_t width, uint32_t height) {
         // TODO: Move this to a texture class
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
@@ -158,4 +158,28 @@ namespace midori {
         Unbind();
     }
 
+
+    ////////////////////////////
+    // Frame Buffer: 2D Depth //
+    ////////////////////////////
+
+    OpenGLFrameBufferColorCube::OpenGLFrameBufferColorCube(uint32_t size) {
+        
+    }
+
+    OpenGLFrameBufferColorCube::~OpenGLFrameBufferColorCube() {
+        
+    }
+
+    void OpenGLFrameBufferColorCube::Bind() const {
+        
+    }
+
+    void OpenGLFrameBufferColorCube::Unbind() const {
+        
+    }
+
+    void OpenGLFrameBufferColorCube::UpdateFrameSize(uint32_t size) {
+        
+    }
 }

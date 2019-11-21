@@ -38,7 +38,7 @@ namespace midori {
     public:
         SpotLightShadowMap() = default;
         SpotLightShadowMap(uint32_t width, uint32_t height) {
-            m_DepthMap = FrameBuffer::Create(width, height);
+            m_DepthMap = FrameBufferDepth2D::Create(width, height);
             m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
             m_Initialized = true;
         }
@@ -46,7 +46,7 @@ namespace midori {
 
         void SetFrameSize(uint32_t width, uint32_t height) {
             if (!m_DepthMap) {
-                m_DepthMap = FrameBuffer::Create(width, height);
+                m_DepthMap = FrameBufferDepth2D::Create(width, height);
             } else {
                 m_DepthMap->UpdateFrameSize(width, height);
             }
@@ -85,7 +85,7 @@ namespace midori {
     private:
         float m_AspectRatio;
         bool m_Initialized = false;
-        ref<FrameBuffer> m_DepthMap;
+        ref<FrameBufferDepth2D> m_DepthMap;
     };
 
 }
