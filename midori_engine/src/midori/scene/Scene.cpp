@@ -7,7 +7,7 @@
 #include "mdpch.h"
 #include "Scene.h"
 
-#include "midori/renderer/Renderer.h"
+
 
 namespace midori {
 
@@ -43,7 +43,6 @@ namespace midori {
 
     void Scene::Draw() {
         Renderer::BeginScene(m_Camera);
-        Renderer::SetLights(m_Lights);
 
         if (m_Skybox) {
             m_Skybox->Draw();
@@ -64,6 +63,25 @@ namespace midori {
         }
 
         Renderer::EndScene();
+    }
+
+    void Scene::DrawDepth() {
+
+        for (const ref<SpotLight>& spotlight : m_LightingManager->GetSpotLights()) {
+            if (!spotlight->ShadowMap.IsInitialized()) {
+                continue;
+            }
+            spotlight->ShadowMap.BeginShadowMapScene(spotlight->Position, spotlight->Direction);
+
+            if (!m_OpaqueObjects.empty()) {
+                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                    obj->DrawDepth(ShadowMap::GetShader());
+                }
+            }
+
+            spotlight->ShadowMap.EndShadowMapScene();
+        }
+
     }
 
 };

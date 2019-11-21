@@ -21,12 +21,15 @@ namespace midori {
 
         static void SetLights(const ref<LightingManager>& lights) { m_SceneData->Lights = lights; }
 
+        static void SubmitPositions(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f));
+
         static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), const Material& material = Material());
         static void Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const Material& material);
 
         static void SubmitPatches(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform = glm::mat4(1.0f), uint32_t vertices = 4);
 
         inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
+
     private:
         struct SceneData {
             glm::mat4 ViewProjectionMatrix;

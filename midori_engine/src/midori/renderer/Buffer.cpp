@@ -23,7 +23,6 @@ namespace midori {
         return nullptr;
     }
 
-
     ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:;
@@ -35,7 +34,6 @@ namespace midori {
         MD_CORE_ERROR("An unspported Rendering API has been selected");
         return nullptr;
     }
-
 
     ref<UniformBuffer> UniformBuffer::Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock) {
         switch (Renderer::GetAPI()) {
@@ -49,4 +47,15 @@ namespace midori {
         return nullptr;
     }
 
+    ref<FrameBuffer> FrameBuffer::Create(uint32_t frameWidth, uint32_t frameHeight) {
+        switch (Renderer::GetAPI()) {
+        case RendererAPI::API::OpenGL:;
+            return make_ref<OpenGLFrameBuffer>(frameWidth, frameHeight);
+        case RendererAPI::API::None:
+        default:
+            break;
+        }
+        MD_CORE_ERROR("An unspported Rendering API has been selected");
+        return nullptr;
+    }
 }

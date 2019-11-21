@@ -101,4 +101,61 @@ namespace midori {
         glBufferSubData(GL_UNIFORM_BUFFER, m_Layout.GetIndexOffset(index), m_Layout.GetIndexSize(index), newData);
     }
 
+
+    //////////////////
+    // Frame Buffer //
+    //////////////////
+
+    OpenGLFrameBuffer::OpenGLFrameBuffer(uint32_t frameWidth, uint32_t frameHeight) {
+        // Make buffer
+        glGenFramebuffers(1, &m_FrameBufferID);
+
+        // Make Texture
+        SetUpTexture(frameWidth, frameHeight);
+    }
+
+    OpenGLFrameBuffer::~OpenGLFrameBuffer() {
+        glDeleteFramebuffers(1, &m_FrameBufferID);
+        glDeleteTextures(1, &m_TextureID);
+    }
+
+    void OpenGLFrameBuffer::Bind() const {
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    }
+
+    void OpenGLFrameBuffer::Unbind() const {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void OpenGLFrameBuffer::UpdateFrameSize(uint32_t width, uint32_t height) {
+        glDeleteTextures(1, &m_TextureID);
+        SetUpTexture(width, height);
+    }
+
+    // TODO: Allow for other options rather than just depth
+    void OpenGLFrameBuffer::SetUpTexture(uint32_t width, uint32_t height) {
+        // TODO: Move this to a texture class
+        glGenTextures(1, &m_TextureID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+        // Bind to FBO
+        Bind();
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_TextureID, 0);
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+        Unbind();
+    }
+
 }

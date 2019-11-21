@@ -39,6 +39,12 @@ namespace midori {
         void AddSpotLight(const ref<SpotLight>& newLight) { m_SpotLights.push_back(newLight); }
         const std::vector<ref<SpotLight>>& GetSpotLights() { return m_SpotLights; }
 
+        void UpdateFrameBufferSize(uint32_t newWidth, uint32_t newHeight) {
+            for (const ref<SpotLight>& spotlight : m_SpotLights) {
+                spotlight->ShadowMap.SetFrameSize(newWidth, newHeight);
+            }
+        }
+
     private:
         std::vector<ref<PointLight>> m_PointLights;
         std::vector<ref<DirectionalLight>> m_DirectionalLights;

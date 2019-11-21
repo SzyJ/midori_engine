@@ -6,19 +6,19 @@
 
 #pragma once
 
+#include "midori/scene/lighting/ShadowMap.h"
+
 #include <glm/glm.hpp>
 
 namespace midori {
+
+    class SpotLightShadowMap;
 
     struct Light {
  
         virtual ~Light() = default;
 
         glm::vec3 Color;
-        float Distance = 7.0f;
-        float ConstantAttenuation = 1.0f;
-        float LinearAttenuation = 0.045f;
-        float QuadraticAttenuation = 0.0075f;
 
     protected:
         Light(const glm::vec3& color)
@@ -50,6 +50,8 @@ namespace midori {
         }
 
         glm::vec3 Position;
+        float LinearAttenuation = 0.14f;
+        float QuadraticAttenuation = 0.07f;
     };
 
     struct DirectionalLight : public Light {
@@ -75,7 +77,7 @@ namespace midori {
         }
 
         glm::vec3 Direction;
-        float Strength = 1.0f;
+        float Strength = 0.25f;
     };
 
     struct SpotLight : public Light {
@@ -98,13 +100,17 @@ namespace midori {
                 {ShaderDataType::Float, "OuterCutoff"},
 
                 {ShaderDataType::Float3, "Direction"},
-                {ShaderDataType::Float, "Padding0"}
+                {ShaderDataType::Float, "DistanceCutoff"}
                 });
         }
+
         glm::vec3 Position;
         glm::vec3 Direction;
         float InnerCutoff = glm::cos(glm::radians(12.5f));
         float OuterCutoff = glm::cos(glm::radians(17.5f));
+        float DistanceCutoff = 25.0f;
+
+        SpotLightShadowMap ShadowMap;
     };
 
 }

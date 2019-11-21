@@ -39,6 +39,16 @@ namespace midori {
 
     void Renderer::EndScene() {}
 
+    void Renderer::SubmitPositions(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform) {
+        shader->Bind();
+
+        shader->UploadUniformMat4("u_Transform", transform);
+
+        vertexArray->Bind();
+
+        RenderCommand::DrawVertices(vertexArray);
+    }
+
     void Renderer::Submit(const ref<Shader>& shader, const ref<VertexArray>& vertexArray, const glm::mat4& transform, const Material& material) {
         shader->Bind();
 
@@ -52,15 +62,14 @@ namespace midori {
 
         shader->UploadUniformMat4("u_Transform", transform);
 
-        //if (m_SceneData->Lights) {
-        //    shader->UploadUniformFloat3("u_LightPos", m_SceneData->Lights->GetPointLights().at(0)->Position);
-        //    shader->UploadUniformFloat3("u_LightCol", m_SceneData->Lights->GetPointLights().at(0)->Color);
-        //}
-
         shader->UploadUniformFloat3("u_Material.Ambient", material.ambient);
         shader->UploadUniformFloat3("u_Material.Diffuse", material.diffuse);
         shader->UploadUniformFloat3("u_Material.Specular", material.specular);
         shader->UploadUniformFloat("u_Material.Shininess", material.shininess);
+
+        shader->UploadUniformInt("u_DepthMap", 1);
+        shader->UploadUniformMat4("u_SpotLightViewProjection", m_SceneData->Lights->GetSpotLights().at(0)->ShadowMap.GetPerspectiveViewProjection(m_SceneData->Lights->GetSpotLights().at(0)->Position, m_SceneData->Lights->GetSpotLights().at(0)->Direction));
+
 
         vertexArray->Bind();
 
@@ -184,6 +193,7 @@ namespace midori {
             }
         }
 
+        uint32_t tempData;
         for (int spotLightStepper = 0; spotLightStepper < MD_MAX_SPOT_LIGHTS; ++spotLightStepper) {
             if (spotLightStepper < spotLightCount) {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Color));
@@ -193,7 +203,7 @@ namespace midori {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->OuterCutoff));
 
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Direction));
-                m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);
+                m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->DistanceCutoff));
             } else {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(defaultVec));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &paddingData);

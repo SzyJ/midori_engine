@@ -70,6 +70,8 @@ namespace midori {
 
         void Draw(const glm::mat4& transformMod = glm::mat4(1.0f)) const;
 
+        void DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod = glm::mat4(1.0f)) const;
+
     private:
         GeometryPrimitive m_Primitive = GeometryPrimitive::Triangles;
         std::vector<ref<SceneObject>> m_ChildObjects;

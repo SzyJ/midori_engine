@@ -84,4 +84,20 @@ namespace midori {
         }
     }
 
+    void SceneObject::DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod) const {
+        for (const ref<SceneObject>& child : m_ChildObjects) {
+            child->DrawDepth(depthMapShader,m_Transform * transformMod);
+        }
+
+        // TODO: Add shadows to patches
+        switch (m_Primitive) {
+        case GeometryPrimitive::Triangles:
+            Renderer::SubmitPositions(depthMapShader, m_VertexArray, m_Transform * transformMod);
+            break;
+        case GeometryPrimitive::QuadPatches:
+            break;
+        case GeometryPrimitive::TrianglePatches:
+            break;
+        }
+    }
 };
