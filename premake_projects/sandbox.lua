@@ -2,10 +2,10 @@
 -- 
 -- Project: midori_engine
 -- File: sandbox.lua
--- Date: 09/10/2019
+-- Date: 21/11/2019
 
 project "sandbox"
-    location "%{wks.location}/sandbox"
+    location "../sandbox"
     kind "ConsoleApp"
     language "C++"
     cppdialect "C++17"

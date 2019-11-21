@@ -2,10 +2,10 @@
 -- 
 -- Project: midori_engine
 -- File: midori_engine.lua
--- Date: 01/11/2019
+-- Date: 21/11/2019
 
 project "midori_engine"
-    location "%{wks.location}/midori_engine"
+    location "../midori_engine"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
@@ -29,7 +29,8 @@ project "midori_engine"
     }
 
     defines {
-        "_CRT_SECURE_NO_WARNINGS"
+        "_CRT_SECURE_NO_WARNINGS",
+        ("MD_DEFAULT_RESOURCES=\"%{prj.location}/res/\"")
     }
 
     includedirs {

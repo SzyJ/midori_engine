@@ -2,10 +2,10 @@
 -- 
 -- Project: midori_engine
 -- File: imgui.lua
--- Date: 09/10/2019
+-- Date: 21/11/2019
 
 project "imgui"
-    location "%{wks.location}/midori_engine/3rd_party/imgui"
+    location "../midori_engine/3rd_party/imgui"
     kind "StaticLib"
     language "C++"
     cppdialect "C++17"
