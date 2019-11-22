@@ -80,6 +80,7 @@ namespace midori {
             spotlight->ShadowMap.EndShadowMapScene();
         }
 
+        indexCounter = 0;
         for (const ref<DirectionalLight>& dirLight : m_LightingManager->GetDirectionalLights()) {
             if (!dirLight->ShadowMap.IsInitialized()) {
                 continue;

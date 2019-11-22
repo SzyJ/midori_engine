@@ -84,7 +84,8 @@ void main() {
     vec4 baseColor;
 
     float grayscale = 1.0f;
-    baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);
+    //baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);
+    baseColor = texture(u_DirLightDepthMap[0], v_TexCoord);
 
     vec3 diffuse = vec3(0.0f);
     vec3 specular = vec3(0.0f);
@@ -105,7 +106,9 @@ void main() {
 
     // Directional Lights
     for (int i = 0; i < u_DirectionalLightCount; ++i) {
-        float shadow = DirLightShadowCalculation(u_DirectionalLights[i].Direction, i);
+        //float shadow = DirLightShadowCalculation(u_DirectionalLights[i].Direction, i);
+        float shadow = 1.0f;
+
         diffuse += shadow * u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
         //specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }

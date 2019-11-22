@@ -145,7 +145,6 @@ public:
         //terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
         //m_TestScene.AddOpaqueObject(terrainObject);
 
-
         m_TestScene.SetSkybox(midori::make_ref<midori::Skybox>(TEXTURE_SKYBOX));
 
         m_CenterLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -156,7 +155,12 @@ public:
         m_LightManager->AddPointLight(m_SceneLight);
         m_LightManager->AddPointLight(m_SceneLight1);
 
-        m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
+        m_DirLight = midori::make_ref<midori::DirectionalLight>();
+        m_DirLight->Direction = glm::vec3(0.0f, 1.0f, 0.0f);
+        m_DirLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
+        m_DirLight->Strength = 0.8f;
+
+        m_LightManager->AddDirectionalLight(m_DirLight);
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -201,6 +205,8 @@ public:
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
         m_SpotLight1->Direction = glm::vec3(glm::cos(m_TotalTime), -0.5f, -1.0f);
 
+        m_DirLight->Direction = glm::vec3(0.0f, -glm::cos(m_TotalTime), 0.5f);
+
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
         //m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
 
@@ -241,7 +247,7 @@ public:
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
 
         ImGui::Text(std::string("Cam Pos:").append(glm::to_string(m_Camera->GetDirection())).c_str());
-        ImGui::Text(std::string("SpL Pos:").append(glm::to_string(m_SpotLight->Direction)).c_str());
+        ImGui::Text(std::string("DLi Dir:").append(glm::to_string(m_DirLight->Direction)).c_str());
 
         ImGui::End();
     }
@@ -291,6 +297,8 @@ private:
 
     midori::ref<midori::SpotLight> m_SpotLight;
     midori::ref<midori::SpotLight> m_SpotLight1;
+    midori::ref<midori::DirectionalLight> m_DirLight;
+
 
     midori::Scene m_TestScene;
 
