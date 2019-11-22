@@ -161,7 +161,12 @@ public:
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
         m_SpotLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
+        m_SpotLight1 = midori::make_ref<midori::SpotLight>();
+        m_SpotLight1->Position = glm::vec3(0.0f, 0.0f, 15.0f);
+        m_SpotLight1->Color = glm::vec3(1.0f, 0.0f, 1.0f);
+
         m_LightManager->AddSpotLight(m_SpotLight);
+        m_LightManager->AddSpotLight(m_SpotLight1);
 
         m_TestScene.SetLightManager(m_LightManager);
 
@@ -193,6 +198,7 @@ public:
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
+        m_SpotLight1->Direction = glm::vec3(glm::cos(m_TotalTime), -0.5f, -1.0f);
 
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
         //m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
@@ -283,6 +289,7 @@ private:
     midori::ref<midori::SceneObject> m_Helicopter;
 
     midori::ref<midori::SpotLight> m_SpotLight;
+    midori::ref<midori::SpotLight> m_SpotLight1;
 
     midori::Scene m_TestScene;
 
