@@ -17,7 +17,7 @@
 #define MD_DEF_SHADOW_MAP_PERS_FAR_Z 25.0f
 
 #define MD_DEF_SHADOW_MAP_ORTH_NEAR_Z 1.0f
-#define MD_DEF_SHADOW_MAP_ORTH_FAR_Z 7.5f
+#define MD_DEF_SHADOW_MAP_ORTH_FAR_Z 25.0f
 
 #define MD_DEPTH_MAP_SHADER MD_DEFAULT_RESOURCES"shaders/DirectionalLightShadowMap"
 
@@ -67,11 +67,11 @@ namespace midori {
             RenderCommand::Clear();
         }
 
-        void BeginShadowMapOrthoScene(uint8_t index, glm::vec3 position, glm::vec3 direction) {
+        void BeginShadowMapOrthoScene(uint8_t index, glm::vec3 direction) {
             m_DepthMap->Bind(20 + index);
 
             ShadowMap::GetShader()->Bind();
-            ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetOrthographicViewProjection(position, direction));
+            ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetOrthographicViewProjection(direction));
 
             RenderCommand::Clear();
         }
@@ -94,11 +94,11 @@ namespace midori {
             return lightProjection * lightView;
         }
 
-        glm::mat4 GetOrthographicViewProjection(glm::vec3 position, glm::vec3 direction) {
+        glm::mat4 GetOrthographicViewProjection(glm::vec3 direction) {
             glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, MD_DEF_SHADOW_MAP_ORTH_NEAR_Z, MD_DEF_SHADOW_MAP_ORTH_FAR_Z);
-            glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
-                glm::vec3(0.0f, 0.0f, 0.0f),
-                glm::vec3(0.0f, 1.0f, 0.0f));
+            const float distFromOrigin = 25.0f;
+
+            glm::mat4 lightView = glm::lookAt(direction, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
             return lightProjection * lightView;
         }
         

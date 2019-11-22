@@ -65,6 +65,9 @@ layout (std140, binding = 1) uniform Lights {
     SpotLight u_SpotLights[10];
 };
 
+uniform sampler2D u_DirLightDepthMap[10];
+uniform mat4 u_DirLightViewProjection[10];
+
 uniform sampler2D u_SpotLightDepthMap[10];
 uniform mat4 u_SpotLightViewProjection[10];
 
@@ -74,7 +77,8 @@ vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
-float ShadowCalculation(vec3 lightPos, int index);
+float SpotLightShadowCalculation(vec3 lightPos, int index);
+float DirLightShadowCalculation(vec3 lightDir, int index);
 
 void main() {
     vec4 baseColor;
@@ -101,7 +105,8 @@ void main() {
 
     // Directional Lights
     for (int i = 0; i < u_DirectionalLightCount; ++i) {
-        diffuse += u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
+        float shadow = DirLightShadowCalculation(u_DirectionalLights[i].Direction, i);
+        diffuse += shadow * u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
         //specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }
 
@@ -122,7 +127,7 @@ void main() {
         if (theta > u_SpotLights[i].OuterCutoff) {
             vec3 invDir = -u_SpotLights[i].Direction;
 
-            float shadow = ShadowCalculation(u_SpotLights[i].Position, i);
+            float shadow = SpotLightShadowCalculation(u_SpotLights[i].Position, i);
             diffuse += distanceFade * shadow * intensity * CalculateDiffuse(u_SpotLights[i].Color, invDir);
             specular += distanceFade * shadow * intensity * CalculateSpecular(u_SpotLights[i].Color, invDir);
         }
@@ -160,7 +165,7 @@ float GetAttenuation(float dist, float constant, float linear, float quadratic) 
     return 1.0f / denom;
 }
 
-float ShadowCalculation(vec3 lightPos, int index) {
+float SpotLightShadowCalculation(vec3 lightPos, int index) {
     vec4 fragPosLightSpace = u_SpotLightViewProjection[index] * vec4(v_Position, 1.0);
 
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
@@ -173,4 +178,32 @@ float ShadowCalculation(vec3 lightPos, int index) {
     float distFromLight = projCoords.z;
 
     return (lightTravelDist < distFromLight) ? 0.0f : 1.0f;
+}
+
+float DirLightShadowCalculation(vec3 lightDir, int index) {
+    vec4 fragPosLightSpace = u_DirLightViewProjection[index] * vec4(v_Position, 1.0);
+
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    projCoords = projCoords * 0.5 + 0.5;
+
+    float closestDepth = texture(u_DirLightDepthMap[index], projCoords.xy).r; 
+    float currentDepth = projCoords.z;
+
+    vec3 normal = normalize(v_Normal);
+    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+
+    float shadow = 0.0;
+    vec2 texelSize = 1.0 / textureSize(u_DirLightDepthMap[index], 0);
+    for(int x = -1; x <= 1; ++x) {
+        for(int y = -1; y <= 1; ++y) {
+            float pcfDepth = texture(u_DirLightDepthMap[index], projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
+        }    
+    }
+    shadow /= 9.0;
+
+    if(projCoords.z > 1.0)
+        shadow = 0.0;
+        
+    return shadow;
 }

@@ -82,6 +82,20 @@ namespace midori {
             spotlight->ShadowMap.EndShadowMapScene();
         }
 
+        for (const ref<DirectionalLight>& dirLight : m_LightingManager->GetDirectionalLights()) {
+            if (!dirLight->ShadowMap.IsInitialized()) {
+                continue;
+            }
+            dirLight->ShadowMap.BeginShadowMapOrthoScene(indexCounter++, dirLight->Direction);
+
+            if (!m_OpaqueObjects.empty()) {
+                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                    obj->DrawDepth(ShadowMap::GetShader());
+                }
+            }
+
+            dirLight->ShadowMap.EndShadowMapScene();
+        }
     }
 
 };

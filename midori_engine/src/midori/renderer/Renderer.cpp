@@ -77,6 +77,13 @@ namespace midori {
                 shader->UploadUniformMat4("u_SpotLightViewProjection[" + std::to_string(indexCounter) + "]", spotlight->ShadowMap.GetPerspectiveViewProjection(spotlight->Position, spotlight->Direction));
                 ++indexCounter;
             }
+
+            indexCounter = 0;
+            for (const ref<DirectionalLight>& dirLight : m_SceneData->Lights->GetDirectionalLights()) {
+                shader->UploadUniformInt("u_DirLightDepthMap[" + std::to_string(indexCounter) + "]", MD_DIR_SHADOW_MAP_TEX_OFFSET + indexCounter);
+                shader->UploadUniformMat4("u_DirLightViewProjection[" + std::to_string(indexCounter) + "]", dirLight->ShadowMap.GetOrthographicViewProjection(dirLight->Direction));
+                ++indexCounter;
+            }
         }
 
         vertexArray->Bind();

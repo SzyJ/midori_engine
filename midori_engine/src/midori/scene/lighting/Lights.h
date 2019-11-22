@@ -78,6 +78,8 @@ namespace midori {
 
         glm::vec3 Direction;
         float Strength = 0.25f;
+
+        DirectionalLightShadowMap ShadowMap;
     };
 
     struct SpotLight : public Light {

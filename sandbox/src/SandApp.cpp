@@ -74,15 +74,15 @@ public:
 
         m_TestScene.AddOpaqueObject(ground);
 
-        //auto testSquare = midori::make_ref<midori::SceneObject>();
-        //testSquare->SetShader(m_MeshLoadShader);
-        //testSquare->SetVertexArray(groundVA);
-        //testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
-        //testSquare->SetScale(1.0f);
-        //testSquare->SetRotation(glm::vec3(0.5f, 0.0f, 0.0f));
-        //testSquare->SetMaterial(midori::Material::Chrome());
-        //
-        //m_TestScene.AddOpaqueObject(testSquare);
+        auto testSquare = midori::make_ref<midori::SceneObject>();
+        testSquare->SetShader(m_MeshLoadShader);
+        testSquare->SetVertexArray(groundVA);
+        testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
+        testSquare->SetScale(1.0f);
+        testSquare->SetRotation(glm::vec3(0.5f, 0.0f, 0.0f));
+        testSquare->SetMaterial(midori::Material::Chrome());
+        
+        m_TestScene.AddOpaqueObject(testSquare);
 
         auto building = midori::make_ref<midori::SceneObject>();
         building->SetShader(m_MeshLoadShader);
