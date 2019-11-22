@@ -65,6 +65,7 @@ namespace midori {
     }
 
     void OpenGLTextureCubeMap::Bind(const uint32_t slot) const {
+        glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_ImagesID);
     }
 

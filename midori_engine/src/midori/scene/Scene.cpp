@@ -7,8 +7,6 @@
 #include "mdpch.h"
 #include "Scene.h"
 
-
-
 namespace midori {
 
     void Scene::AddOpaqueObject(const ref<SceneObject>& newObject) {
