@@ -156,11 +156,19 @@ public:
         m_LightManager->AddPointLight(m_SceneLight1);
 
         m_DirLight = midori::make_ref<midori::DirectionalLight>();
-        m_DirLight->Direction = glm::vec3(0.0f, 1.0f, 0.0f);
+        m_DirLight->Direction = glm::vec3(-0.5f, -0.767f, 0.363f);
         m_DirLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
         m_DirLight->Strength = 0.8f;
 
         m_LightManager->AddDirectionalLight(m_DirLight);
+
+        auto otherDir = midori::make_ref<midori::DirectionalLight>();
+        otherDir->Direction = glm::vec3(0.5f, -0.74f, 0.47f);
+        otherDir->Color = glm::vec3(0.8f, 0.6f, 0.3f);
+        otherDir->Strength = 0.8f;
+
+        m_LightManager->AddDirectionalLight(otherDir);
+
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -205,7 +213,7 @@ public:
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
         m_SpotLight1->Direction = glm::vec3(glm::cos(m_TotalTime), -0.5f, -1.0f);
 
-        m_DirLight->Direction = glm::vec3(0.0f, -glm::cos(m_TotalTime), 0.5f);
+        //m_DirLight->Direction = glm::vec3(0.0f, -glm::cos(m_TotalTime), 0.5f);
 
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
         //m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
