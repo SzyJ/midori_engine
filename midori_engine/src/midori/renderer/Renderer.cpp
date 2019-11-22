@@ -67,9 +67,11 @@ namespace midori {
         shader->UploadUniformFloat3("u_Material.Specular", material.specular);
         shader->UploadUniformFloat("u_Material.Shininess", material.shininess);
 
-        shader->UploadUniformInt("u_DepthMap", 1);
-        for (const ref<SpotLight>& spotlight : m_SceneData->Lights->GetSpotLights()) {
-            shader->UploadUniformMat4("u_SpotLightViewProjection", spotlight->ShadowMap.GetPerspectiveViewProjection(spotlight->Position, spotlight->Direction));
+        if (m_SceneData->Lights) {
+            shader->UploadUniformInt("u_DepthMap", 1);
+            for (const ref<SpotLight>& spotlight : m_SceneData->Lights->GetSpotLights()) {
+                shader->UploadUniformMat4("u_SpotLightViewProjection", spotlight->ShadowMap.GetPerspectiveViewProjection(spotlight->Position, spotlight->Direction));
+            }
         }
 
         vertexArray->Bind();

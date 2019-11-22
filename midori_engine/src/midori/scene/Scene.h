@@ -14,6 +14,7 @@
 #include "midori/renderer/Renderer.h"
 
 #include <vector>
+#include <algorithm>
 
 namespace midori {
 
@@ -27,7 +28,7 @@ namespace midori {
         bool RemoveOpaqueObject(const ref<SceneObject>& object);
         bool RemoveAlphaObject(const ref<SceneObject>& object);
 
-        void SetSkybox(Skybox* newSkybox) { m_Skybox = newSkybox; }
+        void SetSkybox(const ref<Skybox>& newSkybox) { m_Skybox = newSkybox; }
 
         void SetLightManager(const ref<LightingManager>& newLights) {
             m_LightingManager = newLights;
@@ -42,7 +43,7 @@ namespace midori {
 
     private:
         Camera* m_Camera;
-        Skybox* m_Skybox;
+        ref<Skybox> m_Skybox;
 
         std::vector<ref<SceneObject>> m_OpaqueObjects;
         std::vector<ref<SceneObject>> m_AlphaObjects;
