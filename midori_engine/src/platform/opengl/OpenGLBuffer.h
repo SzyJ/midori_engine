@@ -67,7 +67,7 @@ namespace midori {
         OpenGLFrameBufferDepth2D(uint32_t frameWidth, uint32_t frameHeight);
         ~OpenGLFrameBufferDepth2D();
 
-        virtual void Bind() const override;
+        virtual void Bind(uint8_t textureSlot) const override;
         virtual void Unbind() const override;
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) override;

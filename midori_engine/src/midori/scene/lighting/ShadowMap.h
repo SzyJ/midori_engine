@@ -13,10 +13,13 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#define MD_DEF_SHADOW_MAP_NEAR_Z 1.0f
-#define MD_DEF_SHADOW_MAP_FAR_Z 25.0f
+#define MD_DEF_SHADOW_MAP_PERS_NEAR_Z 1.0f
+#define MD_DEF_SHADOW_MAP_PERS_FAR_Z 25.0f
 
-#define MD_DEPTH_MAP_SHADER MD_DEFAULT_RESOURCES"shaders/SpotLightShadowMap"
+#define MD_DEF_SHADOW_MAP_ORTH_NEAR_Z 1.0f
+#define MD_DEF_SHADOW_MAP_ORTH_FAR_Z 7.5f
+
+#define MD_DEPTH_MAP_SHADER MD_DEFAULT_RESOURCES"shaders/DirectionalLightShadowMap"
 
 namespace midori {
 
@@ -34,17 +37,18 @@ namespace midori {
         static inline bool s_Initialized = false;
     };
 
-    class SpotLightShadowMap {
+    class DirectionalLightShadowMap {
     public:
-        SpotLightShadowMap() = default;
-        SpotLightShadowMap(uint32_t width, uint32_t height) {
+        DirectionalLightShadowMap() = default;
+        DirectionalLightShadowMap(uint32_t width, uint32_t height) {
             m_DepthMap = FrameBufferDepth2D::Create(width, height);
             m_AspectRatio = static_cast<float>(width) / static_cast<float>(height);
             m_Initialized = true;
         }
-        ~SpotLightShadowMap() = default;
+        ~DirectionalLightShadowMap() = default;
 
         void SetFrameSize(uint32_t width, uint32_t height) {
+
             if (!m_DepthMap) {
                 m_DepthMap = FrameBufferDepth2D::Create(width, height);
             } else {
@@ -54,13 +58,21 @@ namespace midori {
             m_Initialized = true;
         }
 
-        void BeginShadowMapScene(glm::vec3 position, glm::vec3 direction) {
-            m_DepthMap->Bind();
+        void BeginShadowMapPerspectiveScene(uint8_t index, glm::vec3 position, glm::vec3 direction) {
+            m_DepthMap->Bind(10 + index);
 
             ShadowMap::GetShader()->Bind();
             ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetPerspectiveViewProjection(position, direction));
 
-            
+            RenderCommand::Clear();
+        }
+
+        void BeginShadowMapOrthoScene(uint8_t index, glm::vec3 position, glm::vec3 direction) {
+            m_DepthMap->Bind(20 + index);
+
+            ShadowMap::GetShader()->Bind();
+            ShadowMap::GetShader()->UploadUniformMat4("u_LightViewProjection", GetOrthographicViewProjection(position, direction));
+
             RenderCommand::Clear();
         }
 
@@ -76,9 +88,17 @@ namespace midori {
         glm::mat4 GetPerspectiveViewProjection(glm::vec3 position, glm::vec3 direction) {
             glm::mat4 lightProjection, lightView;
             // TODO: Change fov based on light size
-            lightProjection = glm::perspective(glm::radians(45.0f), m_AspectRatio, MD_DEF_SHADOW_MAP_NEAR_Z, MD_DEF_SHADOW_MAP_FAR_Z);
+            lightProjection = glm::perspective(glm::radians(45.0f), m_AspectRatio, MD_DEF_SHADOW_MAP_PERS_NEAR_Z, MD_DEF_SHADOW_MAP_PERS_FAR_Z);
             lightView = glm::lookAt(position, position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
 
+            return lightProjection * lightView;
+        }
+
+        glm::mat4 GetOrthographicViewProjection(glm::vec3 position, glm::vec3 direction) {
+            glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, MD_DEF_SHADOW_MAP_ORTH_NEAR_Z, MD_DEF_SHADOW_MAP_ORTH_FAR_Z);
+            glm::mat4 lightView = glm::lookAt(glm::vec3(-2.0f, 4.0f, -1.0f),
+                glm::vec3(0.0f, 0.0f, 0.0f),
+                glm::vec3(0.0f, 1.0f, 0.0f));
             return lightProjection * lightView;
         }
         

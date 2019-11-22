@@ -29,8 +29,7 @@ namespace midori {
 
         virtual void SetViewport(const int xOffset, const int yOffset, const int width, const int height) override;
 
-        virtual void SetActiveTexture0() override;
-        virtual void SetActiveTexture1() override;
+        virtual void SetActiveTexture(uint8_t textureSlot) override;
     };
 
 }

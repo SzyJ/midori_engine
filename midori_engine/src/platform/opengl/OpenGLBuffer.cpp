@@ -119,9 +119,9 @@ namespace midori {
         glDeleteTextures(1, &m_TextureID);
     }
 
-    void OpenGLFrameBufferDepth2D::Bind() const {
+    void OpenGLFrameBufferDepth2D::Bind(uint8_t textureSlot) const {
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
-        glActiveTexture(GL_TEXTURE1);
+        glActiveTexture(GL_TEXTURE0 + textureSlot);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
 
@@ -151,17 +151,20 @@ namespace midori {
         glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
 
         // Bind to FBO
-        Bind();
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_TextureID, 0);
         glDrawBuffer(GL_NONE);
         glReadBuffer(GL_NONE);
+
         Unbind();
     }
 
 
-    ////////////////////////////
-    // Frame Buffer: 2D Depth //
-    ////////////////////////////
+    /////////////////////////////////
+    // Frame Buffer: CubeMap Color //
+    /////////////////////////////////
 
     OpenGLFrameBufferColorCube::OpenGLFrameBufferColorCube(uint32_t size) {
         

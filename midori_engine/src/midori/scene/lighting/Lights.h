@@ -12,7 +12,7 @@
 
 namespace midori {
 
-    class SpotLightShadowMap;
+    class DirectionalLightShadowMap;
 
     struct Light {
  
@@ -110,7 +110,7 @@ namespace midori {
         float OuterCutoff = glm::cos(glm::radians(17.5f));
         float DistanceCutoff = 25.0f;
 
-        SpotLightShadowMap ShadowMap;
+        DirectionalLightShadowMap ShadowMap;
     };
 
 }

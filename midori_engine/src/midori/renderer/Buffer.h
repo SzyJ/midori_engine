@@ -158,7 +158,7 @@ namespace midori {
     public:
         virtual ~FrameBufferDepth2D() = default;
 
-        virtual void Bind() const = 0;
+        virtual void Bind(uint8_t textureSlot) const = 0;
         virtual void Unbind() const = 0;
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) = 0;

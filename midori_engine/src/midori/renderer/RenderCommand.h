@@ -44,14 +44,9 @@ namespace midori {
             s_RendererAPI->SetViewport(xOffset, yOffset, width, height);
         }
 
-        inline static void SetActiveTexture0() {
-            s_RendererAPI->SetActiveTexture0();
+        inline static void SetActiveTexture(uint8_t textureSlot) {
+            s_RendererAPI->SetActiveTexture(textureSlot);
         }
-
-        inline static void SetActiveTexture1() {
-            s_RendererAPI->SetActiveTexture1();
-        }
-
 
     private:
         static RendererAPI* s_RendererAPI;

@@ -59,12 +59,8 @@ namespace midori {
         glViewport(xOffset, yOffset, width, height);
     }
 
-    void OpenGLRendererAPI::SetActiveTexture0() {
-        glActiveTexture(GL_TEXTURE0);
-    }
-
-    void OpenGLRendererAPI::SetActiveTexture1() {
-        glActiveTexture(GL_TEXTURE1);
+    void OpenGLRendererAPI::SetActiveTexture(uint8_t textureSlot) {
+        glActiveTexture(GL_TEXTURE0 + textureSlot);
     }
 
 }

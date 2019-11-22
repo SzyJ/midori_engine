@@ -41,10 +41,7 @@ struct SpotLight {
 };
 
 uniform Material u_Material;
-
 uniform sampler2D u_Texture;
-uniform sampler2D u_DepthMap;
-uniform mat4 u_SpotLightViewProjection;
 
 layout (std140, binding = 0) uniform MVP {
     mat4 u_ViewProjection;
@@ -68,12 +65,16 @@ layout (std140, binding = 1) uniform Lights {
     SpotLight u_SpotLights[10];
 };
 
+uniform sampler2D u_SpotLightDepthMap[10];
+uniform mat4 u_SpotLightViewProjection[10];
+
+
 vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir);
 vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
 
 float GetAttenuation(float dist, float constant, float linear, float quadratic);
 
-float ShadowCalculation(vec3 lightPos);
+float ShadowCalculation(vec3 lightPos, int index);
 
 void main() {
     vec4 baseColor;
@@ -121,7 +122,7 @@ void main() {
         if (theta > u_SpotLights[i].OuterCutoff) {
             vec3 invDir = -u_SpotLights[i].Direction;
 
-            float shadow = ShadowCalculation(u_SpotLights[i].Position);
+            float shadow = ShadowCalculation(u_SpotLights[i].Position, i);
             diffuse += distanceFade * shadow * intensity * CalculateDiffuse(u_SpotLights[i].Color, invDir);
             specular += distanceFade * shadow * intensity * CalculateSpecular(u_SpotLights[i].Color, invDir);
         }
@@ -136,7 +137,6 @@ void main() {
     result = pow(result, vec3(gamma));
     color = vec4(result, 1.0f);
 }
-
 
 vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir) {
     vec3 norm = normalize(v_Normal);
@@ -160,8 +160,8 @@ float GetAttenuation(float dist, float constant, float linear, float quadratic) 
     return 1.0f / denom;
 }
 
-float ShadowCalculation(vec3 lightPos) {
-    vec4 fragPosLightSpace = u_SpotLightViewProjection * vec4(v_Position, 1.0);
+float ShadowCalculation(vec3 lightPos, int index) {
+    vec4 fragPosLightSpace = u_SpotLightViewProjection[index] * vec4(v_Position, 1.0);
 
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     
@@ -169,7 +169,7 @@ float ShadowCalculation(vec3 lightPos) {
 
     float bias = 0.005f;
 
-    float lightTravelDist = texture(u_DepthMap, projCoords.xy).r + bias;
+    float lightTravelDist = texture(u_SpotLightDepthMap[index], projCoords.xy).r + bias;
     float distFromLight = projCoords.z;
 
     return (lightTravelDist < distFromLight) ? 0.0f : 1.0f;
