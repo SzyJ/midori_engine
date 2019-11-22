@@ -62,12 +62,12 @@ namespace midori {
         BufferLayout m_Layout;
     };
 
-    class OpenGLFrameBuffer : public FrameBuffer {
+    class OpenGLFrameBufferDepth2D : public FrameBufferDepth2D {
     public:
-        OpenGLFrameBuffer(uint32_t frameWidth, uint32_t frameHeight);
-        ~OpenGLFrameBuffer();
+        OpenGLFrameBufferDepth2D(uint32_t frameWidth, uint32_t frameHeight);
+        ~OpenGLFrameBufferDepth2D();
 
-        virtual void Bind() const override;
+        virtual void Bind(uint8_t textureSlot) const override;
         virtual void Unbind() const override;
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) override;
@@ -78,6 +78,17 @@ namespace midori {
         uint32_t m_FrameBufferID, m_TextureID;
 
         inline void SetUpTexture(uint32_t width, uint32_t height);
+    };
+
+    class OpenGLFrameBufferColorCube : public FrameBufferColorCube {
+    public:
+        OpenGLFrameBufferColorCube(uint32_t size);
+        ~OpenGLFrameBufferColorCube();
+
+        virtual void Bind() const override;
+        virtual void Unbind() const override;
+
+        virtual void UpdateFrameSize(uint32_t size) override;
     };
     
 }

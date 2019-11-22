@@ -71,8 +71,7 @@ uniform mat4 u_DirLightViewProjection[10];
 uniform sampler2D u_SpotLightDepthMap[10];
 uniform mat4 u_SpotLightViewProjection[10];
 
-
-vec4 ApplyLighting(vec4 baseColor);
+uniform samplerCube u_CubeMapTexture;
 
 vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir);
 vec3 CalculateSpecular(vec3 lightCol, vec3 lightDir);
@@ -83,14 +82,15 @@ float SpotLightShadowCalculation(vec3 lightPos, int index);
 float DirLightShadowCalculation(vec3 lightDir, int index);
 
 void main() {
-    vec4 baseColor;
-    float grayscale = 1.0f;
-    baseColor = vec4(grayscale, grayscale, grayscale, 1.0f);
+    float ratio = 1.00 / 1.52;
+    vec3 I = normalize(u_CameraPos - v_Position);
+    vec3 R = refract(-I, normalize(-v_Normal), ratio);
+    R.y = -R.y;
+    R = normalize(R);
 
-    color = ApplyLighting(baseColor);
-}
+    vec4 baseColor = vec4(texture(u_CubeMapTexture, R).rgb, 1.0);
 
-vec4 ApplyLighting(vec4 baseColor){
+    baseColor *= 1.5f;
 
     vec3 diffuse = vec3(0.0f);
     vec3 specular = vec3(0.0f);
@@ -111,7 +111,9 @@ vec4 ApplyLighting(vec4 baseColor){
 
     // Directional Lights
     for (int i = 0; i < u_DirectionalLightCount; ++i) {
-        float shadow = (1.0f - DirLightShadowCalculation(u_DirectionalLights[i].Direction, i));
+        float shadow = DirLightShadowCalculation(u_DirectionalLights[i].Direction, i);
+        //float shadow = 1.0f;
+
         diffuse += shadow * u_DirectionalLights[i].Strength * CalculateDiffuse(u_DirectionalLights[i].Color, -u_DirectionalLights[i].Direction);
         //specular += u_DirectionalLights[i].Strength * CalculateSpecular(u_DirectionalLights[i].Color, u_DirectionalLights[i].Direction);
     }
@@ -146,7 +148,7 @@ vec4 ApplyLighting(vec4 baseColor){
     float gamma = 2.2f;
 
     result = pow(result, vec3(gamma));
-    return vec4(result, 1.0f);
+    color = vec4(result, 1.0f);
 }
 
 vec3 CalculateDiffuse(vec3 lightCol, vec3 lightDir) {
@@ -195,12 +197,12 @@ float DirLightShadowCalculation(vec3 lightDir, int index) {
     float closestDepth = texture(u_DirLightDepthMap[index], projCoords.xy).r;
 
     float currentDepth = projCoords.z;
+    float bias = 0.005f;
 
-    //float bias = 0.005f;
-    //return currentDepth < closestDepth + bias ? 1.0f : 0.0f;
+    return currentDepth < closestDepth + bias ? 1.0f : 0.0f;
 
     vec3 normal = normalize(v_Normal);
-    float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
+    //float bias = max(0.05 * (1.0 - dot(normal, lightDir)), 0.005);
 
     float shadow = 0.0;
     vec2 texelSize = 1.0 / textureSize(u_DirLightDepthMap[index], 0);

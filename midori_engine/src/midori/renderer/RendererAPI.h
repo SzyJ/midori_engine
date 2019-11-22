@@ -34,8 +34,7 @@ namespace midori {
 
         virtual void SetViewport(const int xOffset, const int yOffset, const int width, const int height) = 0;
 
-        virtual void SetActiveTexture0() = 0;
-        virtual void SetActiveTexture1() = 0;
+        virtual void SetActiveTexture(uint8_t textureSlot) = 0;
 
         inline static API GetAPI() { return s_API; }
 

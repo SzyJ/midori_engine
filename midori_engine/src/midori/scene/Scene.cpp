@@ -7,8 +7,6 @@
 #include "mdpch.h"
 #include "Scene.h"
 
-
-
 namespace midori {
 
     void Scene::AddOpaqueObject(const ref<SceneObject>& newObject) {
@@ -66,12 +64,12 @@ namespace midori {
     }
 
     void Scene::DrawDepth() {
-
+        uint32_t indexCounter = 0;
         for (const ref<SpotLight>& spotlight : m_LightingManager->GetSpotLights()) {
             if (!spotlight->ShadowMap.IsInitialized()) {
                 continue;
             }
-            spotlight->ShadowMap.BeginShadowMapScene(spotlight->Position, spotlight->Direction);
+            spotlight->ShadowMap.BeginShadowMapPerspectiveScene(indexCounter++, spotlight->Position, spotlight->Direction);
 
             if (!m_OpaqueObjects.empty()) {
                 for (const ref<SceneObject>& obj : m_OpaqueObjects) {
@@ -82,6 +80,21 @@ namespace midori {
             spotlight->ShadowMap.EndShadowMapScene();
         }
 
+        indexCounter = 0;
+        for (const ref<DirectionalLight>& dirLight : m_LightingManager->GetDirectionalLights()) {
+            if (!dirLight->ShadowMap.IsInitialized()) {
+                continue;
+            }
+            dirLight->ShadowMap.BeginShadowMapOrthoScene(indexCounter++, dirLight->Direction);
+
+            if (!m_OpaqueObjects.empty()) {
+                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                    obj->DrawDepth(ShadowMap::GetShader());
+                }
+            }
+
+            dirLight->ShadowMap.EndShadowMapScene();
+        }
     }
 
 };

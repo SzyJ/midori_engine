@@ -43,6 +43,10 @@ namespace midori {
             for (const ref<SpotLight>& spotlight : m_SpotLights) {
                 spotlight->ShadowMap.SetFrameSize(newWidth, newHeight);
             }
+#
+            for (const ref<DirectionalLight>& dirlight : m_DirectionalLights) {
+                dirlight->ShadowMap.SetFrameSize(newWidth, newHeight);
+            }
         }
 
     private:

@@ -154,18 +154,30 @@ namespace midori {
         static ref<UniformBuffer> Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock = 0);
     };
 
-    class FrameBuffer {
+    class FrameBufferDepth2D {
     public:
-        virtual ~FrameBuffer() = default;
+        virtual ~FrameBufferDepth2D() = default;
 
-        virtual void Bind() const = 0;
+        virtual void Bind(uint8_t textureSlot) const = 0;
         virtual void Unbind() const = 0;
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) = 0;
 
         virtual uint32_t GetDepthTextureID() = 0;
 
-        static ref<FrameBuffer> Create(uint32_t frameWidth, uint32_t frameHeight);
+        static ref<FrameBufferDepth2D> Create(uint32_t frameWidth, uint32_t frameHeight);
+    };
+
+    class FrameBufferColorCube {
+    public:
+        virtual ~FrameBufferColorCube() = default;
+
+        virtual void Bind() const = 0;
+        virtual void Unbind() const = 0;
+
+        virtual void UpdateFrameSize(uint32_t size) = 0;
+
+        static ref<FrameBufferColorCube> Create(uint32_t size);
     };
 
 }

@@ -63,14 +63,12 @@ namespace midori {
         vb->SetLayout({ {ShaderDataType::Float3, "a_Position" } });
         m_VertexArray->AddVertexBuffer(vb);
 
-        uint32_t bindLocation;
         m_CubeMap = TextureCubeMap::Create(texturePath);
-        m_CubeMap->Bind();
-        m_CubeMap->GetBindLocation(bindLocation);
+        m_CubeMap->Bind(MD_CUBEMAP_TEXTURE_SLOT);
 
         m_Shader = Shader::Load(MD_DEFAULT_RESOURCES"shaders/Skybox");
         m_Shader->Bind();
-        m_Shader->UploadUniformInt("u_CubeMapTexture", bindLocation);
+        m_Shader->UploadUniformInt("u_CubeMapTexture", MD_CUBEMAP_TEXTURE_SLOT);
     }
 
     Skybox::~Skybox() { }

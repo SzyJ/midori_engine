@@ -13,6 +13,9 @@
 #define MD_MAX_DIR_LIGHTS 10
 #define MD_MAX_SPOT_LIGHTS 10
 
+#define MD_SPOT_SHADOW_MAP_TEX_OFFSET 10
+#define MD_DIR_SHADOW_MAP_TEX_OFFSET 20
+
 namespace midori {
 
     Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData;
@@ -68,9 +71,18 @@ namespace midori {
         shader->UploadUniformFloat("u_Material.Shininess", material.shininess);
 
         if (m_SceneData->Lights) {
-            shader->UploadUniformInt("u_DepthMap", 1);
+            uint32_t indexCounter = 0;
             for (const ref<SpotLight>& spotlight : m_SceneData->Lights->GetSpotLights()) {
-                shader->UploadUniformMat4("u_SpotLightViewProjection", spotlight->ShadowMap.GetPerspectiveViewProjection(spotlight->Position, spotlight->Direction));
+                shader->UploadUniformInt("u_SpotLightDepthMap[" + std::to_string(indexCounter) + "]", MD_SPOT_SHADOW_MAP_TEX_OFFSET + indexCounter);
+                shader->UploadUniformMat4("u_SpotLightViewProjection[" + std::to_string(indexCounter) + "]", spotlight->ShadowMap.GetPerspectiveViewProjection(spotlight->Position, spotlight->Direction));
+                ++indexCounter;
+            }
+
+            indexCounter = 0;
+            for (const ref<DirectionalLight>& dirLight : m_SceneData->Lights->GetDirectionalLights()) {
+                shader->UploadUniformInt("u_DirLightDepthMap[" + std::to_string(indexCounter) + "]", MD_DIR_SHADOW_MAP_TEX_OFFSET + indexCounter);
+                shader->UploadUniformMat4("u_DirLightViewProjection[" + std::to_string(indexCounter) + "]", dirLight->ShadowMap.GetOrthographicViewProjection(dirLight->Direction));
+                ++indexCounter;
             }
         }
 

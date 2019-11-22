@@ -13,7 +13,7 @@ namespace midori {
 
     ref<VertexBuffer> VertexBuffer::Create(float* vertices, uint32_t size) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::API::OpenGL:;
+        case RendererAPI::API::OpenGL:
             return make_ref<OpenGLVertexBuffer>(vertices, size);
         case RendererAPI::API::None:
         default:
@@ -25,7 +25,7 @@ namespace midori {
 
     ref<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::API::OpenGL:;
+        case RendererAPI::API::OpenGL:
             return make_ref<OpenGLIndexBuffer>(indices, count);
         case RendererAPI::API::None:
         default:
@@ -37,7 +37,7 @@ namespace midori {
 
     ref<UniformBuffer> UniformBuffer::Create(uint32_t bytesToAssign, void* data, uint32_t bindingBlock) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::API::OpenGL:;
+        case RendererAPI::API::OpenGL:
             return make_ref<OpenGLUniformBuffer>(bytesToAssign, data, bindingBlock);
         case RendererAPI::API::None:
         default:
@@ -47,10 +47,10 @@ namespace midori {
         return nullptr;
     }
 
-    ref<FrameBuffer> FrameBuffer::Create(uint32_t frameWidth, uint32_t frameHeight) {
+    ref<FrameBufferDepth2D> FrameBufferDepth2D::Create(uint32_t frameWidth, uint32_t frameHeight) {
         switch (Renderer::GetAPI()) {
-        case RendererAPI::API::OpenGL:;
-            return make_ref<OpenGLFrameBuffer>(frameWidth, frameHeight);
+        case RendererAPI::API::OpenGL:
+            return make_ref<OpenGLFrameBufferDepth2D>(frameWidth, frameHeight);
         case RendererAPI::API::None:
         default:
             break;
@@ -58,4 +58,17 @@ namespace midori {
         MD_CORE_ERROR("An unspported Rendering API has been selected");
         return nullptr;
     }
+
+    ref<FrameBufferColorCube> FrameBufferColorCube::Create(uint32_t size) {
+        switch (Renderer::GetAPI()) {
+        case RendererAPI::API::OpenGL:
+            return make_ref<OpenGLFrameBufferColorCube>(size);
+        case RendererAPI::API::None:
+        default:
+            break;
+        }
+        MD_CORE_ERROR("An unspported Rendering API has been selected");
+        return nullptr;
+    }
+
 }

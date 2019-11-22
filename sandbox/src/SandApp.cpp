@@ -16,12 +16,14 @@
 class ExampleLayer : public midori::Layer {
 public:
     ExampleLayer() : Layer("Test_Layer") {
+        m_CursorEnabled = true;
         midori::Application::Get().GetWindow().SetCursorEnabled(m_CursorEnabled);
 
         unsigned int screenWidth = midori::Application::Get().GetWindow().GetWindowWidth();
         unsigned int screenHeight = midori::Application::Get().GetWindow().GetWindowHeight();
 
-        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 0.0f, 3.0f));
+        m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 5.0f, -10.0f));
+        m_Camera->Rotate(180.0f, -15.0f);
 
         m_TestScene.SetCamera(m_Camera);
 
@@ -35,8 +37,9 @@ public:
         m_MeshLoadShader->Bind();
         //m_MeshLoadShader->UploadUniformInt("u_Texture", TEXTURE_WHITE_ID);
 
-        m_HelicopterShader = midori::Shader::Load(SHADER_MODEL_LOADER);
+        m_HelicopterShader = midori::Shader::Load(SHADER_HELICOPTER);
         m_HelicopterShader->Bind();
+        m_HelicopterShader->UploadUniformInt("u_CubeMapTexture", MD_CUBEMAP_TEXTURE_SLOT);
         //m_HelicopterShader->UploadUniformInt("u_Texture", TEXTURE_METAL_ID);
 
 
@@ -72,15 +75,15 @@ public:
 
         m_TestScene.AddOpaqueObject(ground);
 
-        //auto testSquare = midori::make_ref<midori::SceneObject>();
-        //testSquare->SetShader(m_MeshLoadShader);
-        //testSquare->SetVertexArray(groundVA);
-        //testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
-        //testSquare->SetScale(1.0f);
-        //testSquare->SetRotation(glm::vec3(0.5f, 0.0f, 0.0f));
-        //testSquare->SetMaterial(midori::Material::Chrome());
-        //
-        //m_TestScene.AddOpaqueObject(testSquare);
+        auto testSquare = midori::make_ref<midori::SceneObject>();
+        testSquare->SetShader(m_MeshLoadShader);
+        testSquare->SetVertexArray(groundVA);
+        testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
+        testSquare->SetScale(1.0f);
+        testSquare->SetRotation(glm::vec3(0.5f, 0.0f, 0.0f));
+        testSquare->SetMaterial(midori::Material::Chrome());
+        
+        m_TestScene.AddOpaqueObject(testSquare);
 
         auto building = midori::make_ref<midori::SceneObject>();
         building->SetShader(m_MeshLoadShader);
@@ -142,7 +145,6 @@ public:
         //terrainObject->SetGeometryPrimitive(midori::GeometryPrimitive::QuadPatches);
         //m_TestScene.AddOpaqueObject(terrainObject);
 
-
         m_TestScene.SetSkybox(midori::make_ref<midori::Skybox>(TEXTURE_SKYBOX));
 
         m_CenterLight = midori::make_ref<midori::PointLight>(glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f));
@@ -153,13 +155,31 @@ public:
         m_LightManager->AddPointLight(m_SceneLight);
         m_LightManager->AddPointLight(m_SceneLight1);
 
-        m_LightManager->AddDirectionalLight(midori::make_ref<midori::DirectionalLight>(glm::vec3(0.0f, 1.0f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
+        m_DirLight = midori::make_ref<midori::DirectionalLight>();
+        m_DirLight->Direction = glm::vec3(-0.5f, -0.767f, 0.363f);
+        m_DirLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
+        m_DirLight->Strength = 0.8f;
+
+        m_LightManager->AddDirectionalLight(m_DirLight);
+
+        auto otherDir = midori::make_ref<midori::DirectionalLight>();
+        otherDir->Direction = glm::vec3(0.5f, -0.74f, 0.47f);
+        otherDir->Color = glm::vec3(0.8f, 0.6f, 0.3f);
+        otherDir->Strength = 0.8f;
+
+        m_LightManager->AddDirectionalLight(otherDir);
+
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
         m_SpotLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
 
+        m_SpotLight1 = midori::make_ref<midori::SpotLight>();
+        m_SpotLight1->Position = glm::vec3(0.0f, 0.0f, 15.0f);
+        m_SpotLight1->Color = glm::vec3(1.0f, 0.0f, 1.0f);
+
         m_LightManager->AddSpotLight(m_SpotLight);
+        m_LightManager->AddSpotLight(m_SpotLight1);
 
         m_TestScene.SetLightManager(m_LightManager);
 
@@ -187,10 +207,13 @@ public:
 
         //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * -m_FlightSpeed));
+        //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * -m_FlightSpeed));
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
+        m_SpotLight1->Direction = glm::vec3(glm::cos(m_TotalTime), -0.5f, -1.0f);
+
+        //m_DirLight->Direction = glm::vec3(0.0f, -glm::cos(m_TotalTime), 0.5f);
 
         //m_SpotLight->Position = glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed);
         //m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);
@@ -232,7 +255,7 @@ public:
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
 
         ImGui::Text(std::string("Cam Pos:").append(glm::to_string(m_Camera->GetDirection())).c_str());
-        ImGui::Text(std::string("SpL Pos:").append(glm::to_string(m_SpotLight->Direction)).c_str());
+        ImGui::Text(std::string("DLi Dir:").append(glm::to_string(m_DirLight->Direction)).c_str());
 
         ImGui::End();
     }
@@ -281,6 +304,9 @@ private:
     midori::ref<midori::SceneObject> m_Helicopter;
 
     midori::ref<midori::SpotLight> m_SpotLight;
+    midori::ref<midori::SpotLight> m_SpotLight1;
+    midori::ref<midori::DirectionalLight> m_DirLight;
+
 
     midori::Scene m_TestScene;
 
