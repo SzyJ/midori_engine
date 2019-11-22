@@ -26,6 +26,7 @@
 #define SHADER_SQUARE_GRID GAME_SHADERS"SquareGrid"
 #define SHADER_TEXTURE_SQUARE GAME_SHADERS"TextureSquare"
 #define SHADER_MODEL_LOADER GAME_SHADERS"MeshLoad"
+#define SHADER_HELICOPTER GAME_SHADERS"Helicopter"
 
 // Textures
 #define TEXTURE_WHITE_ID 4
@@ -33,7 +34,7 @@
 #define TEXTURE_METAL_ID 5
 #define TEXTURE_METAL GAME_TEXTURES"Metal.png"
 
-#define TEXTURE_SKYBOX GAME_TEXTURES"skybox/Sunset" 
+#define TEXTURE_SKYBOX GAME_TEXTURES"skybox/NightSky" 
 
 // Models
 #define MODEL_TEAPOT GAME_MODELS"Teapot.obj"

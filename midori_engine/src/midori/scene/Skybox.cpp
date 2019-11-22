@@ -9,8 +9,6 @@
 
 #include "midori/renderer/Renderer.h"
 
-#define MD_CUBEMAP_TEXTURE_SLOT 30
-
 namespace midori {
 
     inline float c_SkyboxVertices[] = {

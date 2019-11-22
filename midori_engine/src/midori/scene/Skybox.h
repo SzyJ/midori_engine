@@ -10,6 +10,8 @@
 #include "midori/renderer/Shader.h"
 #include "midori/renderer/VertexArray.h"
 
+#define MD_CUBEMAP_TEXTURE_SLOT 30
+
 namespace midori {
 
     class Skybox {

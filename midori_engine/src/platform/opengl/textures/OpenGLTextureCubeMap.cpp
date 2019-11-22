@@ -39,7 +39,7 @@
 namespace midori {
 
     OpenGLTextureCubeMap::~OpenGLTextureCubeMap() {
-        glDeleteTextures(6, &m_ImagesID);
+        glDeleteTextures(1, &m_ImagesID);
     }
 
     OpenGLTextureCubeMap::OpenGLTextureCubeMap(const std::string& path) {
@@ -64,13 +64,20 @@ namespace midori {
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
     }
 
+    OpenGLTextureCubeMap::OpenGLTextureCubeMap() {
+        glGenTextures(1, &m_ImagesID);
+        glBindTexture(GL_TEXTURE_CUBE_MAP, m_ImagesID);
+
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+    }
+
     void OpenGLTextureCubeMap::Bind(const uint32_t slot) const {
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_ImagesID);
-    }
-
-    void OpenGLTextureCubeMap::GetBindLocation(uint32_t& bindLocation) const {
-        bindLocation = GL_TEXTURE_CUBE_MAP;
     }
 
     inline void OpenGLTextureCubeMap::BindTextureData(char* pathToImage, char* const extPtr, const char* faceExtention, GLuint textureTarget) {

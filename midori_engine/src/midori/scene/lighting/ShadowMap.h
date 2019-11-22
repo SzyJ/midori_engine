@@ -95,10 +95,10 @@ namespace midori {
         }
 
         glm::mat4 GetOrthographicViewProjection(glm::vec3 direction) {
-            glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, MD_DEF_SHADOW_MAP_ORTH_NEAR_Z, MD_DEF_SHADOW_MAP_ORTH_FAR_Z);
+            glm::mat4 lightProjection = glm::ortho(-25.0f, 25.0f, -25.0f, 25.0f, MD_DEF_SHADOW_MAP_ORTH_NEAR_Z, MD_DEF_SHADOW_MAP_ORTH_FAR_Z);
             const float distFromOrigin = 25.0f;
 
-            glm::mat4 lightView = glm::lookAt(direction, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+            glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f) - (direction * distFromOrigin), glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
             return lightProjection * lightView;
         }
         

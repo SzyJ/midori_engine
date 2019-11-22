@@ -37,8 +37,9 @@ public:
         m_MeshLoadShader->Bind();
         //m_MeshLoadShader->UploadUniformInt("u_Texture", TEXTURE_WHITE_ID);
 
-        m_HelicopterShader = midori::Shader::Load(SHADER_MODEL_LOADER);
+        m_HelicopterShader = midori::Shader::Load(SHADER_HELICOPTER);
         m_HelicopterShader->Bind();
+        m_HelicopterShader->UploadUniformInt("u_CubeMapTexture", MD_CUBEMAP_TEXTURE_SLOT);
         //m_HelicopterShader->UploadUniformInt("u_Texture", TEXTURE_METAL_ID);
 
 
@@ -194,7 +195,7 @@ public:
 
         //m_Helicopter->SetRotation(glm::vec3(-0.2f, glm::cos(m_TotalTime * 0.3f), glm::sin(m_TotalTime * 0.3f)));
         //m_SceneLight->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * m_FlightSpeed));
-        m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * -m_FlightSpeed));
+        //m_Helicopter->SetPosition(glm::vec3(glm::sin(m_TotalTime) * m_FlightSpeed, 0.0f, glm::cos(m_TotalTime) * -m_FlightSpeed));
         m_Helicopter->SetRotation(glm::vec3(0.0f, glm::cos(m_TotalTime * 0.3f), 0.0f));
 
         m_SpotLight->Direction = glm::vec3(glm::sin(m_TotalTime), -0.5f, 1.0f);

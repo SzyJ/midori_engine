@@ -12,7 +12,7 @@ namespace midori {
 
     class OpenGLTextureCubeMap : public TextureCubeMap {
     public:
-        OpenGLTextureCubeMap() = delete;
+        OpenGLTextureCubeMap();
         OpenGLTextureCubeMap(const std::string& path);
         virtual ~OpenGLTextureCubeMap();
 
@@ -21,8 +21,6 @@ namespace midori {
         virtual uint32_t GetHeight() const override { return 0; }
 
         virtual void Bind(const uint32_t slot = 0) const override;
-
-        virtual void GetBindLocation(uint32_t& binLocation) const override;
 
     private:
         std::string m_Path;
