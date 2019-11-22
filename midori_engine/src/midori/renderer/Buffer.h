@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "midori/core/Log.h"
+
 namespace midori {
 
     enum class ShaderDataType {
