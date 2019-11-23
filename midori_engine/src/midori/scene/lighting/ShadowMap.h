@@ -39,6 +39,16 @@ namespace midori {
 
     class DirectionalLightShadowMap {
     public:
+        float OrthoNearZ = 10.0f;
+        float OrthoFarZ = 25.0f;
+        float OrthoDistFromOrigin = 15.0f;
+        float OrthoSize = 25.0f;
+
+        float PersNearZ = 1.0f;
+        float PersFarZ = 25.0f;
+        float PersFOV = 45.0f;
+
+
         DirectionalLightShadowMap() = default;
         DirectionalLightShadowMap(uint32_t width, uint32_t height) {
             m_DepthMap = FrameBufferDepth2D::Create(width, height);
@@ -86,19 +96,16 @@ namespace midori {
         uint32_t GetDepthTextureID() { return m_DepthMap->GetDepthTextureID(); }
 
         glm::mat4 GetPerspectiveViewProjection(glm::vec3 position, glm::vec3 direction) {
-            glm::mat4 lightProjection, lightView;
-            // TODO: Change fov based on light size
-            lightProjection = glm::perspective(glm::radians(45.0f), m_AspectRatio, MD_DEF_SHADOW_MAP_PERS_NEAR_Z, MD_DEF_SHADOW_MAP_PERS_FAR_Z);
-            lightView = glm::lookAt(position, position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
+            glm::mat4 lightProjection = glm::perspective(glm::radians(PersFOV), m_AspectRatio, PersNearZ, PersFarZ);
+            glm::mat4 lightView = glm::lookAt(position, position + direction, glm::vec3(0.0f, 1.0f, 0.0f));
 
             return lightProjection * lightView;
         }
 
         glm::mat4 GetOrthographicViewProjection(glm::vec3 direction) {
-            glm::mat4 lightProjection = glm::ortho(-25.0f, 25.0f, -25.0f, 25.0f, MD_DEF_SHADOW_MAP_ORTH_NEAR_Z, MD_DEF_SHADOW_MAP_ORTH_FAR_Z);
-            const float distFromOrigin = 15.0f;
+            glm::mat4 lightProjection = glm::ortho(-OrthoSize, OrthoSize, -OrthoSize, OrthoSize, OrthoNearZ, OrthoFarZ);
+            glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f) - (direction * OrthoDistFromOrigin), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
 
-            glm::mat4 lightView = glm::lookAt(glm::vec3(0.0f, 0.0f, 0.0f) - (direction * distFromOrigin), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0, 1.0, 0.0));
             return lightProjection * lightView;
         }
         
