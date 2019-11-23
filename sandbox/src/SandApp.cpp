@@ -156,19 +156,27 @@ public:
         m_LightManager->AddPointLight(m_SceneLight1);
 
         m_DirLight = midori::make_ref<midori::DirectionalLight>();
-        m_DirLight->Direction = glm::vec3(-0.5f, -0.767f, 0.363f);
+        m_DirLight->Direction = glm::vec3(0.0f, -1.0f, 0.0f);
         m_DirLight->Color = glm::vec3(1.0f, 1.0f, 1.0f);
-        m_DirLight->Strength = 0.8f;
+        m_DirLight->Strength = 0.3f;
 
         m_LightManager->AddDirectionalLight(m_DirLight);
+        //
+        //auto otherDir = midori::make_ref<midori::DirectionalLight>();
+        //otherDir->Direction = glm::vec3(0.5f, -0.74f, 0.47f);
+        //otherDir->Color = glm::vec3(0.8f, 0.6f, 0.3f);
+        //otherDir->Strength = 0.8f;
+        //
+        //m_LightManager->AddDirectionalLight(otherDir);
 
-        auto otherDir = midori::make_ref<midori::DirectionalLight>();
-        otherDir->Direction = glm::vec3(0.5f, -0.74f, 0.47f);
-        otherDir->Color = glm::vec3(0.8f, 0.6f, 0.3f);
-        otherDir->Strength = 0.8f;
 
-        m_LightManager->AddDirectionalLight(otherDir);
+        auto blueDir = midori::make_ref<midori::DirectionalLight>(glm::vec3(0.5f, -0.74f, 0.47f), glm::vec3(0.19f, 0.23f, 0.5f));
+        blueDir->Strength = 0.4f;
+        m_LightManager->AddDirectionalLight(blueDir);
 
+        auto yellowDir = midori::make_ref<midori::DirectionalLight>(glm::vec3(-0.5f, -0.767f, 0.363f), glm::vec3(0.43f, 0.419f, 0.25f));
+        yellowDir->Strength = 0.4f;
+        m_LightManager->AddDirectionalLight(yellowDir);
 
         m_SpotLight = midori::make_ref<midori::SpotLight>();
         m_SpotLight->Position = glm::vec3(0.0f, 0.0f, 3.0f);
@@ -254,8 +262,8 @@ public:
         ImGui::Begin("FPS");
         ImGui::Text(std::to_string((1.0f/m_DeltaAverage)).c_str());
 
-        ImGui::Text(std::string("Cam Pos:").append(glm::to_string(m_Camera->GetDirection())).c_str());
-        ImGui::Text(std::string("DLi Dir:").append(glm::to_string(m_DirLight->Direction)).c_str());
+        //ImGui::Text(std::string("Cam Pos:").append(glm::to_string(m_Camera->GetDirection())).c_str());
+        //ImGui::Text(std::string("DLi Dir:").append(glm::to_string(m_DirLight->Direction)).c_str());
 
         ImGui::End();
     }
