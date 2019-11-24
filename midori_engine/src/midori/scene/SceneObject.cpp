@@ -68,31 +68,31 @@ namespace midori {
 
     void SceneObject::Draw(const glm::mat4& transformMod) const {
         for (const ref<SceneObject>& child : m_ChildObjects) {
-            child->Draw(m_Transform * transformMod);
+            child->Draw(transformMod * m_Transform);
         }
 
         switch(m_Primitive) {
         case GeometryPrimitive::Triangles:
-            Renderer::Submit(m_Shader, m_VertexArray, m_Transform * transformMod, m_Material);
+            Renderer::Submit(m_Shader, m_VertexArray, transformMod * m_Transform, m_Material);
             break;
         case GeometryPrimitive::QuadPatches:
-            Renderer::SubmitPatches(m_Shader, m_VertexArray, m_Transform * transformMod);
+            Renderer::SubmitPatches(m_Shader, m_VertexArray, transformMod * m_Transform);
             break;
         case GeometryPrimitive::TrianglePatches:
-            Renderer::SubmitPatches(m_Shader, m_VertexArray, m_Transform * transformMod, 3);
+            Renderer::SubmitPatches(m_Shader, m_VertexArray, transformMod * m_Transform, 3);
             break;
         }
     }
 
     void SceneObject::DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod) const {
         for (const ref<SceneObject>& child : m_ChildObjects) {
-            child->DrawDepth(depthMapShader,m_Transform * transformMod);
+            child->DrawDepth(depthMapShader, transformMod * m_Transform);
         }
 
         // TODO: Add shadows to patches
         switch (m_Primitive) {
         case GeometryPrimitive::Triangles:
-            Renderer::SubmitPositions(depthMapShader, m_VertexArray, m_Transform * transformMod);
+            Renderer::SubmitPositions(depthMapShader, m_VertexArray, transformMod * m_Transform);
             break;
         case GeometryPrimitive::QuadPatches:
             break;
