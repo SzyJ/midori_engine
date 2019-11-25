@@ -43,6 +43,18 @@ namespace midori {
 
         virtual const glm::vec3& GetPosition() const override { return m_Position; }
         virtual const glm::vec3& GetDirection() const override { return m_Front; }
+        virtual void SetPosition(const glm::vec3& newPos) override {
+            m_Position = newPos;
+            RecalculateViewMatrix();
+        }
+        virtual void SetDirection(float yaw, float pitch) override {
+            m_Yaw = yaw;
+            m_Pitch = pitch;
+            UpdateCameraVectors();
+            RecalculateViewMatrix();
+        }
+        virtual float GetYaw() override { return m_Yaw; }
+        virtual float GetPitch() override { return m_Pitch; }
 
         virtual const glm::mat4& GetViewMatrix() const override;
         virtual const glm::mat4& GetProjectionMatrix() const override;

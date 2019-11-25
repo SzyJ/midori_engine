@@ -17,6 +17,10 @@ namespace midori {
 
         virtual const glm::vec3& GetPosition() const = 0;
         virtual const glm::vec3& GetDirection() const = 0;
+        virtual void SetPosition(const glm::vec3& newPos) = 0;
+        virtual void SetDirection(float yaw, float pitch) = 0;
+        virtual float GetYaw() = 0;
+        virtual float GetPitch() = 0;
 
         virtual const glm::mat4& GetViewMatrix() const = 0;
         virtual const glm::mat4& GetProjectionMatrix() const = 0;
