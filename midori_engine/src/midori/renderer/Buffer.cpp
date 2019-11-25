@@ -59,6 +59,19 @@ namespace midori {
         return nullptr;
     }
 
+
+    ref<FrameBufferColor2D> FrameBufferColor2D::Create(uint32_t frameWidth, uint32_t frameHeight) {
+        switch (Renderer::GetAPI()) {
+        case RendererAPI::API::OpenGL:
+            return make_ref<OpenGLFrameBufferColor2D>(frameWidth, frameHeight);
+        case RendererAPI::API::None:
+        default:
+            break;
+        }
+        MD_CORE_ERROR("An unspported Rendering API has been selected");
+        return nullptr;
+    }
+
     ref<FrameBufferColorCube> FrameBufferColorCube::Create(uint32_t size) {
         switch (Renderer::GetAPI()) {
         case RendererAPI::API::OpenGL:

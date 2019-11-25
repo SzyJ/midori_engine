@@ -172,14 +172,16 @@ namespace midori {
     public:
         virtual ~FrameBufferColor2D() = default;
 
-        virtual void Bind(uint8_t textureSlot) const = 0;
+        virtual void Bind() const = 0;
+        virtual void BindTexture(uint8_t textureSlot) const = 0;
+
         virtual void Unbind() const = 0;
 
         virtual void UpdateFrameSize(uint32_t width, uint32_t height) = 0;
 
         virtual uint32_t GetDepthTextureID() = 0;
 
-        static ref<FrameBufferDepth2D> Create(uint32_t frameWidth, uint32_t frameHeight);
+        static ref<FrameBufferColor2D> Create(uint32_t frameWidth, uint32_t frameHeight);
     };
 
     class FrameBufferColorCube {

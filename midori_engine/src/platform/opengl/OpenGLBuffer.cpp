@@ -170,17 +170,21 @@ namespace midori {
         // Make buffer
         glGenFramebuffers(1, &m_FrameBufferID);
 
-        // Make Texture
         SetUpTexture(frameWidth, frameHeight);
+        SetUpRenderBuffer(frameWidth, frameHeight);
     }
 
     OpenGLFrameBufferColor2D::~OpenGLFrameBufferColor2D() {
         glDeleteFramebuffers(1, &m_FrameBufferID);
         glDeleteTextures(1, &m_TextureID);
+        glDeleteRenderbuffers(1, &m_RenderBufferID);
     }
 
-    void OpenGLFrameBufferColor2D::Bind(uint8_t textureSlot) const {
+    void OpenGLFrameBufferColor2D::Bind() const {
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+    }
+
+    void OpenGLFrameBufferColor2D::BindTexture(uint8_t textureSlot) const {
         glActiveTexture(GL_TEXTURE0 + textureSlot);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
     }
@@ -191,35 +195,40 @@ namespace midori {
 
     void OpenGLFrameBufferColor2D::UpdateFrameSize(uint32_t width, uint32_t height) {
         glDeleteTextures(1, &m_TextureID);
+        glDeleteRenderbuffers(1, &m_RenderBufferID);
         SetUpTexture(width, height);
+        SetUpRenderBuffer(width, height);
     }
 
     // TODO: Allow for other options rather than just depth
     void OpenGLFrameBufferColor2D::SetUpTexture(uint32_t width, uint32_t height) {
         // TODO: Move this to a texture class
+        Bind();
+
         glGenTextures(1, &m_TextureID);
         glBindTexture(GL_TEXTURE_2D, m_TextureID);
 
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-        float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-
-        // Bind to FBO
-        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
-        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureID, 0);
-        glDrawBuffer(GL_NONE);
-        glReadBuffer(GL_NONE);
 
         Unbind();
     }
+
+    void OpenGLFrameBufferColor2D::SetUpRenderBuffer(uint32_t width, uint32_t height) {
+        Bind();
+
+        glGenRenderbuffers(1, &m_RenderBufferID);
+        glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBufferID);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_RenderBufferID);
+
+        Unbind();
+    }
+
 
 
     /////////////////////////////////
