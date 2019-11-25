@@ -27,6 +27,8 @@ public:
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 5.0f, -10.0f));
         m_Camera->Rotate(180.0f, -15.0f);
 
+        //m_PostProcessing.AddStage(SHADER_PP_GRAYSCALE);
+        m_PostProcessing.AddStage(SHADER_PP_RAINDROP);
         m_PostProcessing.UpdateScreenSize(screenWidth, screenHeight);
 
         m_TestScene.SetCamera(m_Camera);
@@ -262,7 +264,7 @@ public:
         midori::RenderCommand::Clear();
         m_TestScene.Draw();
 
-        m_PostProcessing.FinishPostProcess();
+        m_PostProcessing.FinishPostProcess(m_TotalTime);
     }
 
     void OnImGuiRender() override {

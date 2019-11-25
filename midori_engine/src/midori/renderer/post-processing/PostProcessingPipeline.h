@@ -12,7 +12,7 @@
 
 #include <vector>
 
-#define MD_POST_PROCESS_TEX_OFFSET 5
+#define MD_POST_PROCESS_TEX_SLOT 9
 
 namespace midori {
 
@@ -22,9 +22,11 @@ namespace midori {
         ~PostProcessingPipeline() = default;
 
         void BeginPostProcess();
-        void FinishPostProcess();
+        void FinishPostProcess(float time = 0.0f);
 
         void UpdateScreenSize(uint32_t width, uint32_t height);
+
+        void AddStage(const char* shaderPath) { m_ProcessStages.emplace_back(shaderPath); }
 
     private:
         ref<Shader> m_SimpleDrawShader;

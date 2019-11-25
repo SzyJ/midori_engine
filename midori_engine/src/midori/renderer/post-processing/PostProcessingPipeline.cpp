@@ -36,23 +36,23 @@ namespace midori {
         m_InputFrame->Bind();
     }
 
-    void PostProcessingPipeline::FinishPostProcess() {
+    void PostProcessingPipeline::FinishPostProcess(float time) {
         m_InputFrame->Unbind();
-        m_InputFrame->BindTexture(MD_POST_PROCESS_TEX_OFFSET);
+        m_InputFrame->BindTexture(MD_POST_PROCESS_TEX_SLOT);
 
-        uint32_t inputTextureSlot = MD_POST_PROCESS_TEX_OFFSET;
         for (PostProcessStage& stage : m_ProcessStages) {
-            stage.SetInputTexture(inputTextureSlot);
+            stage.SetInputTexture(MD_POST_PROCESS_TEX_SLOT);
+            stage.SetTime(time);
             stage.Bind();
-
+            
             DrawScreenQuad();
 
             stage.Unbind();
-            stage.BindTexture(inputTextureSlot);
+            stage.BindTexture(MD_POST_PROCESS_TEX_SLOT);
         }
 
         m_SimpleDrawShader->Bind();
-        m_SimpleDrawShader->UploadUniformInt("u_InputTexture", inputTextureSlot);
+        m_SimpleDrawShader->UploadUniformInt("u_InputTexture", MD_POST_PROCESS_TEX_SLOT);
 
         DrawScreenQuad();
         m_SimpleDrawShader->Unbind();
