@@ -43,12 +43,12 @@ namespace midori {
         RecalculateScale();
     }
 
-    inline void SceneObject::RecalculateScale() {
+    void SceneObject::RecalculateScale() {
         m_ScaleTransform = glm::scale(glm::mat4(1.0f), glm::vec3(m_Scale));
         RecalculateTransform();
     }
 
-    inline void SceneObject::RecalculateRotate() {
+    void SceneObject::RecalculateRotate() {
         glm::mat4 rotationMat(1.0f);
         rotationMat = glm::rotate(rotationMat, m_Rotation.z * glm::pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f));
         rotationMat = glm::rotate(rotationMat, m_Rotation.y * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -57,12 +57,12 @@ namespace midori {
         RecalculateTransform();
     }
    
-    inline void SceneObject::RecalculateTranslate() {
+    void SceneObject::RecalculateTranslate() {
         m_TranslateTransform = glm::translate(glm::mat4(1.0f), m_Position);
         RecalculateTransform();
     }
 
-    inline void SceneObject::RecalculateTransform() {
+    void SceneObject::RecalculateTransform() {
         m_Transform = m_TranslateTransform * m_RotationTransform * m_ScaleTransform;
     }
 
