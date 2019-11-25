@@ -41,17 +41,16 @@ namespace midori {
         m_InputFrame->BindTexture(MD_POST_PROCESS_TEX_OFFSET);
 
         uint32_t inputTextureSlot = MD_POST_PROCESS_TEX_OFFSET;
-        //for (PostProcessStage& stage : m_ProcessStages) {
-        //    stage.SetInputTexture(inputTextureSlot);
-        //    stage.Bind();
-        //
-        //    DrawScreenQuad();
-        //
-        //    stage.Unbind();
-        //    stage.BindTexture(inputTextureSlot);
-        //}
+        for (PostProcessStage& stage : m_ProcessStages) {
+            stage.SetInputTexture(inputTextureSlot);
+            stage.Bind();
 
-        
+            DrawScreenQuad();
+
+            stage.Unbind();
+            stage.BindTexture(inputTextureSlot);
+        }
+
         m_SimpleDrawShader->Bind();
         m_SimpleDrawShader->UploadUniformInt("u_InputTexture", inputTextureSlot);
 
