@@ -162,6 +162,66 @@ namespace midori {
     }
 
 
+    ////////////////////////////
+    // Frame Buffer: 2D Color //
+    ////////////////////////////
+
+    OpenGLFrameBufferColor2D::OpenGLFrameBufferColor2D(uint32_t frameWidth, uint32_t frameHeight) {
+        // Make buffer
+        glGenFramebuffers(1, &m_FrameBufferID);
+
+        // Make Texture
+        SetUpTexture(frameWidth, frameHeight);
+    }
+
+    OpenGLFrameBufferColor2D::~OpenGLFrameBufferColor2D() {
+        glDeleteFramebuffers(1, &m_FrameBufferID);
+        glDeleteTextures(1, &m_TextureID);
+    }
+
+    void OpenGLFrameBufferColor2D::Bind(uint8_t textureSlot) const {
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glActiveTexture(GL_TEXTURE0 + textureSlot);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+    }
+
+    void OpenGLFrameBufferColor2D::Unbind() const {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void OpenGLFrameBufferColor2D::UpdateFrameSize(uint32_t width, uint32_t height) {
+        glDeleteTextures(1, &m_TextureID);
+        SetUpTexture(width, height);
+    }
+
+    // TODO: Allow for other options rather than just depth
+    void OpenGLFrameBufferColor2D::SetUpTexture(uint32_t width, uint32_t height) {
+        // TODO: Move this to a texture class
+        glGenTextures(1, &m_TextureID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+
+        // Bind to FBO
+        glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
+        glBindTexture(GL_TEXTURE_2D, m_TextureID);
+
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_TextureID, 0);
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+
+        Unbind();
+    }
+
+
     /////////////////////////////////
     // Frame Buffer: CubeMap Color //
     /////////////////////////////////
@@ -185,4 +245,5 @@ namespace midori {
     void OpenGLFrameBufferColorCube::UpdateFrameSize(uint32_t size) {
         
     }
+
 }
