@@ -28,6 +28,10 @@
 #define SHADER_MODEL_LOADER GAME_SHADERS"MeshLoad"
 #define SHADER_HELICOPTER GAME_SHADERS"Helicopter"
 
+#define SHADER_PP_GRAYSCALE GAME_SHADERS"post-process/Grayscale"
+#define SHADER_PP_RAINDROP GAME_SHADERS"post-process/LensRaindrop"
+
+
 // Textures
 #define TEXTURE_WHITE_ID 4
 #define TEXTURE_WHITE GAME_TEXTURES"White.png"

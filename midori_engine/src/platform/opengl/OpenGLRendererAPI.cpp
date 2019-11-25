@@ -33,6 +33,14 @@ namespace midori {
         glDepthMask(newState ? GL_TRUE : GL_FALSE);
     }
 
+    void OpenGLRendererAPI::SetDepthTest(const bool newState) {
+        if (newState) {
+            glEnable(GL_DEPTH_TEST);
+        } else {
+            glDisable(GL_DEPTH_TEST);
+        }
+    }
+
     void OpenGLRendererAPI::DrawVertices(const ref<VertexArray>& vertexArray) {
         if (vertexArray->GetIndexBuffer()) {
             glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);

@@ -10,6 +10,8 @@
 
 #include <midori/renderer/MeshLoader.h>
 
+#include <midori/renderer/post-processing/PostProcessingPipeline.h>
+
 #include <glm/gtx/string_cast.hpp>
 
 
@@ -24,6 +26,10 @@ public:
 
         m_Camera = new midori::PerspectiveCamera((float) screenWidth / (float) screenHeight, glm::vec3(0.0f, 5.0f, -10.0f));
         m_Camera->Rotate(180.0f, -15.0f);
+
+        //m_PostProcessing.AddStage(SHADER_PP_GRAYSCALE);
+        m_PostProcessing.AddStage(SHADER_PP_RAINDROP);
+        m_PostProcessing.UpdateScreenSize(screenWidth, screenHeight);
 
         m_TestScene.SetCamera(m_Camera);
 
@@ -249,13 +255,16 @@ public:
             m_Camera->Move(midori::MovementDirection::down, delta * m_MoveSpeed);
         }
 
-
+        // Draw
         m_TestScene.DrawDepth();
+
+        m_PostProcessing.BeginPostProcess();
 
         midori::RenderCommand::SetClearColor({ 0.26f, 0.26f, 0.26f, 1.0f });
         midori::RenderCommand::Clear();
-
         m_TestScene.Draw();
+
+        m_PostProcessing.FinishPostProcess(m_TotalTime);
     }
 
     void OnImGuiRender() override {
@@ -315,6 +324,7 @@ private:
     midori::ref<midori::SpotLight> m_SpotLight1;
     midori::ref<midori::DirectionalLight> m_DirLight;
 
+    midori::PostProcessingPipeline m_PostProcessing;
 
     midori::Scene m_TestScene;
 
@@ -333,8 +343,10 @@ private:
         const auto newHeight = resizeEvent.GetHeight();
 
         midori::RenderCommand::SetViewport(0, 0, newWidth, newHeight);
+        // TODO: do below in engine code.
         m_Camera->OnWindowResize(newWidth, newHeight);
         m_LightManager->UpdateFrameBufferSize(newWidth, newHeight);
+        m_PostProcessing.UpdateScreenSize(newWidth, newHeight);
     }
 };
 

@@ -32,6 +32,10 @@ namespace midori {
             s_RendererAPI->SetDepthMask(newState);
         }
 
+        inline static void SetDepthTest(const bool newState) {
+            s_RendererAPI->SetDepthTest(newState);
+        }
+
         inline static void DrawVertices(const ref<VertexArray>& vertexArray) {
             s_RendererAPI->DrawVertices(vertexArray);
         }
