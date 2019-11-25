@@ -91,10 +91,10 @@ namespace midori {
         glm::vec3 m_Rotation;
         float m_Scale;
 
-        inline void RecalculateScale();
-        inline void RecalculateRotate();
-        inline void RecalculateTranslate();
-        inline void RecalculateTransform();
+        void RecalculateScale();
+        void RecalculateRotate();
+        void RecalculateTranslate();
+        void RecalculateTransform();
     };
 
 }
