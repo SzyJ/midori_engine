@@ -1,7 +1,7 @@
 ![README_Banner](images/midori_engine_banner.png)
 
 # Real-time Application Engine built from the ground up!
-TODO: README
+This is an ongoing project used by me for educational purposes and fun!
 
 ## To include in your project
 Add this repo as a submodule:
