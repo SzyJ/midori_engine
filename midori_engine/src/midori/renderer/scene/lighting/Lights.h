@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "midori/scene/lighting/ShadowMap.h"
+#include "midori/renderer/scene/lighting/ShadowMap.h"
 
 #include <glm/glm.hpp>
 

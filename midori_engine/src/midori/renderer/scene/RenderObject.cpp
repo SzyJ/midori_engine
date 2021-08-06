@@ -1,11 +1,11 @@
 // Author: Szymon Jackiewicz
 // 
 // Project: midori_engine
-// File: SceneObject.cpp
-// Date: 04/11/2019
+// File: RenderObject.cpp
+// Date: 06/08/2021
 
 #include "mdpch.h"
-#include "midori/scene/SceneObject.h"
+#include "midori/renderer/scene/RenderObject.h"
 #include "midori/renderer/Renderer.h"
 
 #include <glm/glm.hpp>
@@ -13,11 +13,11 @@
 
 namespace midori {
 
-    void SceneObject::AddChild(const ref<SceneObject>& child) {
+    void RenderObject::AddChild(const ref<RenderObject>& child) {
         m_ChildObjects.push_back(child);
     }
 
-    bool SceneObject::DeleteChild(const ref<SceneObject>& child) {
+    bool RenderObject::DeleteChild(const ref<RenderObject>& child) {
         auto childIndex = std::find(m_ChildObjects.begin(), m_ChildObjects.end(), child);
         if (childIndex == m_ChildObjects.end()) {
             MD_CORE_TRACE("Attempt to remove child scene object that cannot be found");
@@ -28,27 +28,27 @@ namespace midori {
         return true;
     }
 
-    void SceneObject::SetPosition(const glm::vec3& newPosition) {
+    void RenderObject::SetPosition(const glm::vec3& newPosition) {
         m_Position = newPosition;
         RecalculateTranslate();
     }
 
-    void SceneObject::SetRotation(const glm::vec3& newRotation) {
+    void RenderObject::SetRotation(const glm::vec3& newRotation) {
         m_Rotation = newRotation;
         RecalculateRotate();
     }
 
-    void SceneObject::SetScale(const float newScale) {
+    void RenderObject::SetScale(const float newScale) {
         m_Scale = newScale;
         RecalculateScale();
     }
 
-    void SceneObject::RecalculateScale() {
+    void RenderObject::RecalculateScale() {
         m_ScaleTransform = glm::scale(glm::mat4(1.0f), glm::vec3(m_Scale));
         RecalculateTransform();
     }
 
-    void SceneObject::RecalculateRotate() {
+    void RenderObject::RecalculateRotate() {
         glm::mat4 rotationMat(1.0f);
         rotationMat = glm::rotate(rotationMat, m_Rotation.z * glm::pi<float>(), glm::vec3(0.0f, 0.0f, 1.0f));
         rotationMat = glm::rotate(rotationMat, m_Rotation.y * glm::pi<float>(), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -57,17 +57,17 @@ namespace midori {
         RecalculateTransform();
     }
    
-    void SceneObject::RecalculateTranslate() {
+    void RenderObject::RecalculateTranslate() {
         m_TranslateTransform = glm::translate(glm::mat4(1.0f), m_Position);
         RecalculateTransform();
     }
 
-    void SceneObject::RecalculateTransform() {
+    void RenderObject::RecalculateTransform() {
         m_Transform = m_TranslateTransform * m_RotationTransform * m_ScaleTransform;
     }
 
-    void SceneObject::Draw(const glm::mat4& transformMod) const {
-        for (const ref<SceneObject>& child : m_ChildObjects) {
+    void RenderObject::Draw(const glm::mat4& transformMod) const {
+        for (const ref<RenderObject>& child : m_ChildObjects) {
             child->Draw(transformMod * m_Transform);
         }
 
@@ -84,8 +84,8 @@ namespace midori {
         }
     }
 
-    void SceneObject::DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod) const {
-        for (const ref<SceneObject>& child : m_ChildObjects) {
+    void RenderObject::DrawDepth(ref<Shader> depthMapShader, const glm::mat4& transformMod) const {
+        for (const ref<RenderObject>& child : m_ChildObjects) {
             child->DrawDepth(depthMapShader, transformMod * m_Transform);
         }
 

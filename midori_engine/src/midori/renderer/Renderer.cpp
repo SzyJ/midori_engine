@@ -208,8 +208,7 @@ namespace midori {
             }
         }
 
-        uint32_t tempData;
-        for (int spotLightStepper = 0; spotLightStepper < MD_MAX_SPOT_LIGHTS; ++spotLightStepper) {
+        for (size_t spotLightStepper = 0; spotLightStepper < MD_MAX_SPOT_LIGHTS; ++spotLightStepper) {
             if (spotLightStepper < spotLightCount) {
                 m_Uniforms->AllLights->SetSubData(elementIndex++, glm::value_ptr(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->Color));
                 m_Uniforms->AllLights->SetSubData(elementIndex++, &(m_SceneData->Lights->GetSpotLights().at(spotLightStepper)->InnerCutoff));

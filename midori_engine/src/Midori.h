@@ -33,11 +33,11 @@
 #include "midori/renderer/camera/PerspectiveCamera.h"
 
 // Scene
-#include "midori/scene/SceneObject.h"
-#include "midori/scene/Scene.h"
-#include "midori/scene/Skybox.h"
-#include "midori/scene/lighting/Lights.h"
-#include "midori/scene/lighting/LightingManager.h"
+#include "midori/renderer/scene/RenderObject.h"
+#include "midori/renderer/scene/RenderScene.h"
+#include "midori/renderer/scene/Skybox.h"
+#include "midori/renderer/scene/lighting/Lights.h"
+#include "midori/renderer/scene/lighting/LightingManager.h"
 
 // == Entry Point == //
 #include "midori/core/EntryPoint.h"

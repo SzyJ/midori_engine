@@ -9,8 +9,8 @@
 #include "midori/renderer/camera/Camera.h"
 #include "midori/renderer/RenderCommand.h"
 #include "midori/renderer/Shader.h"
-#include "midori/scene/lighting/LightingManager.h"
-#include "midori/scene/lighting/Materials.h"
+#include "midori/renderer/scene/lighting/LightingManager.h"
+#include "midori/renderer/scene/lighting/Materials.h"
 
 namespace midori {
 

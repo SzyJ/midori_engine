@@ -1,23 +1,23 @@
 // Author: Szymon Jackiewicz
 // 
 // Project: midori_engine
-// File: Scene.cpp
-// Date: 04/11/2019
+// File: RenderScene.cpp
+// Date: 06/08/2021
 
 #include "mdpch.h"
-#include "Scene.h"
+#include "RenderScene.h"
 
 namespace midori {
 
-    void Scene::AddOpaqueObject(const ref<SceneObject>& newObject) {
+    void RenderScene::AddOpaqueObject(const ref<RenderObject>& newObject) {
         m_OpaqueObjects.push_back(newObject);
     }
 
-    void Scene::AddAlphaObject(const ref<SceneObject>& newObject) {
+    void RenderScene::AddAlphaObject(const ref<RenderObject>& newObject) {
         m_AlphaObjects.push_back(newObject);
     }
 
-    bool Scene::RemoveOpaqueObject(const ref<SceneObject>& object) {
+    bool RenderScene::RemoveOpaqueObject(const ref<RenderObject>& object) {
         auto childIndex = std::find(m_OpaqueObjects.begin(), m_OpaqueObjects.end(), object);
         if (childIndex == m_OpaqueObjects.end()) {
             MD_CORE_TRACE("Attempt to remove scene object that cannot be found");
@@ -28,7 +28,7 @@ namespace midori {
         return true;
     }
 
-    bool Scene::RemoveAlphaObject(const ref<SceneObject>& object)  {
+    bool RenderScene::RemoveAlphaObject(const ref<RenderObject>& object)  {
         auto childIndex = std::find(m_AlphaObjects.begin(), m_AlphaObjects.end(), object);
         if (childIndex == m_AlphaObjects.end()) {
             MD_CORE_TRACE("Attempt to remove scene object that cannot be found");
@@ -39,7 +39,7 @@ namespace midori {
         return true;
     }
 
-    void Scene::Draw() {
+    void RenderScene::Draw() {
         Renderer::BeginScene(m_Camera);
 
         if (m_Skybox) {
@@ -48,7 +48,7 @@ namespace midori {
 
         if (!m_OpaqueObjects.empty()) {
             SortBasedOnCameraDistance(m_OpaqueObjects.begin(), m_OpaqueObjects.end());
-            for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+            for (const ref<RenderObject>& obj : m_OpaqueObjects) {
                 obj->Draw();
             }
         }
@@ -63,7 +63,7 @@ namespace midori {
         Renderer::EndScene();
     }
 
-    void Scene::DrawDepth() {
+    void RenderScene::DrawDepth() {
         uint32_t indexCounter = 0;
         for (const ref<SpotLight>& spotlight : m_LightingManager->GetSpotLights()) {
             if (!spotlight->ShadowMap.IsInitialized()) {
@@ -72,7 +72,7 @@ namespace midori {
             spotlight->ShadowMap.BeginShadowMapPerspectiveScene(indexCounter++, spotlight->Position, spotlight->Direction);
 
             if (!m_OpaqueObjects.empty()) {
-                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                for (const ref<RenderObject>& obj : m_OpaqueObjects) {
                     obj->DrawDepth(ShadowMap::GetShader());
                 }
             }
@@ -88,7 +88,7 @@ namespace midori {
             dirLight->ShadowMap.BeginShadowMapOrthoScene(indexCounter++, dirLight->Direction);
 
             if (!m_OpaqueObjects.empty()) {
-                for (const ref<SceneObject>& obj : m_OpaqueObjects) {
+                for (const ref<RenderObject>& obj : m_OpaqueObjects) {
                     obj->DrawDepth(ShadowMap::GetShader());
                 }
             }

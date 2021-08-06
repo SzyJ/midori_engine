@@ -2,7 +2,7 @@
 // 
 // Project: sandbox
 // File: SandApp.cpp
-// Date: 09/10/2019
+// Date: 06/08/2021
 
 #include "Core.h"
 #include <Midori.h>
@@ -72,7 +72,7 @@ public:
         groundVA->AddVertexBuffer(groundVB);
         groundVA->SetIndexBuffer(groundIB);
 
-        auto ground = midori::make_ref<midori::SceneObject>();
+        auto ground = midori::make_ref<midori::RenderObject>();
         ground->SetShader(m_MeshLoadShader);
         ground->SetVertexArray(groundVA);
         ground->SetPosition(glm::vec3(0.0f, -3.0f, 0.0f));
@@ -81,7 +81,7 @@ public:
 
         m_TestScene.AddOpaqueObject(ground);
 
-        auto testSquare = midori::make_ref<midori::SceneObject>();
+        auto testSquare = midori::make_ref<midori::RenderObject>();
         testSquare->SetShader(m_MeshLoadShader);
         testSquare->SetVertexArray(groundVA);
         testSquare->SetPosition(glm::vec3(0.0f, 5.0f, 0.0f));
@@ -91,7 +91,7 @@ public:
         
         m_TestScene.AddOpaqueObject(testSquare);
 
-        auto building = midori::make_ref<midori::SceneObject>();
+        auto building = midori::make_ref<midori::RenderObject>();
         building->SetShader(m_MeshLoadShader);
         building->SetVertexArray(midori::MeshLoader::Load(MODEL_BUILDING));
         building->SetPosition(glm::vec3(0.0f, -3.0f, 7.5f));
@@ -99,7 +99,7 @@ public:
 
         m_TestScene.AddOpaqueObject(building);
 
-        m_Helicopter = midori::make_ref<midori::SceneObject>();
+        m_Helicopter = midori::make_ref<midori::RenderObject>();
         m_Helicopter->SetShader(m_HelicopterShader);
         m_Helicopter->SetVertexArray(midori::MeshLoader::Load(MODEL_HELICOPTER));
         m_Helicopter->SetScale(1.0f);
@@ -318,7 +318,7 @@ private:
     midori::ref<midori::Texture2D> m_TextureMetal;
 
     midori::ref<midori::Shader> m_HelicopterShader;
-    midori::ref<midori::SceneObject> m_Helicopter;
+    midori::ref<midori::RenderObject> m_Helicopter;
 
     midori::ref<midori::SpotLight> m_SpotLight;
     midori::ref<midori::SpotLight> m_SpotLight1;
@@ -326,7 +326,7 @@ private:
 
     midori::PostProcessingPipeline m_PostProcessing;
 
-    midori::Scene m_TestScene;
+    midori::RenderScene m_TestScene;
 
     float m_TotalTime = 0.0f;
 

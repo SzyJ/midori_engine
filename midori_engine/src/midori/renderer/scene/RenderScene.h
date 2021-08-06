@@ -1,16 +1,16 @@
 // Author: Szymon Jackiewicz
 // 
 // Project: midori_engine
-// File: Scene.h
-// Date: 04/11/2019
+// File: RenderScene.h
+// Date: 06/08/2021
 
 #pragma once
 
 #include "midori/core/Core.h"
 #include "midori/renderer/camera/Camera.h"
-#include "midori/scene/Skybox.h"
-#include "midori/scene/SceneObject.h"
-#include "midori/scene/lighting/LightingManager.h"
+#include "midori/renderer/scene/Skybox.h"
+#include "midori/renderer/scene/RenderObject.h"
+#include "midori/renderer/scene/lighting/LightingManager.h"
 #include "midori/renderer/Renderer.h"
 
 #include <vector>
@@ -18,15 +18,15 @@
 
 namespace midori {
 
-    class Scene {
+    class RenderScene {
     public:
-        Scene() = default;
-        ~Scene() = default;
+        RenderScene() = default;
+        ~RenderScene() = default;
 
-        void AddOpaqueObject(const ref<SceneObject>& newObject);
-        void AddAlphaObject(const ref<SceneObject>& newObject);
-        bool RemoveOpaqueObject(const ref<SceneObject>& object);
-        bool RemoveAlphaObject(const ref<SceneObject>& object);
+        void AddOpaqueObject(const ref<RenderObject>& newObject);
+        void AddAlphaObject(const ref<RenderObject>& newObject);
+        bool RemoveOpaqueObject(const ref<RenderObject>& object);
+        bool RemoveAlphaObject(const ref<RenderObject>& object);
 
         void SetSkybox(const ref<Skybox>& newSkybox) { m_Skybox = newSkybox; }
 
@@ -45,15 +45,15 @@ namespace midori {
         Camera* m_Camera;
         ref<Skybox> m_Skybox;
 
-        std::vector<ref<SceneObject>> m_OpaqueObjects;
-        std::vector<ref<SceneObject>> m_AlphaObjects;
+        std::vector<ref<RenderObject>> m_OpaqueObjects;
+        std::vector<ref<RenderObject>> m_AlphaObjects;
 
         ref<LightingManager> m_LightingManager;
 
-        inline void SortBasedOnCameraDistance(std::vector<ref<SceneObject>>::iterator begin, std::vector<ref<SceneObject>>::iterator end) {
+        inline void SortBasedOnCameraDistance(std::vector<ref<RenderObject>>::iterator begin, std::vector<ref<RenderObject>>::iterator end) {
             // TODO: Make this insertion sort
             std::sort(begin, end,
-                [this](ref<SceneObject> const &lhs, ref<SceneObject> const& rhs) {
+                [this](ref<RenderObject> const &lhs, ref<RenderObject> const& rhs) {
                     glm::vec3 pos = m_Camera->GetPosition();
                     return lhs->GetDistTo(pos) < rhs->GetDistTo(pos);
                 });

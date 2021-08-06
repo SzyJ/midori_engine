@@ -1,8 +1,8 @@
 // Author: Szymon Jackiewicz
 // 
 // Project: midori_engine
-// File: SceneObject.h
-// Date: 04/11/2019
+// File: RenderObject.h
+// Date: 06/08/2021
 
 #pragma once
 
@@ -10,7 +10,7 @@
 #include "midori/renderer/VertexArray.h"
 #include "midori/renderer/Shader.h"
 #include "midori/renderer/camera/Camera.h"
-#include "midori/scene/lighting/Materials.h"
+#include "midori/renderer/scene/lighting/Materials.h"
 
 #include <vector>
 
@@ -22,9 +22,9 @@ namespace midori {
         TrianglePatches
     };
 
-    class SceneObject {
+    class RenderObject {
     public:
-        SceneObject()
+        RenderObject()
             : m_Position(0.0f),
               m_Rotation(0.0f),
               m_Scale(1.0f) {
@@ -33,13 +33,13 @@ namespace midori {
             RecalculateTranslate();
         }
 
-        SceneObject(const SceneObject& copy)
+        RenderObject(const RenderObject& copy)
             : m_VertexArray(copy.m_VertexArray),
               m_Shader(copy.m_Shader),
               m_Rotation(copy.m_Rotation),
               m_Position(copy.m_Position),
               m_Scale(copy.m_Scale) {
-            for (const ref<SceneObject>& child : copy.m_ChildObjects) {
+            for (const ref<RenderObject>& child : copy.m_ChildObjects) {
                 m_ChildObjects.emplace_back(child);
             }
 
@@ -48,10 +48,10 @@ namespace midori {
             RecalculateTranslate();
         }
 
-        virtual ~SceneObject() = default;
+        virtual ~RenderObject() = default;
 
-        void AddChild(const ref<SceneObject>& child);
-        bool DeleteChild(const ref<SceneObject>& child);
+        void AddChild(const ref<RenderObject>& child);
+        bool DeleteChild(const ref<RenderObject>& child);
 
         void SetGeometryPrimitive(const GeometryPrimitive newPrimitive) { m_Primitive = newPrimitive; }
         void SetVertexArray(const ref<VertexArray>& vertexArray) { m_VertexArray = vertexArray; }
@@ -74,7 +74,7 @@ namespace midori {
 
     private:
         GeometryPrimitive m_Primitive = GeometryPrimitive::Triangles;
-        std::vector<ref<SceneObject>> m_ChildObjects;
+        std::vector<ref<RenderObject>> m_ChildObjects;
 
         ref<VertexArray> m_VertexArray;
 

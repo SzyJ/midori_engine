@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "midori/scene/lighting/Lights.h"
+#include "midori/renderer/scene/lighting/Lights.h"
 #include "midori/renderer/Buffer.h"
 
 #include <vector>
