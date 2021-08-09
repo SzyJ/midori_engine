@@ -45,9 +45,19 @@ namespace midori {
             delta = thisFrameTime - lastFrameTime;
             lastFrameTime = thisFrameTime;
 
+            if (m_LoadedWorld)
+            {
+                m_LoadedWorld->Update(delta);
+            }
+
             // Layer Updates
             for (Layer* layer : m_LayerStack) {
                 layer->OnUpdate(delta);
+            }
+
+            if (m_LoadedWorld)
+            {
+                m_LoadedWorld->DrawScene();
             }
 
             // ImGui Updates
@@ -69,10 +79,18 @@ namespace midori {
         m_LayerStack.PushOverlay(overlay);
     }
 
+    void Application::SetWorld(ref<World>& newWorld) {
+        m_LoadedWorld = newWorld;
+    }
+
     void Application::OnEvent(Event& event) {
         EventDispatcher dispatcher(event);
 
         dispatcher.Dispatch<WindowCloseEvent>(MD_BIND_FUNCTION(Application::OnWindowClose));
+
+        if (m_LoadedWorld) {
+            m_LoadedWorld->OnEvent(event);
+        }
 
         for (auto stackIndex = m_LayerStack.end(); stackIndex != m_LayerStack.begin();) {
             (*--stackIndex)->OnEvent(event);

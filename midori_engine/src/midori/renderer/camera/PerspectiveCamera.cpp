@@ -15,6 +15,19 @@ namespace midori {
         RecalculateProjectionMatrix();
     }
 
+
+    void PerspectiveCamera::InitCamera(float aspectRatio, glm::vec3 position, glm::vec3 up, float yaw, float pitch) {
+        m_AspectRatio = aspectRatio;
+        m_Position = position;
+        m_WorldUp = up;
+        m_Yaw = yaw;
+        m_Pitch = pitch;
+
+        UpdateCameraVectors();
+        RecalculateViewMatrix();
+        RecalculateProjectionMatrix();
+    }
+
     const glm::mat4& PerspectiveCamera::GetViewMatrix() const {
         return m_ViewMatrix;
     }

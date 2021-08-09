@@ -14,6 +14,8 @@
 #include "midori/layers/LayerStack.h"
 #include "midori/layers/imgui/ImGuiLayer.h"
 
+#include "midori/world/World.h"
+
 namespace midori {
 
     class MIDORI_API Application {
@@ -30,6 +32,8 @@ namespace midori {
         void PushLayer(Layer* layer);
         void PushOverlay(Layer* overlay);
 
+        void SetWorld(ref<World>& newWorld);
+
         inline Window& GetWindow() { return *m_Window; }
 
     private:
@@ -38,6 +42,8 @@ namespace midori {
         scope<Window> m_Window;
         bool m_Running = true;
         LayerStack m_LayerStack;
+
+        ref<World> m_LoadedWorld;
 
         bool OnWindowClose(WindowCloseEvent& closeEvent);
     };

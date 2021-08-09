@@ -39,5 +39,13 @@
 #include "midori/renderer/scene/lighting/Lights.h"
 #include "midori/renderer/scene/lighting/LightingManager.h"
 
+// Entity Components
+#include "midori/world/Components/EntityComponentBase.h"
+#include "midori/world/Components/EntityRendererComponent.h"
+
+// World
+#include "midori/world/EntityBase.h"
+#include "midori/world/World.h"
+
 // == Entry Point == //
 #include "midori/core/EntryPoint.h"

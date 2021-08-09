@@ -41,6 +41,9 @@ namespace midori {
             float pitch = c_DefaultPitch
         );
 
+        void InitCamera(float aspectRatio = 0.0f, glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = c_DefaultYaw, float pitch = c_DefaultPitch);
+
         virtual const glm::vec3& GetPosition() const override { return m_Position; }
         virtual const glm::vec3& GetDirection() const override { return m_Front; }
         virtual void SetPosition(const glm::vec3& newPos) override {
@@ -75,7 +78,7 @@ namespace midori {
         glm::vec3 m_Front;
         glm::vec3 m_Up;
         glm::vec3 m_Right;
-        const glm::vec3 m_WorldUp;
+        glm::vec3 m_WorldUp;
 
         glm::mat4 m_ViewMatrix;
         glm::mat4 m_ProjectionMatrix;
